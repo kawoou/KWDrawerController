@@ -1,6 +1,10 @@
 KWNinePatchView
 ===============
 
+![KWDrawerViewController](https://dl.dropboxusercontent.com/u/65611701/KWDrawerViewController.gif)
+
+<br />
+
 ##How-To
 You can either simply drag and drop the `KWDrawerViewController/KWDrawerViewController` folder into your existing project or add the library as a submodule and reference `KWDrawerViewController.xcodeproj` from within your own project.
 
