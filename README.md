@@ -21,11 +21,13 @@ You can either simply drag and drop the `KWDrawerViewController/KWDrawerViewCont
     [drawerViewController setMainViewController:mainViewController];
     [drawerViewController setLeftDrawerViewController:leftViewController];
     [drawerViewController setRightDrawerViewController:rightViewController];
+    [drawerViewController setMaximumRightDrawerWidth:280.0f animated:YES completion:nil];
+    [drawerViewController setShowShadow:YES];
     [drawerViewController setDelegate:self];
     
     [self.window setRootViewController:drawerViewController];
     ```
-    
+
 <br />
 
 ##Requirements
@@ -38,6 +40,7 @@ You can either simply drag and drop the `KWDrawerViewController/KWDrawerViewCont
 ## Changelog
 
 + 1.0 First Release.
++ 1.1 Bug Fix, Add animations.
 
 <br />
 
