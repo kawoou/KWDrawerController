@@ -27,8 +27,10 @@
     [drawerViewController setMainViewController:mainViewController];
     [drawerViewController setLeftDrawerViewController:leftViewController];
     [drawerViewController setRightDrawerViewController:rightViewController];
+    [drawerViewController setShowShadow:YES];
     [drawerViewController setDelegate:self];
     
+    [self.window setBackgroundColor:[UIColor yellowColor]];
     [self.window setRootViewController:drawerViewController];
     [self.window makeKeyAndVisible];
     return YES;
@@ -64,36 +66,14 @@
 #pragma mark -
 #pragma mark KWDrawerViewControllerDelegate
 
-- (void)drawerViewController:(KWDrawerViewController *)drawerViewController didAnimationMainViewController:(UIViewController *)viewController withPercentage:(CGFloat)percentage
+- (void)drawerViewControllerDidAnimationMainViewController:(UIViewController *)viewController withPercentage:(CGFloat)percentage andAnimationSide:(KWDrawerSide)animationSide andDrawerBlocks:(KWDrawerBlocks)drawerBlocks
 {
-    if(percentage >= 0.0f)
-    {
-        viewController.view.transform = CGAffineTransformIdentity;
-        viewController.view.frame = CGRectMake(0,
-                                               0,
-                                               viewController.view.superview.frame.size.width,
-                                               viewController.view.superview.frame.size.height);
-        
-        CGAffineTransform affine;
-        affine = CGAffineTransformMakeTranslation((-viewController.view.superview.frame.size.width + 120) * (1.0f - percentage) * (percentage > 1.0f ? 0.5f : 1.0f), 0);
-        affine = CGAffineTransformScale(affine, percentage > 1.0f ? percentage : 1.0f, 1.0f);
-        drawerViewController.leftDrawerViewController.view.transform = affine;
-        
-        [drawerViewController.view bringSubviewToFront:drawerViewController.leftDrawerViewController.view];
-    }
+    if(animationSide == KWDrawerSideLeft)
+        drawerBlocks([KWDrawerAnimation floatingSlideAnimationBlock], [KWDrawerAnimation scalingOverflowAnimationBlock]);
     
-    if(percentage <= 0.0f)
-    {
-        CGFloat newPercentage = 1.0f + percentage * 0.2875f;
-        viewController.view.transform = CGAffineTransformMakeScale(newPercentage, newPercentage);
-        viewController.view.frame = CGRectMake(newPercentage * percentage * 236.0f,
-                                               viewController.view.frame.origin.y,
-                                               viewController.view.frame.size.width,
-                                               viewController.view.frame.size.height);
-        
-        drawerViewController.rightDrawerViewController.view.transform = CGAffineTransformMakeScale(1.5 + 0.5 * percentage, 1.5 + 0.5 * percentage);
-        drawerViewController.rightDrawerViewController.view.alpha = -percentage;
-    }
+    if(animationSide == KWDrawerSideRight)
+        [viewController.drawerController setMaximumRightDrawerWidth:280.0f animated:YES completion:nil];
+    //    drawerBlocks([KWDrawerAnimation fullSizeSlideAnimationBlock], [KWDrawerAnimation fullSizeSlideAnimationBlock]);
 }
 
 @end

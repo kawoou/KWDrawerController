@@ -14,11 +14,13 @@
 
 @implementation RightViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    self = [super init];
+    if (self)
+    {
+        //[self.view setFrame:CGRectMake(0, 0, 280, self.view.frame.size.height)];
+        [self.view setBackgroundColor:[UIColor redColor]];
     }
     return self;
 }
@@ -28,13 +30,28 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.view setBackgroundColor:[UIColor redColor]];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, 0, 0)];
+    [label setText:@"Right View Controller"];
+    [label setTextColor:[UIColor whiteColor]];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label sizeToFit];
+    [self.view addSubview:label];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (UIStatusBarAnimation)statusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
+}
+
+- (BOOL)statusBarHidden
+{
+    return YES;
 }
 
 /*

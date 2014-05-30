@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- KWNinePatchView - Copyright (c) 2014, Jeungwon An (kawoou@kawoou.kr)
+ KWDrawerViewController - Copyright (c) 2014, Jeungwon An (kawoou@kawoou.kr)
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -22,16 +22,13 @@
  SOFTWARE.
  */
 
-#import "KWDrawerViewController.h"
+#import "KWDrawerController.h"
 
 @interface KWDrawerViewController () <UIGestureRecognizerDelegate>
 {
     BOOL                    _slideEnable;
     
     CGFloat                 _commitPosition;
-    BOOL                    _isMovingLeftDrawer;
-    BOOL                    _isMovingRightDrawer;
-    BOOL                    _isAnimationPlaying;
     
     CGPoint                 _beginPoint;
     CGPoint                 _movePoint;
@@ -40,6 +37,8 @@
     
     BOOL                    _leftViewWillAppear;
     BOOL                    _rightViewWillAppear;
+    BOOL                    _statusBarHidden;
+    BOOL                    _statusBarTranslucent;
     
     BOOL                    _isMainUserInteraction;
     BOOL                    _isLeftUserInteraction;
@@ -48,18 +47,27 @@
     BOOL                    _oldLeftUserInteraction;
     BOOL                    _oldRightUserInteraction;
     
+    CGRect                  _mainViewRect;
+    CGRect                  _leftViewRect;
+    CGRect                  _rightViewRect;
+    
     UIPanGestureRecognizer  *_gestureRecognizer;
     UITapGestureRecognizer  *_tapGestureRecognizer;
 }
+
+@property (nonatomic, assign) BOOL      isMovingLeftDrawer;
+@property (nonatomic, assign) BOOL      isMovingRightDrawer;
+@property (nonatomic, assign) BOOL      isAnimationPlaying;
 
 - (void)_showMainViewController;
 - (void)_showLeftDrawerViewController;
 - (void)_showRightDrawerViewController;
 
 - (void)initialize;
+- (void)repositioning;
 - (void)setUserInteraction:(BOOL)interaction forViewController:(UIViewController *)viewController;
 
-- (void)isMainViewControllerTouched;
+- (BOOL)isMainViewControllerTouched:(CGPoint)point;
 
 - (void)didBeganAnimationLeftDrawer:(UIViewController *)viewController;
 - (void)didBeganAnimationRightDrawer:(UIViewController *)viewController;
@@ -97,17 +105,65 @@
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-    return [self.showingViewController preferredStatusBarStyle];
+    return [self statusBarStyle];
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
 {
-    return [self.showingViewController preferredStatusBarUpdateAnimation];
+    return [self statusBarUpdateAnimation];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
-    return [self.showingViewController prefersStatusBarHidden];
+    return [self statusBarHidden];
+}
+
+- (UIStatusBarStyle)statusBarStyle
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    UIStatusBarStyle style = (UIStatusBarStyle)[self.showingViewController performSelector:@selector(statusBarStyle)];
+    
+    if(style == UIStatusBarStyleLightContent)
+        _statusBarTranslucent = YES;
+    else
+        _statusBarTranslucent = NO;
+    
+    return style;
+#pragma clang diagnostic pop
+}
+
+- (UIStatusBarAnimation)statusBarUpdateAnimation
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return (UIStatusBarAnimation)[self.showingViewController performSelector:@selector(statusBarUpdateAnimation)];
+#pragma clang diagnostic pop
+}
+
+- (BOOL)statusBarHidden
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return _statusBarHidden = (BOOL)[self.showingViewController performSelector:@selector(statusBarHidden)];
+#pragma clang diagnostic pop
+}
+
+- (void)setNeedsStatusBarUpdate
+{
+    if([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+    {
+        [UIView animateWithDuration:0.35f animations:^{
+            [self setNeedsStatusBarAppearanceUpdate];
+        }];
+    }
+    else
+    {
+        [[UIApplication sharedApplication] setStatusBarStyle:[self statusBarStyle] animated:YES];
+        [[UIApplication sharedApplication] setStatusBarHidden:[self statusBarHidden] withAnimation:[self statusBarUpdateAnimation]];
+        
+        [self repositioning];
+    }
 }
 
 #pragma mark -
@@ -117,14 +173,14 @@
     [self addChildViewController:mainViewController];
     
     _mainViewController = mainViewController;
+    [self addChildViewController:_mainViewController];
+    
     [self setUserInteraction:NO forViewController:_mainViewController];
     [self setUserInteraction:YES forViewController:_mainViewController];
     
     [self.view addSubview:_mainViewController.view];
     
-    CGRect rect = (CGRect){CGPointZero, _mainViewController.view.frame.size};
-    _mainViewController.view.frame = rect;
-    _mainViewController.drawerController = self;
+    [self repositioning];
 }
 
 - (void)setLeftDrawerViewController:(UIViewController *)leftDrawerViewController
@@ -132,15 +188,15 @@
     [self addChildViewController:leftDrawerViewController];
     
     _leftDrawerViewController = leftDrawerViewController;
+    [self addChildViewController:_leftDrawerViewController];
+    
     [self setUserInteraction:NO forViewController:_leftDrawerViewController];
     [_leftDrawerViewController.view setHidden:YES];
     
     [self.view addSubview:_leftDrawerViewController.view];
     [self.view bringSubviewToFront:_mainViewController.view];
     
-    CGRect rect = (CGRect){CGPointZero, _leftDrawerViewController.view.frame.size};
-    _leftDrawerViewController.view.frame = rect;
-    _leftDrawerViewController.drawerController = self;
+    [self repositioning];
 }
 
 - (void)setRightDrawerViewController:(UIViewController *)rightDrawerViewController
@@ -148,15 +204,15 @@
     [self addChildViewController:rightDrawerViewController];
     
     _rightDrawerViewController = rightDrawerViewController;
+    [self addChildViewController:_rightDrawerViewController];
+    
     [self setUserInteraction:NO forViewController:_rightDrawerViewController];
     [_rightDrawerViewController.view setHidden:YES];
     
     [self.view addSubview:_rightDrawerViewController.view];
     [self.view bringSubviewToFront:_mainViewController.view];
     
-    CGRect rect = (CGRect){CGPointZero, _rightDrawerViewController.view.frame.size};
-    _rightDrawerViewController.view.frame = rect;
-    _rightDrawerViewController.drawerController = self;
+    [self repositioning];
 }
 
 - (void)showMainViewController
@@ -177,6 +233,36 @@
     [self _showRightDrawerViewController];
 }
 
+- (void)setMaximumLeftDrawerWidth:(CGFloat)width animated:(BOOL)animated completion:(void(^)(BOOL finished))completion
+{
+    if(self.view.bounds.size.width + _rightViewRect.size.width != width)
+    {
+        CGRect rect = _leftDrawerViewController.view.frame;
+        rect.size.width = width;
+        
+        [UIView animateWithDuration:(kDrawerDefaultAnimationDuration * animated) animations:^{
+            _leftDrawerViewController.view.frame = rect;
+        } completion:completion];
+        
+        [self repositioning];
+    }
+}
+
+- (void)setMaximumRightDrawerWidth:(CGFloat)width animated:(BOOL)animated completion:(void(^)(BOOL finished))completion
+{
+    if(self.view.bounds.size.width + _rightViewRect.size.width != width)
+    {
+        CGRect rect = _rightDrawerViewController.view.frame;
+        rect.size.width = width;
+        
+        [UIView animateWithDuration:(kDrawerDefaultAnimationDuration * animated) animations:^{
+            _rightDrawerViewController.view.frame = rect;
+        } completion:completion];
+        
+        [self repositioning];
+    }
+}
+
 #pragma mark -
 #pragma mark Variables
 - (void)setSlideEnable:(BOOL)slideEnable
@@ -187,6 +273,50 @@
 - (BOOL)slideEnable
 {
     return _slideEnable;
+}
+
+- (void)setShowShadow:(BOOL)showShadow
+{
+    _showShadow = showShadow;
+    
+    UIView *mainView = self.mainViewController.view;
+    UIView *leftView = self.leftDrawerViewController.view;
+    UIView *rightView = self.rightDrawerViewController.view;
+    if(_showShadow)
+    {
+        mainView.layer.masksToBounds = NO;
+        mainView.layer.shadowRadius = kDrawerDefaultShadowRadius;
+        mainView.layer.shadowOpacity = kDrawerDefaultShadowOpacity;
+        mainView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:mainView.bounds] CGPath];
+        
+        leftView.layer.masksToBounds = NO;
+        leftView.layer.shadowRadius = kDrawerDefaultShadowRadius;
+        leftView.layer.shadowOpacity = kDrawerDefaultShadowOpacity;
+        leftView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:leftView.bounds] CGPath];
+        
+        rightView.layer.masksToBounds = NO;
+        rightView.layer.shadowRadius = kDrawerDefaultShadowRadius;
+        rightView.layer.shadowOpacity = kDrawerDefaultShadowOpacity;
+        rightView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:rightView.bounds] CGPath];
+    }
+    else
+    {
+        mainView.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectNull].CGPath;
+        mainView.layer.masksToBounds = YES;
+        
+        leftView.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectNull].CGPath;
+        leftView.layer.masksToBounds = YES;
+        
+        rightView.layer.shadowPath = [UIBezierPath bezierPathWithRect:CGRectNull].CGPath;
+        rightView.layer.masksToBounds = YES;
+    }
+}
+
+- (void)setDelegate:(id<KWDrawerViewControllerDelegate>)delegate
+{
+    _delegate = delegate;
+
+    [self repositioning];
 }
 
 - (UIViewController *)showingViewController
@@ -205,9 +335,7 @@
 #pragma mark Gesture Recognizer
 - (void)handleTapGestureRecognizer:(UITapGestureRecognizer *)gesture
 {
-    if(_isMovingLeftDrawer) return;
-    if(_isMovingRightDrawer) return;
-    if(_isAnimationPlaying) return;
+    if(self.isAnimationPlaying) return;
     [self _showMainViewController];
 }
 
@@ -216,12 +344,18 @@
     UIGestureRecognizerState state = [gesture state];
     CGPoint location = [gesture locationInView:self.view];
     
-    if(_isAnimationPlaying) return;
+    if(self.isAnimationPlaying) return;
     if (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStateChanged)
     {
-        if(!_isMovingLeftDrawer && !_isMovingRightDrawer) return;
+        CGSize viewSize;
+        if(self.isMovingLeftDrawer)
+            viewSize = CGSizeAdd(self.view.frame.size, _leftViewRect.size);
+        else if(self.isMovingRightDrawer)
+            viewSize = CGSizeAdd(self.view.frame.size, _rightViewRect.size);
+        else
+            return;
         
-        CGFloat percentage = _commitPosition + (location.x - _beginPoint.x) / self.view.frame.size.width;
+        CGFloat percentage = _commitPosition + (location.x - _beginPoint.x) / viewSize.width;
         if(location.x - _movePoint.x > 0)
             _isTouchMoveLeft = NO;
         else if(location.x - _movePoint.x < 0)
@@ -248,32 +382,28 @@
     else if(state == UIGestureRecognizerStateEnded || state == UIGestureRecognizerStateCancelled)
     {
         _endPoint = location;
-        if(_isMovingLeftDrawer || _isMovingRightDrawer)
+        if(self.isMovingLeftDrawer || self.isMovingRightDrawer)
         {
             if(_commitPosition == 0.0f)
             {
-                if(_isMovingLeftDrawer)
+                if(self.isMovingLeftDrawer)
                 {
-                    [self willFinishAnimationLeftDrawer:_leftDrawerViewController];
                     if(_isTouchMoveLeft == NO)
                         return [self _showLeftDrawerViewController];
                 }
                 else
                 {
-                    [self willFinishAnimationRightDrawer:_rightDrawerViewController];
                     if(_isTouchMoveLeft == YES)
                         return [self _showRightDrawerViewController];
                 }
             }
             else if(_commitPosition == 1.0f)
             {
-                [self willFinishAnimationLeftDrawer:_leftDrawerViewController];
                 if(_isTouchMoveLeft == NO)
                     return [self _showLeftDrawerViewController];
             }
             else
             {
-                [self willFinishAnimationRightDrawer:_rightDrawerViewController];
                 if(_isTouchMoveLeft == YES)
                     return [self _showRightDrawerViewController];
             }
@@ -286,13 +416,12 @@
 {
     _leftViewWillAppear = _rightViewWillAppear = NO;
     
-    if(!_slideEnable) return NO;
-    if(_isAnimationPlaying) return NO;
+    if(!_slideEnable)
+        return NO;
+    if(self.isAnimationPlaying)
+        return NO;
     if(gestureRecognizer == _gestureRecognizer)
     {
-        [self willFinishAnimationLeftDrawer:_leftDrawerViewController];
-        [self willFinishAnimationRightDrawer:_rightDrawerViewController];
-        
         CGPoint translation = [(UIPanGestureRecognizer*)gestureRecognizer translationInView:self.view];
         if (fabsf(translation.x) < fabsf(translation.y))
             return NO;
@@ -369,12 +498,25 @@
 #pragma mark Private Methods
 - (void)_showMainViewController
 {
-    if(_isAnimationPlaying) return;
+    if(self.isAnimationPlaying) return;
     
     CGFloat lastCommitPosition = _commitPosition;
+    if(!self.isMovingLeftDrawer && !self.isMovingRightDrawer)
+    {
+        if(lastCommitPosition > 0.0f)
+        {
+            self.isMovingLeftDrawer = YES;
+            self.isMovingRightDrawer = NO;
+        }
+        if(lastCommitPosition < 0.0f)
+        {
+            self.isMovingLeftDrawer = NO;
+            self.isMovingRightDrawer = YES;
+        }
+    }
     
-    _isAnimationPlaying = YES;
-    [UIView animateWithDuration:0.35 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
+    self.isAnimationPlaying = YES;
+    [UIView animateWithDuration:kDrawerDefaultAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
         [self mainViewController:_mainViewController didAnimationWithPercentage:0.0f];
     } completion:^(BOOL finished){
         _commitPosition = 0.0f;
@@ -393,24 +535,23 @@
             [_rightDrawerViewController viewWillDisappear:YES];
             [_rightDrawerViewController viewDidDisappear:YES];
         }
+        self.isAnimationPlaying = NO;
         
-        if([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
-            [self setNeedsStatusBarAppearanceUpdate];
-        _isAnimationPlaying = NO;
+        [self setNeedsStatusBarUpdate];
     }];
 }
 
 - (void)_showLeftDrawerViewController
 {
-    if(_isAnimationPlaying) return;
+    if(self.isAnimationPlaying) return;
     
     [self didBeganAnimationLeftDrawer:_leftDrawerViewController];
     
     if(_leftViewWillAppear == NO)
         [_leftDrawerViewController viewWillAppear:YES];
     
-    _isAnimationPlaying = YES;
-    [UIView animateWithDuration:0.35 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
+    self.isAnimationPlaying = YES;
+    [UIView animateWithDuration:kDrawerDefaultAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
         [self mainViewController:_mainViewController didAnimationWithPercentage:1.0f];
     } completion:^(BOOL finished){
         _commitPosition = 1.0f;
@@ -419,23 +560,23 @@
         [self willFinishAnimationLeftDrawer:_leftDrawerViewController];
         
         [_leftDrawerViewController viewDidAppear:YES];
-        if([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
-            [self setNeedsStatusBarAppearanceUpdate];
-        _isAnimationPlaying = NO;
+        self.isAnimationPlaying = NO;
+        
+        [self setNeedsStatusBarUpdate];
     }];
 }
 
 - (void)_showRightDrawerViewController
 {
-    if(_isAnimationPlaying) return;
+    if(self.isAnimationPlaying) return;
     
     [self didBeganAnimationRightDrawer:_rightDrawerViewController];
     
     if(_rightViewWillAppear == NO)
         [_rightDrawerViewController viewWillAppear:YES];
     
-    _isAnimationPlaying = YES;
-    [UIView animateWithDuration:0.35 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
+    self.isAnimationPlaying = YES;
+    [UIView animateWithDuration:kDrawerDefaultAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void){
         [self mainViewController:_mainViewController didAnimationWithPercentage:-1.0f];
     } completion:^(BOOL finished){
         _commitPosition = -1.0f;
@@ -444,9 +585,9 @@
         [self willFinishAnimationRightDrawer:_rightDrawerViewController];
         
         [_rightDrawerViewController viewDidAppear:YES];
-        if([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
-            [self setNeedsStatusBarAppearanceUpdate];
-        _isAnimationPlaying = NO;
+        self.isAnimationPlaying = NO;
+        
+        [self setNeedsStatusBarUpdate];
     }];
 }
 
@@ -456,8 +597,10 @@
     
     _slideEnable = YES;
     _commitPosition = 0.0f;
-    _isMovingLeftDrawer = _isMovingRightDrawer = _isAnimationPlaying = NO;
+    self.isMovingLeftDrawer = self.isMovingRightDrawer = self.isAnimationPlaying = NO;
     _isMainUserInteraction = _isLeftUserInteraction = _isRightUserInteraction = YES;
+    _statusBarHidden = NO;
+    _statusBarTranslucent = NO;
     
     CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
     self.view.frame = rect;
@@ -469,6 +612,61 @@
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureRecognizer:)];
     [_tapGestureRecognizer setDelegate:self];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
+}
+
+- (void)repositioning
+{
+    static BOOL statusBarHidden = NO;
+    CGFloat leftSize = self.view.bounds.size.width - _leftDrawerViewController.view.bounds.size.width;
+    CGFloat rightSize = self.view.bounds.size.width - _rightDrawerViewController.view.bounds.size.width;
+    
+    _mainViewRect = CGRectZero;
+    _leftViewRect = CGRectMake(0, 0, -MAX(0, leftSize), 0);
+    _rightViewRect = CGRectMake(MAX(0, rightSize), 0, -MAX(0, rightSize), 0);
+    
+    if(!_isAnimationPlaying)
+    {
+        /* 7.0f > OS Version */
+        if(![self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+        {
+            if(_statusBarHidden || _statusBarTranslucent)
+            {
+                _mainViewRect = CGRectMake(0, -20, 0, 20);
+                _leftViewRect = CGRectAdd(_leftViewRect, _mainViewRect);
+                _rightViewRect = CGRectAdd(_rightViewRect, _mainViewRect);
+            }
+        }
+        if(statusBarHidden != _statusBarHidden || _statusBarTranslucent != _statusBarHidden)
+        {
+            [UIView animateWithDuration:0.35f animations:^{
+                CGRect viewRect = (CGRect){self.view.frame.origin.x, 0, self.view.frame.size};
+                
+                _mainViewController.view.frame = CGRectAdd(viewRect, _mainViewRect);
+                _leftDrawerViewController.view.frame = CGRectAdd(viewRect, _leftViewRect);
+                _rightDrawerViewController.view.frame = CGRectAdd(viewRect, _rightViewRect);
+            }];
+        }
+        else
+        {
+            CGRect viewRect = (CGRect){self.view.frame.origin.x, 0, self.view.frame.size};
+            
+            _mainViewController.view.frame = CGRectAdd(viewRect, _mainViewRect);
+            _leftDrawerViewController.view.frame = CGRectAdd(viewRect, _leftViewRect);
+            _rightDrawerViewController.view.frame = CGRectAdd(viewRect, _rightViewRect);
+        }
+        if(![self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+            statusBarHidden = _statusBarHidden || _statusBarTranslucent;
+    }
+}
+
+- (void)setIsMovingLeftDrawer:(BOOL)isMovingLeftDrawer
+{
+    _isMovingLeftDrawer = isMovingLeftDrawer;
+}
+
+- (void)setIsMovingRightDrawer:(BOOL)isMovingRightDrawer
+{
+    _isMovingRightDrawer = isMovingRightDrawer;
 }
 
 - (void)setUserInteraction:(BOOL)interaction forViewController:(UIViewController *)viewController
@@ -522,7 +720,7 @@
     if(_commitPosition == 0.0f)
         return NO;
     
-    for(int i = self.view.subviews.count - 1; i >= 0; i --)
+    for(NSInteger i = self.view.subviews.count - 1; i >= 0; i --)
     {
         UIView *view = self.view.subviews[i];
         if(CGRectIntersectsRect(view.frame, pointRect))
@@ -545,10 +743,10 @@
 
 - (void)didBeganAnimationLeftDrawer:(UIViewController *)viewController
 {
-    if(_isAnimationPlaying) return;
+    if(self.isAnimationPlaying) return;
     
-    _isMovingLeftDrawer = YES;
-    _isMovingRightDrawer = NO;
+    self.isMovingLeftDrawer = YES;
+    self.isMovingRightDrawer = NO;
     
     viewController.view.hidden = NO;
     _leftDrawerViewController.view.hidden = NO;
@@ -567,10 +765,10 @@
 
 - (void)didBeganAnimationRightDrawer:(UIViewController *)viewController
 {
-    if(_isAnimationPlaying) return;
+    if(self.isAnimationPlaying) return;
     
-    _isMovingRightDrawer = YES;
-    _isMovingLeftDrawer = NO;
+    self.isMovingRightDrawer = YES;
+    self.isMovingLeftDrawer = NO;
     
     viewController.view.hidden = NO;
     _rightDrawerViewController.view.hidden = NO;
@@ -589,26 +787,48 @@
 
 - (void)mainViewController:(UIViewController *)viewController didAnimationWithPercentage:(CGFloat)percentage
 {
-    if(_isMovingLeftDrawer)
+    KWDrawerSide sideState = self.isMovingLeftDrawer?KWDrawerSideLeft:(self.isMovingRightDrawer?KWDrawerSideRight:KWDrawerSideNone);
+    
+    CGRect viewRect = (CGRect){CGPointZero, self.view.frame.size};
+    if(sideState == KWDrawerSideLeft)
     {
-        if(percentage < 0.0f) percentage = 0.0f;
-        if(percentage > 1.06f) percentage = 1.06f;
+        viewRect = CGRectAdd(_leftViewRect, CGSizeRect(self.view.frame.size));
+        
+        if(percentage < 0.0f)
+            percentage = 0.0f;
+        
+        if(percentage > kDrawerOverflowAnimationPercent)
+            percentage = kDrawerOverflowAnimationPercent;
     }
-    if(_isMovingRightDrawer)
+    if(sideState == KWDrawerSideRight)
     {
-        if(percentage > 0.0f) percentage = 0.0f;
-        if(percentage < -1.06f) percentage = -1.06f;
+        viewRect = CGRectAdd(_rightViewRect, CGSizeRect(self.view.frame.size));
+        
+        if(percentage > 0.0f)
+            percentage = 0.0f;
+        
+        if(percentage < -kDrawerOverflowAnimationPercent)
+            percentage = -kDrawerOverflowAnimationPercent;
     }
     
-    if(_delegate && [((id)_delegate) respondsToSelector:@selector(drawerViewController:didAnimationMainViewController:withPercentage:)])
-        [_delegate drawerViewController:self didAnimationMainViewController:_mainViewController withPercentage:percentage];
-    else
+    __block KWDrawerAnimationBlock aniBlock = [KWDrawerAnimation slideAnimationBlock];
+    __block KWDrawerOverflowAnimationBlock overflowAniBlock = [KWDrawerAnimation scalingOverflowAnimationBlock];
+    if(_delegate && [((id)_delegate) respondsToSelector:@selector(drawerViewControllerDidAnimationMainViewController:withPercentage:andAnimationSide:andDrawerBlocks:)])
     {
-        viewController.view.frame = CGRectMake(percentage * 280.0f,
-                                               viewController.view.frame.origin.y,
-                                               viewController.view.frame.size.width,
-                                               viewController.view.frame.size.height);
+        [_delegate drawerViewControllerDidAnimationMainViewController:_mainViewController withPercentage:percentage andAnimationSide:sideState andDrawerBlocks:^(KWDrawerAnimationBlock animationBlock, KWDrawerOverflowAnimationBlock overflowAnimationBlock)
+        {
+            if(animationBlock)
+                aniBlock = animationBlock;
+            
+            if(overflowAnimationBlock)
+                overflowAniBlock = overflowAnimationBlock;
+        }];
     }
+    
+    if(fabs(percentage) > 1.0f)
+        overflowAniBlock(viewController, sideState, percentage, viewRect);
+    else
+        aniBlock(viewController, sideState, percentage, viewRect);
 }
 
 - (void)willFinishAnimationMainViewController:(UIViewController *)viewController
@@ -617,15 +837,18 @@
     _leftDrawerViewController.view.hidden = YES;
     _rightDrawerViewController.view.hidden = YES;
     
+    self.isMovingLeftDrawer = NO;
+    
     if(_delegate && [((id)_delegate) respondsToSelector:@selector(drawerViewController:willFinishAnimationMainDrawer:)])
         [_delegate drawerViewController:self willFinishAnimationMainDrawer:viewController];
 }
 
 - (void)willFinishAnimationLeftDrawer:(UIViewController *)viewController
 {
-    if(!_isMovingLeftDrawer) return;
+    if(!self.isMovingLeftDrawer) return;
     
-    _isMovingLeftDrawer = NO;
+    self.isMovingLeftDrawer = NO;
+    self.isMovingRightDrawer = NO;
     
     viewController.view.hidden = NO;
     _leftDrawerViewController.view.hidden = NO;
@@ -637,9 +860,9 @@
 
 - (void)willFinishAnimationRightDrawer:(UIViewController *)viewController
 {
-    if(!_isMovingRightDrawer) return;
+    if(!self.isMovingRightDrawer) return;
     
-    _isMovingRightDrawer = NO;
+    self.isMovingRightDrawer = NO;
     
     viewController.view.hidden = NO;
     _leftDrawerViewController.view.hidden = YES;
@@ -650,3 +873,4 @@
 }
 
 @end
+

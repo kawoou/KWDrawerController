@@ -14,11 +14,13 @@
 
 @implementation LeftViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    self = [super init];
+    if (self)
+    {
+        [self.view setFrame:CGRectMake(0, 0, 200, self.view.frame.size.height)];
+        [self.view setBackgroundColor:[UIColor blueColor]];
     }
     return self;
 }
@@ -28,14 +30,33 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    [self.view setFrame:CGRectMake(0, 0, 200, self.view.frame.size.height)];
-    [self.view setBackgroundColor:[UIColor blueColor]];
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, 0, 0)];
+    [label setText:@"Left View Controller"];
+    [label setTextColor:[UIColor whiteColor]];
+    [label setBackgroundColor:[UIColor clearColor]];
+    [label sizeToFit];
+    [self.view addSubview:label];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (UIStatusBarStyle)statusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (UIStatusBarAnimation)statusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
+- (BOOL)statusBarHidden
+{
+    return NO;
 }
 
 /*

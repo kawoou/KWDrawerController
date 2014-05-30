@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- KWNinePatchView - Copyright (c) 2014, Jeungwon An (kawoou@kawoou.kr)
+ KWDrawerViewController - Copyright (c) 2014, Jeungwon An (kawoou@kawoou.kr)
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -23,10 +23,15 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "KWDrawerViewController.h"
 
-@class KWDrawerViewController;
 @interface UIViewController (KWDrawerViewController)
 
-@property (nonatomic, readwrite) KWDrawerViewController    *drawerController;
+@property (nonatomic, retain, readonly) KWDrawerViewController  *drawerController;
+
+- (UIStatusBarStyle)statusBarStyle;
+- (UIStatusBarAnimation)statusBarUpdateAnimation;
+- (BOOL)statusBarHidden;
+
 
 @end

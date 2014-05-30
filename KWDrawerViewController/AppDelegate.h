@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "KWDrawerViewController.h"
+#import "KWDrawerController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, KWDrawerViewControllerDelegate>
 

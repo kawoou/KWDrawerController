@@ -14,11 +14,12 @@
 
 @implementation MainViewController
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)init
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    self = [super init];
+    if (self)
+    {
+        //[self.view setAlpha:0.75f];
     }
     return self;
 }

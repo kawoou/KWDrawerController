@@ -22,24 +22,6 @@
  SOFTWARE.
  */
 
-#import <UIKit/UIKit.h>
-#import "KWDrawerDefinition.h"
-
-@interface KWDrawerViewController : UIViewController
-
-@property (nonatomic, retain) id<KWDrawerViewControllerDelegate>    delegate;
-@property (nonatomic, assign) BOOL                                  slideEnable;
-@property (nonatomic, assign) BOOL                                  showShadow;
-@property (nonatomic, retain) UIViewController                      *mainViewController;
-@property (nonatomic, retain) UIViewController                      *leftDrawerViewController;
-@property (nonatomic, retain) UIViewController                      *rightDrawerViewController;
-@property (readonly)          UIViewController                      *showingViewController;
-
-- (void)showMainViewController;
-- (void)showLeftDrawerViewController;
-- (void)showRightDrawerViewController;
-
-- (void)setMaximumLeftDrawerWidth:(CGFloat)width animated:(BOOL)animated completion:(void(^)(BOOL finished))completion;
-- (void)setMaximumRightDrawerWidth:(CGFloat)width animated:(BOOL)animated completion:(void(^)(BOOL finished))completion;
-
-@end
+#import "KWDrawerViewController.h"
+#import "UIViewController+KWDrawerViewController.h"
+#import "KWDrawerAnimation.h"

@@ -1,7 +1,7 @@
 /*
  The MIT License (MIT)
  
- KWNinePatchView - Copyright (c) 2014, Jeungwon An (kawoou@kawoou.kr)
+ KWDrawerViewController - Copyright (c) 2014, Jeungwon An (kawoou@kawoou.kr)
  
  Permission is hereby granted, free of charge, to any person obtaining a copy of
  this software and associated documentation files (the "Software"), to deal in
@@ -23,20 +23,36 @@
  */
 
 #import "UIViewController+KWDrawerViewController.h"
-#import <objc/runtime.h>
 
 @implementation UIViewController (KWDrawerViewController)
 
-static char drawerControllerKey;
-
-- (void)setDrawerController:(KWDrawerViewController *)drawerController
-{
-    objc_setAssociatedObject(self, &drawerControllerKey, drawerController, OBJC_ASSOCIATION_ASSIGN);
-}
-
 - (KWDrawerViewController *)drawerController
 {
-    return (KWDrawerViewController *)objc_getAssociatedObject(self, &drawerControllerKey);
+    UIViewController *parentViewController = self.parentViewController;
+    
+    while(parentViewController)
+    {
+        if([parentViewController isKindOfClass:[KWDrawerViewController class]])
+            return (KWDrawerViewController *)parentViewController;
+        
+        parentViewController = parentViewController.parentViewController;
+    }
+    return nil;
+}
+
+- (UIStatusBarStyle)statusBarStyle
+{
+    return UIStatusBarStyleDefault;
+}
+
+- (UIStatusBarAnimation)statusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
+- (BOOL)statusBarHidden
+{
+    return NO;
 }
 
 @end
