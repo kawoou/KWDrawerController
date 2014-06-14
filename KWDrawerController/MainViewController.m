@@ -19,7 +19,7 @@
     self = [super init];
     if (self)
     {
-        [self.view setAlpha:0.75f];
+        
     }
     return self;
 }
