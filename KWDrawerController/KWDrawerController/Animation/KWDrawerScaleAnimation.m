@@ -55,6 +55,8 @@
         [visibleView setFrame:CGRectAdd(((CGRect){(percentage + 1.0f) * viewRect.size.width, 0,
             visibleView.frame.size}), CGPointRect(viewRect.origin))];
     }
+    
+    visibleBlock(YES, NO);
 }
 
 @end

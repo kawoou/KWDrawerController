@@ -28,6 +28,7 @@
 
 typedef NS_ENUM(NSInteger, KWDrawerSide)
 {
+    KWDrawerSideOverlap = -1,
     KWDrawerSideNone = 0,
     KWDrawerSideLeft,
     KWDrawerSideRight,
@@ -54,7 +55,7 @@ const static CGFloat kDrawerDefaultFullSizeAnimationVisibleSize = 80.0f;
 #define kDrawerSizingViewControllerNotification                   @"KWDrawerViewControllerDidBeganSizingViewController"
 
 /* Block types */
-typedef void (^KWDrawerVisibleBlock)(BOOL isFrontIndex);
+typedef void (^KWDrawerVisibleBlock)(BOOL isFrontIndex, BOOL isCustomAnimation);
 //typedef void (^KWDrawerAnimationBlock)(UIView *view, KWDrawerSide animationSide, CGFloat percentage, CGRect viewRect, KWDrawerVisibleBlock visibleBlock);
 //typedef void (^KWDrawerOverflowAnimationBlock)(UIView *view, KWDrawerSide animationSide, CGFloat percentage, CGRect viewRect, KWDrawerVisibleBlock visibleBlock);
 

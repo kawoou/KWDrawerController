@@ -24,16 +24,48 @@
 
 #import "KWDrawerFloatingAnimation.h"
 
+@interface KWDrawerFloatingAnimation()
+{
+    UIView              *_blackView;
+}
+
+@end
+
 @implementation KWDrawerFloatingAnimation
 
-- (UIView *)visibleViewForAnimation
+- (instancetype)init
 {
-    return nil;
+    if (self = [super init])
+    {
+        _blackView = [[UIView alloc] init];
+        [_blackView setBackgroundColor:[UIColor blackColor]];
+    }
+    
+    return self;
 }
 
 - (void)animation:(UIViewController *)mainViewController visibleView:(UIView *)visibleView animationSide:(KWDrawerSide)side percentage:(CGFloat)percentage viewRect:(CGRect)viewRect visibleBlock:(KWDrawerVisibleBlock)visibleBlock
 {
     CGAffineTransform affine = CGAffineTransformIdentity;
+    
+    if (_blackView.superview != mainViewController.view)
+    {
+        UIView *sview1 = mainViewController.view;
+        UIView *sview2 = sview1;
+        UIView *sview3 = sview1;
+        UIView *sview4 = sview1;
+        
+        while (sview1.superview) {
+            sview4 = sview3;
+            sview3 = sview2;
+            sview2 = sview1;
+            sview1 = sview1.superview;
+        }
+        
+        [_blackView removeFromSuperview];
+        [sview4 addSubview:_blackView];
+        [sview4 bringSubviewToFront:_blackView];
+    }
     
     mainViewController.view.transform = affine;
     mainViewController.view.frame = (CGRect){
@@ -44,6 +76,12 @@
     
     [visibleView setTransform:affine];
     
+    if (fabsf(percentage) <= 0.0f)
+        [_blackView setAlpha:0.0f];
+    
+    [_blackView setFrame:mainViewController.view.bounds];
+    [_blackView setAlpha:(fabsf(percentage) * 0.7f)];
+    
     if(side == KWDrawerSideLeft)
     {
         [visibleView setFrame:CGRectAdd(CGRectMake(viewRect.size.width * (-1.0f + percentage), 0, 0, 0), viewRect)];
@@ -53,7 +91,7 @@
         [visibleView setFrame:CGRectAdd(CGRectMake(viewRect.size.width * (1.0f + percentage), 0, 0, 0),viewRect)];
     }
     
-    visibleBlock(YES);
+    visibleBlock(YES, NO);
 }
 
 @end

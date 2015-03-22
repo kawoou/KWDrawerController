@@ -33,8 +33,10 @@
 
 @property (nonatomic, assign) CGFloat           percentage;
 @property (nonatomic, retain) UIView            *drawerView;
+@property (nonatomic, assign) BOOL              isCustomAnimation;
 
 @property (nonatomic, assign) BOOL              isOverflow;
+@property (nonatomic, assign) BOOL              isOverflowChanged;
 
 @property (nonatomic, assign) BOOL              showShadow;
 

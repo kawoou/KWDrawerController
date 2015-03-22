@@ -23,6 +23,7 @@
 		9D6577ED194C8FFF0078FECB /* KWDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6577E0194C8FFF0078FECB /* KWDrawerController.m */; };
 		9D6577EE194C8FFF0078FECB /* KWDrawerSandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6577E3194C8FFF0078FECB /* KWDrawerSandbox.m */; };
 		9D6577EF194C8FFF0078FECB /* UIViewController+KWDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D6577E5194C8FFF0078FECB /* UIViewController+KWDrawerController.m */; };
+		9D774B82195FC2AA0082AC7E /* KWDrawerFoldingAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D774B81195FC2AA0082AC7E /* KWDrawerFoldingAnimation.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -70,6 +71,8 @@
 		9D6577E3194C8FFF0078FECB /* KWDrawerSandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KWDrawerSandbox.m; sourceTree = "<group>"; };
 		9D6577E4194C8FFF0078FECB /* UIViewController+KWDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+KWDrawerController.h"; sourceTree = "<group>"; };
 		9D6577E5194C8FFF0078FECB /* UIViewController+KWDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+KWDrawerController.m"; sourceTree = "<group>"; };
+		9D774B80195FC2AA0082AC7E /* KWDrawerFoldingAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KWDrawerFoldingAnimation.h; sourceTree = "<group>"; };
+		9D774B81195FC2AA0082AC7E /* KWDrawerFoldingAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KWDrawerFoldingAnimation.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +169,8 @@
 				9D6577D9194C8FFF0078FECB /* KWDrawerSlideAnimation.m */,
 				9D6577DA194C8FFF0078FECB /* KWDrawerSwingingAnimation.h */,
 				9D6577DB194C8FFF0078FECB /* KWDrawerSwingingAnimation.m */,
+				9D774B80195FC2AA0082AC7E /* KWDrawerFoldingAnimation.h */,
+				9D774B81195FC2AA0082AC7E /* KWDrawerFoldingAnimation.m */,
 			);
 			path = Animation;
 			sourceTree = "<group>";
@@ -282,6 +287,7 @@
 				9D6577ED194C8FFF0078FECB /* KWDrawerController.m in Sources */,
 				9D6577EF194C8FFF0078FECB /* UIViewController+KWDrawerController.m in Sources */,
 				9D6577E6194C8FFF0078FECB /* KWDrawerFloatingAnimation.m in Sources */,
+				9D774B82195FC2AA0082AC7E /* KWDrawerFoldingAnimation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

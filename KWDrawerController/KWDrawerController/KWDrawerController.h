@@ -34,6 +34,7 @@
 @property (nonatomic, assign) BOOL                                  showShadow;
 @property (nonatomic, assign) BOOL                                  enable;
 
+@property (readonly)          CGPoint                               touchedPoint;
 @property (readonly)          KWDrawerSide                          openedDrawerSide;
 
 - (void)openDrawerSide:(KWDrawerSide)drawerSide animated:(BOOL)animated;

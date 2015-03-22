@@ -24,16 +24,36 @@
 
 #import "KWDrawerSlideAnimation.h"
 
+@interface KWDrawerSlideAnimation()
+{
+    UIView              *_blackView;
+}
+
+@end
+
 @implementation KWDrawerSlideAnimation
 
-- (UIView *)visibleViewForAnimation
+- (instancetype)init
 {
-    return nil;
+    if (self = [super init])
+    {
+        _blackView = [[UIView alloc] init];
+        [_blackView setBackgroundColor:[UIColor blackColor]];
+    }
+    
+    return self;
 }
 
 - (void)animation:(UIViewController *)mainViewController visibleView:(UIView *)visibleView animationSide:(KWDrawerSide)side percentage:(CGFloat)percentage viewRect:(CGRect)viewRect visibleBlock:(KWDrawerVisibleBlock)visibleBlock
 {
     CGAffineTransform affine = CGAffineTransformIdentity;
+    
+    if (_blackView.superview != mainViewController.view)
+    {
+        [_blackView removeFromSuperview];
+        [mainViewController.view addSubview:_blackView];
+        [mainViewController.view bringSubviewToFront:_blackView];
+    }
     
     mainViewController.view.transform = affine;
     mainViewController.view.frame = (CGRect){
@@ -44,6 +64,12 @@
     
     [visibleView setTransform:affine];
     [visibleView setFrame:viewRect];
+    
+    if (fabsf(percentage) <= 0.0f)
+        [_blackView setAlpha:0.0f];
+    
+    [_blackView setFrame:mainViewController.view.bounds];
+    [_blackView setAlpha:(fabsf(percentage) * 0.7f)];
 }
 
 @end

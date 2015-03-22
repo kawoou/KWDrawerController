@@ -13,6 +13,7 @@
 #import "RightViewController.h"
 
 #import "KWDrawerFloatingAnimation.h"
+#import "KWDrawerFullSizeSlideAnimation.h"
 
 @implementation AppDelegate
 
@@ -27,6 +28,8 @@
     UIViewController *mainViewController = [[MainViewController alloc] init];
     
     [drawerController setDefaultAnimation:[KWDrawerFloatingAnimation sharedInstance] inDrawerSide:KWDrawerSideLeft];
+    [drawerController setDefaultAnimation:[KWDrawerFullSizeSlideAnimation sharedInstance] inDrawerSide:KWDrawerSideRight];
+    [drawerController setOverflowAnimation:[KWDrawerFullSizeSlideAnimation sharedInstance] inDrawerSide:KWDrawerSideRight];
     
     [drawerController setViewController:mainViewController inDrawerSide:KWDrawerSideNone];
     [drawerController setViewController:leftViewController inDrawerSide:KWDrawerSideLeft];

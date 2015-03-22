@@ -27,7 +27,7 @@
 #import "KWDrawerSlideAnimation.h"
 #import "KWDrawerScaleAnimation.h"
 
-#define KWDEBUG
+//#define KWDEBUG
 
 @interface KWDrawerController () <UIGestureRecognizerDelegate>
 {
@@ -46,12 +46,14 @@
     UIImage                 *_drawerScreenshot    [KWDrawerSideCount];
     KWDrawerAnimation       *_defaultAnimation    [KWDrawerSideCount];
     KWDrawerAnimation       *_overflowAnimation   [KWDrawerSideCount];
+    UIView                  *_sandboxView;
     
     CGRect                  _drawerViewRect       [KWDrawerSideCount];
     UIViewController        *_drawerViewController[KWDrawerSideCount];
     
     /// Event
     BOOL                    _viewWillAppear       [KWDrawerSideCount];
+    NSInteger               _lastViewWillAppear;
     BOOL                    _isOpenAnimationPlaying;
     
     /// Gesture
@@ -83,6 +85,20 @@
 @implementation KWDrawerController
 
 @synthesize openedDrawerSide = _sideState;
+@synthesize touchedPoint = _movePoint;
+
+- (UINavigationController *)navigationController
+{
+    if ([super navigationController])
+        return [super navigationController];
+    else
+    {
+        if ([[self viewControllerInDrawerSide:KWDrawerSideNone] isKindOfClass:[UINavigationController class]])
+            return (UINavigationController *)[self viewControllerInDrawerSide:KWDrawerSideNone];
+        else
+            return nil;
+    }
+}
 
 #pragma mark -
 #pragma mark Public Methods
@@ -120,16 +136,27 @@
 
 - (void)openDrawerSide:(KWDrawerSide)drawerSide animated:(BOOL)animated
 {
+    [self openDrawerSide:drawerSide animated:animated completion:nil];
+}
+
+- (void)openDrawerSide:(KWDrawerSide)drawerSide animated:(BOOL)animated completion:(void(^)(CGFloat))completion
+{
 #ifdef KWDEBUG
     NSLog(@"openDrawerSide:animated:");
 #endif
+    BOOL isOverlap = drawerSide == KWDrawerSideOverlap;
+    
     if(!_enable) return;
     if(_isOpenAnimationPlaying) return;
+    if(!_isDrawer[drawerSide] && !isOverlap) return;
     
     animated &= _animationEnable;
     
     /// Begin Animation
     KWDrawerSide lastSideState = self.openedDrawerSide;
+    if(isOverlap && lastSideState == KWDrawerSideNone)
+        return;
+    
     if(drawerSide == KWDrawerSideNone)
     {
         if(lastSideState == KWDrawerSideLeft)
@@ -137,6 +164,15 @@
         
         if(lastSideState == KWDrawerSideRight)
             [self didBeganAnimation:KWDrawerSideRight];
+    }
+    else if(drawerSide == KWDrawerSideOverlap)
+    {
+        drawerSide = lastSideState;
+        [self didBeganAnimation:lastSideState];
+    }
+    else if(drawerSide == lastSideState)
+    {
+        [self didBeganAnimation:drawerSide];
     }
     else
     {
@@ -156,58 +192,108 @@
     
     /// Animation
     CGFloat percentage = 0.0f;
-    if(drawerSide == KWDrawerSideLeft)
-        percentage = 1.0f;
-    
-    if(drawerSide == KWDrawerSideRight)
-        percentage = -1.0f;
+    if(isOverlap)
+    {
+        percentage = self.view.bounds.size.width / _drawerViewController[drawerSide].view.bounds.size.width;
+        
+        if(lastSideState == KWDrawerSideRight)
+            percentage = -percentage;
+    }
+    else
+    {
+        if(drawerSide == KWDrawerSideLeft)
+            percentage = 1.0f;
+        
+        if(drawerSide == KWDrawerSideRight)
+            percentage = -1.0f;
+    }
     
     _isOpenAnimationPlaying = YES;
     
+    CGFloat animateTime = isOverlap ? kDrawerDefaultAnimationDuration * 0.5f : kDrawerDefaultAnimationDuration;
     [self willAnimationWithPercentage:percentage];
-    [UIView animateWithDuration:kDrawerDefaultAnimationDuration delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void)
+    if (_sandBox.isCustomAnimation == YES)
     {
         [self didAnimationWithPercentage:percentage];
+        [self performSelector:@selector(openDrawerSideFinishAnimation:) withObject:@[[NSNumber numberWithInteger:drawerSide], [NSNumber numberWithInteger:lastSideState], [NSNumber numberWithBool:animated]] afterDelay:animateTime];
+        
+        if (isOverlap)
+            _sandBox.percentage = percentage;
+        
+        if(completion)
+            completion(animateTime);
     }
-     
-    /// Finish Animation
-    completion:^(BOOL finished)
+    else
     {
-        _isOpenAnimationPlaying = NO;
-        _sideState = drawerSide;
-        
-        [self setUserInteraction:(drawerSide == KWDrawerSideLeft)
-                   forDrawerSide:KWDrawerSideLeft];
-        [self setUserInteraction:(drawerSide == KWDrawerSideRight)
-                   forDrawerSide:KWDrawerSideRight];
-        [self setUserInteraction:(drawerSide == KWDrawerSideNone)
-                   forDrawerSide:KWDrawerSideNone];
-        
-        [self willFinishAnimation:drawerSide];
-        
-        if(drawerSide == KWDrawerSideNone)
+        [UIView animateWithDuration:animateTime delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^(void)
+         {
+             [self didAnimationWithPercentage:percentage];
+         }
+         
+         /// Finish Animation
+         completion:^(BOOL finished)
+         {
+             [self openDrawerSideFinishAnimation:@[[NSNumber numberWithInteger:drawerSide], [NSNumber numberWithInteger:lastSideState], [NSNumber numberWithBool:animated]]];
+             
+             if (isOverlap)
+                 _sandBox.percentage = percentage;
+             
+             if(completion)
+                 completion(0.0f);
+         }];
+    }
+}
+
+- (void)openDrawerSideFinishAnimation:(NSArray *)stateArray
+{
+    KWDrawerSide drawerSide = [stateArray[0] integerValue];
+    KWDrawerSide lastSideState = [stateArray[1] integerValue];
+    BOOL animated = [stateArray[2] boolValue];
+    
+    _isOpenAnimationPlaying = NO;
+    _sideState = drawerSide;
+    
+    [self setUserInteraction:(drawerSide == KWDrawerSideLeft)
+               forDrawerSide:KWDrawerSideLeft];
+    [self setUserInteraction:(drawerSide == KWDrawerSideRight)
+               forDrawerSide:KWDrawerSideRight];
+    [self setUserInteraction:(drawerSide == KWDrawerSideNone)
+               forDrawerSide:KWDrawerSideNone];
+    
+    [self willFinishAnimation:drawerSide];
+    
+    if(drawerSide == KWDrawerSideNone)
+    {
+        if(lastSideState == KWDrawerSideLeft)
         {
-            if(lastSideState == KWDrawerSideLeft)
+            _viewWillAppear[KWDrawerSideLeft] = NO;
+            [_drawerViewController[KWDrawerSideLeft] viewWillDisappear:animated];
+            [_drawerViewController[KWDrawerSideLeft] viewDidDisappear:animated];
+        }
+        if(lastSideState == KWDrawerSideRight)
+        {
+            _viewWillAppear[KWDrawerSideRight] = NO;
+            [_drawerViewController[KWDrawerSideRight] viewWillDisappear:animated];
+            [_drawerViewController[KWDrawerSideRight] viewDidDisappear:animated];
+        }
+        if(lastSideState == KWDrawerSideNone)
+        {
+            if (_lastViewWillAppear != -1)
             {
-                _viewWillAppear[KWDrawerSideLeft] = YES;
-                [_drawerViewController[KWDrawerSideLeft] viewWillDisappear:animated];
-                [_drawerViewController[KWDrawerSideLeft] viewDidDisappear:animated];
-            }
-            if(lastSideState == KWDrawerSideRight)
-            {
-                _viewWillAppear[KWDrawerSideRight] = YES;
-                [_drawerViewController[KWDrawerSideRight] viewWillDisappear:animated];
-                [_drawerViewController[KWDrawerSideRight] viewDidDisappear:animated];
+                _viewWillAppear[_lastViewWillAppear] = NO;
+                [_drawerViewController[_lastViewWillAppear] viewWillDisappear:animated];
+                [_drawerViewController[_lastViewWillAppear] viewDidDisappear:animated];
             }
         }
-        else
-        {
-            [_drawerViewController[drawerSide] viewDidAppear:drawerSide];
-            [self drawerViewWillAppear:drawerSide];
-        }
-        
-        [self setNeedsStatusBarUpdate];
-    }];
+        _lastViewWillAppear = -1;
+    }
+    else
+    {
+        [_drawerViewController[drawerSide] viewDidAppear:drawerSide];
+        [self drawerViewWillAppear:drawerSide];
+    }
+    
+    [self setNeedsStatusBarUpdate];
 }
 
 - (UIImage *)imageContextInDrawerSide:(KWDrawerSide)drawerSide
@@ -225,15 +311,110 @@
 
 - (void)setViewController:(UIViewController *)viewController inDrawerSide:(KWDrawerSide)drawerSide
 {
-    _isDrawer[drawerSide] = YES;
-    
-    _drawerViewController[drawerSide] = viewController;
-    
-    [self addChildViewController:viewController];
-    [self setUserInteraction:NO forDrawerSide:drawerSide];
-    [self setUserInteraction:YES forDrawerSide:drawerSide];
-    
-    [_safetyViewBox[drawerSide] addSubview:viewController.view];
+    if (viewController)
+    {
+        if (_isDrawer[drawerSide] && _animationEnable)
+        {
+#ifdef KWDEBUG
+            NSLog(@"setViewController:inDrawerSide:");
+#endif
+            if(!_enable) return;
+            if(_isOpenAnimationPlaying) return;
+            
+            /// Begin Animation
+            KWDrawerSide lastSideState = self.openedDrawerSide;
+            if (lastSideState != KWDrawerSideNone)
+            {
+                if (drawerSide == lastSideState)
+                {
+                    [self openDrawerSide:KWDrawerSideNone animated:YES completion:^(CGFloat delay) {
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+                        {
+                            [_drawerViewController[drawerSide].view removeFromSuperview];
+                            [_drawerViewController[drawerSide] removeFromParentViewController];
+                            
+                            _drawerViewController[drawerSide] = viewController;
+                            [self addChildViewController:viewController];
+                            [self setUserInteraction:NO forDrawerSide:drawerSide];
+                            [self setUserInteraction:YES forDrawerSide:drawerSide];
+                            [_safetyViewBox[drawerSide] addSubview:viewController.view];
+                            
+                            [self openDrawerSide:drawerSide animated:YES completion:nil];
+                        });
+                    }];
+                }
+                else
+                {
+                    if (drawerSide == KWDrawerSideNone)
+                    {
+//                        [self openDrawerSide:KWDrawerSideOverlap animated:YES completion:^(CGFloat delay) {
+//                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^
+//                            {
+                                [_drawerViewController[drawerSide].view removeFromSuperview];
+                                [_drawerViewController[drawerSide] removeFromParentViewController];
+                        
+                                _drawerViewController[drawerSide] = viewController;
+                                [self addChildViewController:viewController];
+                                [self setUserInteraction:NO forDrawerSide:drawerSide];
+                                [self setUserInteraction:YES forDrawerSide:drawerSide];
+                                [_safetyViewBox[drawerSide] addSubview:viewController.view];
+                                
+                                [self openDrawerSide:drawerSide animated:YES completion:nil];
+//                            });
+//                        }];
+                    }
+                    else
+                    {
+                        [_drawerViewController[drawerSide].view removeFromSuperview];
+                        [_drawerViewController[drawerSide] removeFromParentViewController];
+                        
+                        _drawerViewController[drawerSide] = viewController;
+                        [self addChildViewController:viewController];
+                        [self setUserInteraction:NO forDrawerSide:drawerSide];
+                        [self setUserInteraction:YES forDrawerSide:drawerSide];
+                        [_safetyViewBox[drawerSide] addSubview:viewController.view];
+                    }
+                }
+            }
+            else
+            {
+                [_drawerViewController[drawerSide].view removeFromSuperview];
+                [_drawerViewController[drawerSide] removeFromParentViewController];
+                
+                _drawerViewController[drawerSide] = viewController;
+                [self addChildViewController:viewController];
+                [self setUserInteraction:NO forDrawerSide:drawerSide];
+                [self setUserInteraction:YES forDrawerSide:drawerSide];
+                [_safetyViewBox[drawerSide] addSubview:viewController.view];
+            }
+        }
+        else
+        {
+            _isDrawer[drawerSide] = YES;
+            
+            [_drawerViewController[drawerSide].view removeFromSuperview];
+            [_drawerViewController[drawerSide] removeFromParentViewController];
+            
+            _drawerViewController[drawerSide] = viewController;
+            
+            [self addChildViewController:viewController];
+            [self setUserInteraction:NO forDrawerSide:drawerSide];
+            [self setUserInteraction:YES forDrawerSide:drawerSide];
+            
+            [_safetyViewBox[drawerSide] addSubview:viewController.view];
+        }
+    }
+    else
+    {
+        _isDrawer[drawerSide] = NO;
+        
+        [_drawerViewController[drawerSide].view removeFromSuperview];
+        
+        [self setUserInteraction:YES forDrawerSide:drawerSide];
+        [_drawerViewController[drawerSide] removeFromParentViewController];
+        
+        _drawerViewController[drawerSide] = nil;
+    }
 }
 
 - (void)setDefaultAnimation:(KWDrawerAnimation *)animation inDrawerSide:(KWDrawerSide)drawerSide
@@ -289,14 +470,28 @@
     if(!_enable) return;
     if(!_gestureEnable) return;
     if(_isOpenAnimationPlaying) return;
-    if(_sandBox.movingSide == KWDrawerSideNone) return;
+    //if(_sandBox.movingSide == KWDrawerSideNone) return;
     
     UIGestureRecognizerState state = [gesture state];
     CGPoint location = [gesture locationInView:self.view];
     
-    if(state == UIGestureRecognizerStateBegan ||
-       state == UIGestureRecognizerStateChanged)
+    if(state == UIGestureRecognizerStateBegan)
     {
+        if (_isTouchMoveLeft == YES)
+        {
+            [self willCancelAnimation];
+            [self didBeganAnimation:KWDrawerSideLeft];
+        }
+        else
+        {
+            [self willCancelAnimation];
+            [self didBeganAnimation:KWDrawerSideRight];
+        }
+    }
+    else if(state == UIGestureRecognizerStateChanged)
+    {
+        if(_sandBox.movingSide == KWDrawerSideNone) return;
+        
         CGSize viewSize = CGSizeAdd(self.view.frame.size, _drawerViewRect[_sandBox.movingSide].size);
         CGFloat percentage = _sandBox.percentage;
         percentage += (location.x - _beginPoint.x) / viewSize.width;
@@ -310,19 +505,35 @@
         if(_sandBox.beginSide == KWDrawerSideNone)
         {
             if(percentage < 0)
+            {
                 [self drawerViewWillAppear:KWDrawerSideRight];
+                _lastViewWillAppear = KWDrawerSideRight;
+            }
             
             else if(percentage > 0)
+            {
                 [self drawerViewWillAppear:KWDrawerSideLeft];
+                _lastViewWillAppear = KWDrawerSideLeft;
+            }
         }
+        
+        if(percentage > kDrawerOverflowAnimationPercent)
+            percentage = kDrawerOverflowAnimationPercent;
+        
+        if(percentage < -kDrawerOverflowAnimationPercent)
+            percentage = -kDrawerOverflowAnimationPercent;
         
         [self willAnimationWithPercentage:percentage];
         [self didAnimationWithPercentage:percentage];
     }
     
-    else if(state == UIGestureRecognizerStateEnded ||
-            state == UIGestureRecognizerStateCancelled)
+//    else if(state == UIGestureRecognizerStateEnded ||
+//            state == UIGestureRecognizerStateCancelled ||
+//            state == UIGestureRecognizerStateFailed)
+    else
     {
+        if(_sandBox.movingSide == KWDrawerSideNone) return;
+        
         if(_sandBox.movingSide == KWDrawerSideLeft && (_sandBox.isOverflow || !_isTouchMoveLeft))
             [self openDrawerSide:KWDrawerSideLeft animated:_animationEnable];
             
@@ -331,6 +542,9 @@
             
         else
             [self openDrawerSide:KWDrawerSideNone animated:_animationEnable];
+        
+        _movePoint.x = -1;
+        _movePoint.y = -1;
     }
 }
 
@@ -354,16 +568,18 @@
         
         if(self.openedDrawerSide == KWDrawerSideNone)
         {
-            CGRect leftRect = CGRectAdd(_drawerViewController[KWDrawerSideNone].view.frame, CGRectMake(-20, 0, 0, 0));
+            CGRect leftRect = CGRectAdd(_drawerViewController[KWDrawerSideNone].view.frame, CGRectMake(-40, 0, 0, 0));
             CGRect rightRect = leftRect;
             rightRect.origin.x += leftRect.size.width;
-            rightRect.size.width = leftRect.size.width = 40;
+            rightRect.size.width = leftRect.size.width = 80;
             
             if(_isDrawer[KWDrawerSideLeft] &&
                CGRectIntersectsRect(leftRect, pointRect))
             {
                 _isTouchMoveLeft = YES;
-                [self didBeganAnimation:KWDrawerSideLeft];
+//                [self willCancelAnimation];
+//                [self didBeganAnimation:KWDrawerSideLeft];
+                
                 return YES;
             }
             
@@ -371,7 +587,8 @@
                CGRectIntersectsRect(rightRect, pointRect))
             {
                 _isTouchMoveLeft = NO;
-                [self didBeganAnimation:KWDrawerSideRight];
+//                [self willCancelAnimation];
+//                [self didBeganAnimation:KWDrawerSideRight];
                 
                 return YES;
             }
@@ -384,12 +601,14 @@
                 if(self.openedDrawerSide == KWDrawerSideLeft)
                 {
                     _isTouchMoveLeft = YES;
-                    [self didBeganAnimation:KWDrawerSideLeft];
+//                    [self willCancelAnimation];
+//                    [self didBeganAnimation:KWDrawerSideLeft];
                 }
                 else
                 {
                     _isTouchMoveLeft = NO;
-                    [self didBeganAnimation:KWDrawerSideRight];
+//                    [self willCancelAnimation];
+//                    [self didBeganAnimation:KWDrawerSideRight];
                 }
                 return YES;
             }
@@ -407,21 +626,21 @@
     return NO;
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    UIGestureRecognizer *gesture = nil;
-    if(_panGestureRecognizer == gestureRecognizer)
-        gesture = _panGestureRecognizer;
-    else if(_tapGestureRecognizer == gestureRecognizer)
-        gesture = _tapGestureRecognizer;
-    else
-        return NO;
-    
-    if(gestureRecognizer == otherGestureRecognizer || otherGestureRecognizer == gesture)
-        return YES;
-    
-    return NO;
-}
+//- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+//{
+//    UIGestureRecognizer *gesture = nil;
+//    if(_panGestureRecognizer == gestureRecognizer)
+//        gesture = _panGestureRecognizer;
+//    else if(_tapGestureRecognizer == gestureRecognizer)
+//        gesture = _tapGestureRecognizer;
+//    else
+//        return NO;
+//
+//    if(gestureRecognizer == otherGestureRecognizer || otherGestureRecognizer == gesture)
+//        return YES;
+//    
+//    return NO;
+//}
 
 - (BOOL)isMainViewControllerTouched:(CGPoint)point
 {
@@ -429,9 +648,9 @@
         return NO;
 
     CGRect pointRect = CGRectAdd(CGPointRect(point), kDrawerDefaultTouchRect);
-    for(NSInteger i = self.view.subviews.count - 1; i >= 0; i --)
+    for(NSInteger i = _sandboxView.subviews.count - 1; i >= 0; i --)
     {
-        UIView *view = self.view.subviews[i];
+        UIView *view = _sandboxView.subviews[i];
         if(_safetyViewBox[KWDrawerSideLeft] == view)
             view = _drawerViewController[KWDrawerSideLeft].view;
         
@@ -493,7 +712,8 @@
     
     if([self openSandbox:sandBoxView inDrawerSide:drawerSide])
     {
-        _sandBox.isOverflow = NO;
+        //_sandBox.isOverflow = NO;
+        _sandBox.isOverflowChanged = NO;
     }
     else
     {
@@ -502,10 +722,13 @@
     }
     
     if(drawerSide != KWDrawerSideNone)
+    {
         [self setUserInteraction:NO forDrawerSide:KWDrawerSideLeft];
+        [self setUserInteraction:NO forDrawerSide:KWDrawerSideRight];
+    }
     
-    _viewWillAppear[drawerSide] = NO;
-    [self.view bringSubviewToFront:_safetyViewBox[KWDrawerSideNone]];
+    //_viewWillAppear[drawerSide] = NO;
+    [_sandboxView bringSubviewToFront:_safetyViewBox[KWDrawerSideNone]];
     
     if(_delegate && [((id)_delegate) respondsToSelector:@selector(drawerController:didBeganAnimationDrawerSide:)])
     {
@@ -521,6 +744,9 @@
 #ifdef KWDEBUG
     NSLog(@"willFinishAnimation:");
 #endif
+    if(!_sandBox.drawerView)
+        return;
+    
     _sandBox.endedSide = drawerSide;
     [self closeSandbox];
     
@@ -535,6 +761,9 @@
 #ifdef KWDEBUG
     NSLog(@"willCancelAnimation");
 #endif
+    if(!_sandBox.drawerView)
+        return;
+    
     [_sandBox restoreFirstState];
     [self closeSandbox];
     
@@ -547,7 +776,7 @@
 - (void)willAnimationWithPercentage:(CGFloat)percentage
 {
 #ifdef KWDEBUG
-    //NSLog(@"willAnimationWithPercentage:%lf", percentage);
+    NSLog(@"willAnimationWithPercentage:%lf", percentage);
 #endif
     if(!_enable)
     {
@@ -555,26 +784,36 @@
         return;
     }
     
+    __block KWDrawerAnimation *aniBlock = [KWDrawerSlideAnimation sharedInstance];
+    __block KWDrawerAnimation *overflowAniBlock = [KWDrawerScaleAnimation sharedInstance];
+    if(_defaultAnimation[_sandBox.movingSide])
+        aniBlock = _defaultAnimation[_sandBox.movingSide];
+    if(_overflowAnimation[_sandBox.movingSide])
+        overflowAniBlock = _overflowAnimation[_sandBox.movingSide];
+    
     if((percentage > 0 && _sandBox.movingSide == KWDrawerSideRight) ||
        (percentage < 0 && _sandBox.movingSide == KWDrawerSideLeft))
     {
         KWDrawerSide invSide = (_sandBox.movingSide==KWDrawerSideRight)?KWDrawerSideLeft:KWDrawerSideRight;
         
-        UIView *sandBoxView = [_defaultAnimation[invSide] visibleViewForAnimation];
-        if(!sandBoxView)
-            sandBoxView = _drawerViewController[invSide].view;
-        
-        _sandBox.endedSide = KWDrawerSideNone;
-        _sideState = KWDrawerSideNone;
-        [self changeSandbox:sandBoxView inDrawerSide:invSide];
-        
-        _viewWillAppear[_sandBox.movingSide] = NO;
-        [_drawerViewController[_sandBox.movingSide] viewWillDisappear:NO];
-        [_drawerViewController[_sandBox.movingSide] viewDidDisappear:NO];
-        [self drawerViewWillAppear:invSide];
-        
-        [self willAnimationWithPercentage:0.0f];
-        [self didAnimationWithPercentage:0.0f];
+        if (_isDrawer[invSide])
+        {
+            UIView *sandBoxView = [_defaultAnimation[invSide] visibleViewForAnimation];
+            if(!sandBoxView)
+                sandBoxView = _drawerViewController[invSide].view;
+            
+            _sandBox.endedSide = KWDrawerSideNone;
+            _sideState = KWDrawerSideNone;
+            [self changeSandbox:sandBoxView inDrawerSide:invSide];
+            
+            _viewWillAppear[_sandBox.movingSide] = NO;
+            [_drawerViewController[_sandBox.movingSide] viewWillDisappear:NO];
+            [_drawerViewController[_sandBox.movingSide] viewDidDisappear:NO];
+            [self drawerViewWillAppear:invSide];
+            
+            [self willAnimationWithPercentage:0.0f];
+            [self didAnimationWithPercentage:0.0f];
+        }
     }
     
     if(fabsf(percentage) > 1.0f && !_sandBox.isOverflow)
@@ -587,6 +826,7 @@
         _sideState = _sandBox.movingSide;
         [self changeSandbox:sandBoxView];
         _sandBox.isOverflow = YES;
+        _sandBox.isOverflowChanged = NO;
     }
     if(fabsf(percentage) < 1.0f && _sandBox.isOverflow)
     {
@@ -598,21 +838,19 @@
         _sideState = _sandBox.movingSide;
         [self changeSandbox:sandBoxView];
         _sandBox.isOverflow = NO;
+        _sandBox.isOverflowChanged = YES;
     }
-    
-    __block KWDrawerAnimation *aniBlock = [KWDrawerSlideAnimation sharedInstance];
-    __block KWDrawerAnimation *overflowAniBlock = [KWDrawerScaleAnimation sharedInstance];
-    if(_defaultAnimation[_sandBox.movingSide])
-        aniBlock = _defaultAnimation[_sandBox.movingSide];
-    if(_overflowAnimation[_sandBox.movingSide])
-        overflowAniBlock = _overflowAnimation[_sandBox.movingSide];
     
     if(!_sandBox.isOverflow)
     {
+        if (_sandBox.isOverflowChanged)
+            [overflowAniBlock willAnimationWithMainViewController:_drawerViewController[KWDrawerSideNone]];
         [aniBlock willAnimationWithMainViewController:_drawerViewController[KWDrawerSideNone]];
     }
     else
     {
+        if (_sandBox.isOverflowChanged)
+            [aniBlock willAnimationWithMainViewController:_drawerViewController[KWDrawerSideNone]];
         [overflowAniBlock willAnimationWithMainViewController:_drawerViewController[KWDrawerSideNone]];
     }
 }
@@ -620,7 +858,7 @@
 - (void)didAnimationWithPercentage:(CGFloat)percentage
 {
 #ifdef KWDEBUG
-    //NSLog(@"didAnimationWithPercentage:%lf", percentage);
+    NSLog(@"didAnimationWithPercentage:%lf", percentage);
 #endif
     
     if(!_enable)
@@ -635,17 +873,11 @@
     {
         if(percentage < 0.0f)
             percentage = 0.0f;
-        
-        if(percentage > kDrawerOverflowAnimationPercent)
-            percentage = kDrawerOverflowAnimationPercent;
     }
     if(_sandBox.movingSide == KWDrawerSideRight)
     {
         if(percentage > 0.0f)
             percentage = 0.0f;
-        
-        if(percentage < -kDrawerOverflowAnimationPercent)
-            percentage = -kDrawerOverflowAnimationPercent;
     }
     
     __block KWDrawerAnimation *aniBlock = [KWDrawerSlideAnimation sharedInstance];
@@ -655,22 +887,49 @@
     if(_overflowAnimation[_sandBox.movingSide])
         overflowAniBlock = _overflowAnimation[_sandBox.movingSide];
     
-    KWDrawerVisibleBlock visibleBox = ^(BOOL isFrontIndex)
+    __block BOOL calledVisibleBox = NO;
+    KWDrawerVisibleBlock visibleBox = ^(BOOL isFrontIndex, BOOL isCustomAnimation)
     {
+        if (!calledVisibleBox)
+        {
+            [_sandboxView bringSubviewToFront:_safetyViewBox[KWDrawerSideNone]];
+            calledVisibleBox = YES;
+        }
+        
         if(isFrontIndex)
-            [self.view bringSubviewToFront:_safetyViewBox[_sandBox.movingSide]];
-        else
-            [self.view bringSubviewToFront:_safetyViewBox[KWDrawerSideNone]];
+            [_sandboxView bringSubviewToFront:_safetyViewBox[_sandBox.movingSide]];
+        
+        _sandBox.isCustomAnimation |= isCustomAnimation;
+    };
+    KWDrawerVisibleBlock overflowChangedVisibleBox = ^(BOOL isFrontIndex, BOOL isCustomAnimation)
+    {
+        if (!calledVisibleBox)
+        {
+            [_sandboxView bringSubviewToFront:_safetyViewBox[KWDrawerSideNone]];
+            calledVisibleBox = YES;
+        }
+        
+        if(isFrontIndex)
+            [_sandboxView bringSubviewToFront:_safetyViewBox[_sandBox.movingSide]];
     };
     
     if(!_sandBox.isOverflow)
     {
+        if(_sandBox.isOverflowChanged)
+        {
+            [overflowAniBlock animation:_drawerViewController[KWDrawerSideNone] visibleView:_sandBox.drawerView animationSide:_sandBox.movingSide percentage:(_sandBox.movingSide == KWDrawerSideRight ? -1.0 : 1.0) viewRect:viewRect visibleBlock:overflowChangedVisibleBox];
+        }
         [aniBlock animation:_drawerViewController[KWDrawerSideNone] visibleView:_sandBox.drawerView animationSide:_sandBox.movingSide percentage:percentage viewRect:viewRect visibleBlock:visibleBox];
     }
     else
     {
+        if(_sandBox.isOverflowChanged)
+        {
+            [aniBlock animation:_drawerViewController[KWDrawerSideNone] visibleView:_sandBox.drawerView animationSide:_sandBox.movingSide percentage:(_sandBox.movingSide == KWDrawerSideRight ? -1.0 : 1.0) viewRect:viewRect visibleBlock:overflowChangedVisibleBox];
+        }
         [overflowAniBlock animation:_drawerViewController[KWDrawerSideNone] visibleView:_sandBox.drawerView animationSide:_sandBox.movingSide percentage:percentage viewRect:viewRect visibleBlock:visibleBox];
     }
+    _sandBox.isOverflowChanged = NO;
     
     if(_delegate && [((id)_delegate) respondsToSelector:@selector(drawerControllerDidAnimationViewController:withPercentage:andDrawerSide:)])
     {
@@ -684,8 +943,8 @@
 
 - (void)drawLayerOnScreenshot:(KWDrawerSide)drawerSide
 {
-    if(drawerSide == KWDrawerSideNone)
-        return;
+    //if(drawerSide == KWDrawerSideNone)
+    //    return;
     
     UIGraphicsBeginImageContextWithOptions(_drawerViewController[drawerSide].view.frame.size, NO, 0.0);
     if(!UIGraphicsGetCurrentContext())
@@ -721,6 +980,9 @@
 
 - (BOOL)openSandbox:(UIView *)view inDrawerSide:(KWDrawerSide)drawerSide
 {
+#ifdef KWDEBUG
+    NSLog(@"openSandbox:inDrawerSide:");
+#endif
     [self updateViewSize];
     
     if(!view) return NO;
@@ -747,6 +1009,9 @@
 
 - (void)closeSandbox
 {
+#ifdef KWDEBUG
+    NSLog(@"closeSandbox");
+#endif
     NSInteger i;
     
     for(i = KWDrawerSideLeft; i < KWDrawerSideCount; i ++)
@@ -775,7 +1040,7 @@
     if(mergeView != _sandBox.drawerView)
     {
         _sandBox.drawerView.hidden = YES;
-        [_sandBox copyStateInView:mergeView];
+        //[_sandBox copyStateInView:mergeView];
         
         [_sandBox.drawerView removeFromSuperview];
         _sandBox.drawerView = nil;
@@ -885,13 +1150,18 @@
     /// Parent View
     [self.view setFrame:CGSizeRect(self.view.frame.size)];
     
+    /// Sandbox View
+    _sandboxView = [[UIView alloc] initWithFrame:self.view.frame];
+    [_sandboxView setBackgroundColor:[UIColor clearColor]];
+    [self.view addSubview:_sandboxView];
+    
     /// Safety View Box
     for(i = KWDrawerSideNone; i < KWDrawerSideCount; i ++)
     {
         _isDrawer[i] = NO;
         _isUserInterection[i] = YES;
         _safetyViewBox[i] = [[UIView alloc] initWithFrame:self.view.frame];
-        [self.view addSubview:_safetyViewBox[i]];
+        [_sandboxView addSubview:_safetyViewBox[i]];
     }
     _safetyViewBox[KWDrawerSideLeft].hidden  = YES;
     _safetyViewBox[KWDrawerSideRight].hidden = YES;
@@ -921,8 +1191,8 @@
     __block NSInteger i;
     static BOOL statusBarHidden = NO;
     
-    CGFloat leftSize = self.view.bounds.size.width - _drawerViewController[KWDrawerSideLeft].view.bounds.size.width;
-    CGFloat rightSize = self.view.bounds.size.width - _drawerViewController[KWDrawerSideRight].view.bounds.size.width;
+    CGFloat leftSize = _isDrawer[KWDrawerSideLeft] ? self.view.bounds.size.width - _drawerViewController[KWDrawerSideLeft].view.bounds.size.width : 0.0f;
+    CGFloat rightSize = _isDrawer[KWDrawerSideRight] ? self.view.bounds.size.width - _drawerViewController[KWDrawerSideRight].view.bounds.size.width : 0.0f;
     
     _drawerViewRect[KWDrawerSideNone]  = CGRectZero;
     _drawerViewRect[KWDrawerSideLeft]  = (CGRect){0, 0, -MAX(0, leftSize), 0};
@@ -968,6 +1238,9 @@
 
 - (void)setUserInteraction:(BOOL)interaction forDrawerSide:(KWDrawerSide)drawerSide
 {
+    if (!_isDrawer[drawerSide])
+        return;
+    
     if(!interaction)
     {
         if(_isUserInterection[drawerSide])
@@ -1009,7 +1282,14 @@
     
     if([self.openedViewController respondsToSelector:@selector(statusBarStyle)])
     {
-        style = (UIStatusBarStyle)[self.openedViewController performSelector:@selector(statusBarStyle)];
+        UIViewController *viewController = self.openedViewController;
+        if ([viewController isKindOfClass:[UINavigationController class]])
+        {
+            UINavigationController *navigationController = (UINavigationController *)viewController;
+            style = (UIStatusBarStyle)[navigationController.visibleViewController performSelector:@selector(statusBarStyle)];
+        }
+        else
+            style = (UIStatusBarStyle)[viewController performSelector:@selector(statusBarStyle)];
     }
     else
     {
@@ -1065,7 +1345,7 @@
             [self setNeedsStatusBarAppearanceUpdate];
         }];
     }
-    else
+    //else
     {
         UIStatusBarAnimation animation = [self statusBarUpdateAnimation];
         UIApplication *application = [UIApplication sharedApplication];

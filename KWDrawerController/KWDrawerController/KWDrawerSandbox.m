@@ -46,6 +46,7 @@
     if(self)
     {
         _percentage = 0;
+        _isCustomAnimation = NO;
     }
     return self;
 }

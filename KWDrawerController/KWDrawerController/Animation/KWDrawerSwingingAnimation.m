@@ -60,7 +60,7 @@
     visibleView.layer.transform = affine;
     [visibleView setFrame:viewRect];
     
-    visibleBlock(YES);
+    visibleBlock(YES, NO);
 }
 
 @end
