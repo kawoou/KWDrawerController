@@ -44,6 +44,7 @@ You can either simply drag and drop the `KWDrawerController/KWDrawerController` 
 + 1.0 First Release.
 + 1.1 Bug Fix, Add animations.
 + 2.0 Refactoring.
++ 2.1 Buf Fix, Update animation.
 
 <br />
 
