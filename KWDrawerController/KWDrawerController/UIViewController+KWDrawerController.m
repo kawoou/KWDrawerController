@@ -35,7 +35,7 @@
 
 - (KWDrawerController *)drawerController
 {
-    UIViewController *parentViewController = self.parentViewController;
+    UIViewController *parentViewController = self;
     
     while(parentViewController)
     {

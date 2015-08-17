@@ -52,7 +52,7 @@ const static CGFloat kDrawerDefaultFullSizeAnimationFacter      = 0.2875f;
 const static CGFloat kDrawerDefaultFullSizeAnimationVisibleSize = 80.0f;
 
 #define kDrawerDrawViewControllerNotification                   @"KWDrawerViewControllerDidBeganDrawViewController"
-#define kDrawerSizingViewControllerNotification                   @"KWDrawerViewControllerDidBeganSizingViewController"
+#define kDrawerSizingViewControllerNotification                 @"KWDrawerViewControllerDidBeganSizingViewController"
 
 /* Block types */
 typedef void (^KWDrawerVisibleBlock)(BOOL isFrontIndex, BOOL isCustomAnimation);
