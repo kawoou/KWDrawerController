@@ -7,16 +7,16 @@ Pod::Spec.new do |s|
   s.author              = { "Kawoou" => "kawoou@kawoou.kr" }
   s.source              = { :git => "https://github.com/Kawoou/KWDrawerController.git", :tag => "#{s.version}" }
   s.platform            = :ios, 7.0
-  s.public_header_files = 'KWDrawerController/KWDrawerController/KWDrawerController.h'
+  s.public_header_files = 'KWDrawerController/KWDrawerController/KWDrawer.h'
   s.frameworks          = 'UIKit', 'Foundation', 'QuartzCore'
   s.requires_arc        = true
 
   s.subspec 'Core' do |ss|
     ss.source_files = 'KWDrawerController/KWDrawerController/*.{m,h}'
+    ss.dependency 'KWDrawerController/Animation'
   end
 
   s.subspec 'Animation' do |ss|
     ss.source_files = 'KWDrawerController/KWDrawerController/Animation/*.{m,h}'
-    ss.dependency 'KWDrawerController/Core'
   end
 end
