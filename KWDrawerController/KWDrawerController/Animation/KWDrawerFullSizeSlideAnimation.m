@@ -47,7 +47,7 @@
 {
     UIView *drawerView = mainViewController.drawerController.view;
     CGAffineTransform affine = CGAffineTransformMakeScale(drawerView.frame.size.width / viewRect.size.width, drawerView.frame.size.height / viewRect.size.height);
-    CGFloat newPercentage = 1.0f - fabsf(percentage) * _fullSizeFactor;
+    CGFloat newPercentage = 1.0f - fabs(percentage) * _fullSizeFactor;
     
     mainViewController.view.transform = CGAffineTransformMakeScale(newPercentage, newPercentage);
     if(side == KWDrawerSideLeft)
@@ -71,7 +71,7 @@
         affine = CGAffineTransformScale(affine, 1.5 + 0.5 * percentage, 1.5 + 0.5 * percentage);
     }
     
-    [visibleView setAlpha:fabsf(percentage)];
+    [visibleView setAlpha:fabs(percentage)];
     [visibleView setCenter:drawerView.center];
     [visibleView setTransform:affine];
 }

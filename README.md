@@ -5,6 +5,12 @@ KWDrawerController
 
 <br />
 
+[![CocoaPods](http://img.shields.io/cocoapods/v/JLToast.svg?style=flat)](http://cocoapods.org/?q=name%3AKWDrawerController%20author%3Akawoou)
+
+Drawer view controller that easy to use!
+
+<br />
+
 ##How-To
 You can either simply drag and drop the `KWDrawerController/KWDrawerController` folder into your existing project or add the library as a submodule and reference `KWDrawerController.xcodeproj` from within your own project.
 
@@ -44,7 +50,8 @@ You can either simply drag and drop the `KWDrawerController/KWDrawerController` 
 + 1.0 First Release.
 + 1.1 Bug Fix, Add animations.
 + 2.0 Refactoring.
-+ 2.1 Buf Fix, Update animation.
++ 2.1 Bug Fix, Update animation.
++ 2.2 Fix animation, and some bugs.
 
 <br />
 
