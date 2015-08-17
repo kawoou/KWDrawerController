@@ -37,6 +37,9 @@
 @property (readonly)          CGPoint                               touchedPoint;
 @property (readonly)          KWDrawerSide                          openedDrawerSide;
 
+@property (readonly)          UIPanGestureRecognizer                *panGestureRecognizer;
+
+
 - (void)openDrawerSide:(KWDrawerSide)drawerSide animated:(BOOL)animated;
 
 - (UIImage *)imageContextInDrawerSide:(KWDrawerSide)drawerSide;

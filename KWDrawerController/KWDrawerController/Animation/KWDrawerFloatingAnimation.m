@@ -76,11 +76,11 @@
     
     [visibleView setTransform:affine];
     
-    if (fabsf(percentage) <= 0.0f)
+    if (fabs(percentage) <= 0.0f)
         [_blackView setAlpha:0.0f];
     
     [_blackView setFrame:mainViewController.view.bounds];
-    [_blackView setAlpha:(fabsf(percentage) * 0.7f)];
+    [_blackView setAlpha:(fabs(percentage) * 0.7f)];
     
     if(side == KWDrawerSideLeft)
     {

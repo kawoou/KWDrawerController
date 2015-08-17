@@ -452,6 +452,14 @@
     }
 }
 
+- (UIPanGestureRecognizer *)panGestureRecognizer
+{
+    UIPanGestureRecognizer *gesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
+    [gesture setDelegate:self];
+    
+    return gesture;
+}
+
 
 #pragma mark -
 #pragma mark Gesture Recognizer
@@ -459,7 +467,6 @@
 - (void)handleTapGestureRecognizer:(UITapGestureRecognizer *)gesture
 {
     if(!_enable) return;
-    if(!_gestureEnable) return;
     if(_isOpenAnimationPlaying) return;
     
     [self openDrawerSide:KWDrawerSideNone animated:_animationEnable];
@@ -470,7 +477,6 @@
     if(!_enable) return;
     if(!_gestureEnable) return;
     if(_isOpenAnimationPlaying) return;
-    //if(_sandBox.movingSide == KWDrawerSideNone) return;
     
     UIGestureRecognizerState state = [gesture state];
     CGPoint location = [gesture locationInView:self.view];
@@ -526,10 +532,6 @@
         [self willAnimationWithPercentage:percentage];
         [self didAnimationWithPercentage:percentage];
     }
-    
-//    else if(state == UIGestureRecognizerStateEnded ||
-//            state == UIGestureRecognizerStateCancelled ||
-//            state == UIGestureRecognizerStateFailed)
     else
     {
         if(_sandBox.movingSide == KWDrawerSideNone) return;
@@ -551,14 +553,23 @@
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if(!_enable) return NO;
-    if(!_gestureEnable) return NO;
     if(_isOpenAnimationPlaying) return NO;
     
-    /// Pan Gesture Recognizer
-    if(gestureRecognizer == _panGestureRecognizer)
+    /// Tap Gesture Recognizer
+    if([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
     {
+        if([self isMainViewControllerTouched:[gestureRecognizer locationInView:self.view]])
+            return YES;
+        return NO;
+    }
+    
+    /// Pan Gesture Recognizer
+    else
+    {
+        if(!_gestureEnable) return NO;
+        
         CGPoint translation = [(UIPanGestureRecognizer *)gestureRecognizer translationInView:self.view];
-        if(fabsf(translation.x) < fabsf(translation.y))
+        if(fabs(translation.x) < fabs(translation.y))
             return NO;
         
         _beginPoint = [gestureRecognizer locationInView:self.view];
@@ -577,9 +588,6 @@
                CGRectIntersectsRect(leftRect, pointRect))
             {
                 _isTouchMoveLeft = YES;
-//                [self willCancelAnimation];
-//                [self didBeganAnimation:KWDrawerSideLeft];
-                
                 return YES;
             }
             
@@ -587,9 +595,6 @@
                CGRectIntersectsRect(rightRect, pointRect))
             {
                 _isTouchMoveLeft = NO;
-//                [self willCancelAnimation];
-//                [self didBeganAnimation:KWDrawerSideRight];
-                
                 return YES;
             }
         }
@@ -599,28 +604,13 @@
             if(CGRectIntersectsRect(mainRect, pointRect))
             {
                 if(self.openedDrawerSide == KWDrawerSideLeft)
-                {
                     _isTouchMoveLeft = YES;
-//                    [self willCancelAnimation];
-//                    [self didBeganAnimation:KWDrawerSideLeft];
-                }
                 else
-                {
                     _isTouchMoveLeft = NO;
-//                    [self willCancelAnimation];
-//                    [self didBeganAnimation:KWDrawerSideRight];
-                }
+                
                 return YES;
             }
         }
-    }
-    
-    /// Tap Gesture Recognizer
-    else
-    {
-        if([self isMainViewControllerTouched:[gestureRecognizer locationInView:self.view]])
-            return YES;
-        return NO;
     }
     
     return NO;
@@ -816,7 +806,7 @@
         }
     }
     
-    if(fabsf(percentage) > 1.0f && !_sandBox.isOverflow)
+    if(fabs(percentage) > 1.0f && !_sandBox.isOverflow)
     {
         UIView *sandBoxView = [_overflowAnimation[_sandBox.movingSide] visibleViewForAnimation];
         if(!sandBoxView)
@@ -828,7 +818,7 @@
         _sandBox.isOverflow = YES;
         _sandBox.isOverflowChanged = NO;
     }
-    if(fabsf(percentage) < 1.0f && _sandBox.isOverflow)
+    if(fabs(percentage) < 1.0f && _sandBox.isOverflow)
     {
         UIView *sandBoxView = [_defaultAnimation[_sandBox.movingSide] visibleViewForAnimation];
         if(!sandBoxView)
@@ -1169,6 +1159,7 @@
     /// Gesture Recognizer
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGestureRecognizer:)];
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGestureRecognizer:)];
+    [_panGestureRecognizer setMaximumNumberOfTouches:1];
     [_panGestureRecognizer setDelegate:self];
     [_tapGestureRecognizer setDelegate:self];
     [self.view addGestureRecognizer:_panGestureRecognizer];
