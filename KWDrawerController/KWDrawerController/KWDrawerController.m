@@ -24,8 +24,8 @@
 
 #import "KWDrawerController.h"
 
-#import "KWDrawerSlideAnimation.h"
-#import "KWDrawerScaleAnimation.h"
+#import "Animation/KWDrawerSlideAnimation.h"
+#import "Animation/KWDrawerScaleAnimation.h"
 
 //#define KWDEBUG
 
