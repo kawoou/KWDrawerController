@@ -10,13 +10,5 @@ Pod::Spec.new do |s|
   s.public_header_files = 'KWDrawerController/KWDrawerController/KWDrawer.h'
   s.frameworks          = 'UIKit', 'Foundation', 'QuartzCore'
   s.requires_arc        = true
-
-  s.subspec 'Core' do |ss|
-    ss.source_files = 'KWDrawerController/KWDrawerController/*.{m,h}'
-    ss.dependency 'KWDrawerController/Animation'
-  end
-
-  s.subspec 'Animation' do |ss|
-    ss.source_files = 'KWDrawerController/KWDrawerController/Animation/*.{m,h}'
-  end
+  s.source_files        = 'KWDrawerController/KWDrawerController/*', 'KWDrawerController/KWDrawerController/Animation/*'
 end
