@@ -22,7 +22,7 @@
  SOFTWARE.
  */
 
-#import "KWDrawerAnimation.h"
+#import "../KWDrawerAnimation.h"
 
 @interface KWDrawerFullSizeSlideAnimation : KWDrawerAnimation
 
