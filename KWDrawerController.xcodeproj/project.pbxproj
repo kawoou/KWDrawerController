@@ -26,23 +26,12 @@
 		9D774B82195FC2AA0082AC7E /* KWDrawerFoldingAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9D774B81195FC2AA0082AC7E /* KWDrawerFoldingAnimation.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		9D6577B0194C8FB40078FECB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 9D657797194C8FB40078FECB /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 9D65779E194C8FB40078FECB;
-			remoteInfo = KWDrawerController;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		9D65779F194C8FB40078FECB /* KWDrawerController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KWDrawerController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D6577A4194C8FB40078FECB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		9D6577A6194C8FB40078FECB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		9D6577A7194C8FB40078FECB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		9D6577A9194C8FB40078FECB /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		9D6577AF194C8FB40078FECB /* KWDrawerControllerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KWDrawerControllerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D6577C2194C8FDF0078FECB /* KWDrawerController-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "KWDrawerController-Info.plist"; sourceTree = "<group>"; };
 		9D6577C4194C8FED0078FECB /* KWDrawerController-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KWDrawerController-Prefix.pch"; sourceTree = "<group>"; };
 		9D6577C5194C8FF80078FECB /* LeftViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeftViewController.h; sourceTree = "<group>"; };
@@ -83,13 +72,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9D6577AC194C8FB40078FECB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -105,7 +87,6 @@
 			isa = PBXGroup;
 			children = (
 				9D65779F194C8FB40078FECB /* KWDrawerController.app */,
-				9D6577AF194C8FB40078FECB /* KWDrawerControllerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -195,24 +176,6 @@
 			productReference = 9D65779F194C8FB40078FECB /* KWDrawerController.app */;
 			productType = "com.apple.product-type.application";
 		};
-		9D6577AE194C8FB40078FECB /* KWDrawerControllerTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 9D6577BC194C8FB40078FECB /* Build configuration list for PBXNativeTarget "KWDrawerControllerTests" */;
-			buildPhases = (
-				9D6577AB194C8FB40078FECB /* Sources */,
-				9D6577AC194C8FB40078FECB /* Frameworks */,
-				9D6577AD194C8FB40078FECB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				9D6577B1194C8FB40078FECB /* PBXTargetDependency */,
-			);
-			name = KWDrawerControllerTests;
-			productName = KWDrawerControllerTests;
-			productReference = 9D6577AF194C8FB40078FECB /* KWDrawerControllerTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -224,10 +187,6 @@
 				TargetAttributes = {
 					9D65779E194C8FB40078FECB = {
 						CreatedOnToolsVersion = 6.0;
-					};
-					9D6577AE194C8FB40078FECB = {
-						CreatedOnToolsVersion = 6.0;
-						TestTargetID = 9D65779E194C8FB40078FECB;
 					};
 				};
 			};
@@ -244,7 +203,6 @@
 			projectRoot = "";
 			targets = (
 				9D65779E194C8FB40078FECB /* KWDrawerController */,
-				9D6577AE194C8FB40078FECB /* KWDrawerControllerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -256,13 +214,6 @@
 			files = (
 				9D6577C3194C8FDF0078FECB /* KWDrawerController-Info.plist in Resources */,
 				9D6577AA194C8FB40078FECB /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9D6577AD194C8FB40078FECB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,22 +242,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9D6577AB194C8FB40078FECB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		9D6577B1194C8FB40078FECB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 9D65779E194C8FB40078FECB /* KWDrawerController */;
-			targetProxy = 9D6577B0194C8FB40078FECB /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9D6577B7194C8FB40078FECB /* Debug */ = {
@@ -409,42 +345,6 @@
 			};
 			name = Release;
 		};
-		9D6577BD194C8FB40078FECB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/KWDrawerController.app/KWDrawerController";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = KWDrawerControllerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-			};
-			name = Debug;
-		};
-		9D6577BE194C8FB40078FECB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/KWDrawerController.app/KWDrawerController";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = KWDrawerControllerTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				METAL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUNDLE_LOADER)";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -462,15 +362,6 @@
 			buildConfigurations = (
 				9D6577BA194C8FB40078FECB /* Debug */,
 				9D6577BB194C8FB40078FECB /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		9D6577BC194C8FB40078FECB /* Build configuration list for PBXNativeTarget "KWDrawerControllerTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				9D6577BD194C8FB40078FECB /* Debug */,
-				9D6577BE194C8FB40078FECB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
