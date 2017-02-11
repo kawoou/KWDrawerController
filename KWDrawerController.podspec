@@ -1,14 +1,26 @@
 Pod::Spec.new do |s|
-  s.name                = "KWDrawerController"
-  s.version             = "2.2"
-  s.summary             = "Drawer view controller that easy to use!"
-  s.homepage            = "http://github.com/Kawoou/KWDrawerController"
-  s.license             = { :type => 'MIT', :file => 'LICENSE' }
-  s.author              = { "Kawoou" => "kawoou@kawoou.kr" }
-  s.source              = { :git => "https://github.com/Kawoou/KWDrawerController.git", :tag => "#{s.version}" }
-  s.platform            = :ios, 7.0
-  s.public_header_files = 'KWDrawerController/KWDrawerController/KWDrawer.h'
-  s.frameworks          = 'UIKit', 'Foundation', 'QuartzCore'
-  s.requires_arc        = true
-  s.source_files        = 'KWDrawerController/KWDrawerController/*', 'KWDrawerController/KWDrawerController/Animation/*'
+
+  s.name         = "KWDrawerController"
+  s.version      = "3.0.0"
+  s.summary      = "Drawer view controller that easy to use!"
+  s.license      = { :type => "MIT", :file => "LICENSE" }
+  s.homepage     = "https://github.com/Kawoou/KWDrawerController"
+  s.authors      = { "Jungwon An" => "kawoou@kawoou.kr" }
+  s.social_media_url   = "http://fb.com/kawoou"
+  s.platform     = :ios
+  s.source       =  { :git => "https://github.com/Kawoou/KWDrawerController.git",
+                      :tag => s.version.to_s }
+  s.requires_arc = true
+  s.ios.deployment_target = '7.1'
+
+  s.source_files = 'DrawerController/Types/*.swift',
+                   'DrawerController/Models/*.swift',
+                   'DrawerController/View/*.swift',
+                   'DrawerController/Animator/*.swift',
+                   'DrawerController/Transition/*.swift',
+                   'DrawerController/*.swift',
+                   'DrawerController/Segue/*.swift'
+
+  s.framework  = 'QuartzCore'
+
 end
