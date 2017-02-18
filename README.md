@@ -9,12 +9,6 @@ KWDrawerController
 Drawer view controller that easy to use!
 
 
-Screenshot
-----------
-
-![KWDrawerController](https://dl.dropboxusercontent.com/u/65611701/KWDrawerViewController.gif)
-
-
 Installation
 ------------
 
@@ -32,7 +26,7 @@ pod 'KWDrawerController', '~> 3.0'
 I recommend you to try [CocoaSeeds](https://github.com/devxoul/CocoaSeeds), which uses source code instead of dynamic frameworks. Sample Seedfile:
 
 ```ruby
-github 'kawoou/KWDrawerController', '3.0.0', :files => 'Carte/**.{swift}'
+github 'kawoou/KWDrawerController', '3.0.0', :files => 'DrawerController/**.{swift}'
 ```
 
 
@@ -81,6 +75,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 ### Storyboard
+
+![Storyboard](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/storyboard.jpg)
 
  1. Set the KWDrawerController to Custom Class of Initial ViewController.
 
@@ -144,68 +140,59 @@ Customizing
 
 ### Transition
 
-Transition은 Drawer를 움직이는 연출을 결정하는 모듈로 `DrawerTransition`를 상속받아 구현된다.
+`DrawerTransition` is a module that determines the rendering direction to move the Drawer. It is implemented by inheriting `DrawerTransition`.
 
  - DrawerSlideTransition
 
- <Image>
+![DrawerSlideTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/slide.gif)
 
- - ~DrawerScaleTransition~
+ - DrawerScaleTransition
+	 - Use is not recommended.
  - DrawerParallaxTransition
 
- <Image>
+![DrawerParallaxTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/parallax.gif)
 
  - DrawerFloatTransition
+    - When using the `Transition`, `Overflow Transition` should also use `DrawerFloatTransition`.
 
- <Image>
-
- > 해당 트랜지션을 사용하는 경우, Overflow Transition 또한 DrawerFloatTransition을 사용해야한다.
+![DrawerFloatTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/float.gif)
 
  - DrawerFoldTransition
 
- <Image>
+![DrawerFoldTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/fold.gif)
 
  - DrawerSwingTransition
 
- <Image>
+![DrawerSwingTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/swing.gif)
 
  - DrawerZoomTransition
 
- <Image>
+![DrawerZoomTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/zoom.gif)
 
 
 ### Overflow Transition
 
-Overflow Transition은 Drawer의 오픈 범위를 넘어서서 Transition을 처리하려고 할 때 사용된다.
+`Overflow Transition` be used when `Transition` beyond the open range of the drawer.
 
- - ~DrawerSlideTransition~
+ - DrawerSlideTransition
  - DrawerScaleTransition
+    - This is natural when used with `DrawerSlideTransition`, `DrwaerParallaxTransition`, `DrawerFoldTransition`, and `DrawerSwingTransition`.
 
- <Image>
-
- > DrawerSlideTransition, DrwaerParallaxTransition, DrawerFoldTransition, DrawerSwingTransition과 함께 사용할 경우 자연스럽다.
- 
+![DrawerScaleTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/scale.gif)
+    
  - DrawerParallaxTransition
-
- <Image>
-
  - DrawerFloatTransition
-
- <Image>
-
- > 해당 트랜지션을 사용하는 경우, Transition 또한 DrawerFloatTransition을 사용해야한다.
-
- - ~DrawerFoldTransition~
- - ~DrawerSwingTransition~
-
+	 - When using the `Overflow Transition`, `Transition` should also use `DrawerFloatTransition`.
+ - DrawerFoldTransition
+	 - Use is not recommended.
+ - DrawerSwingTransition
+	 - Use is not recommended.
  - DrawerZoomTransition
-
- <Image>
 
 
 ### Animator
 
-Animator는 Drawer를 움직이는 속도를 제어하는 모듈로 `DrawerAnimator` 또는 `DrawerTickAnimator`를 상속받아 구현된다.
+Animator is a module that controls the speed of moving a drawer. It is implemented by inheriting `DrawerAnimator` or `DrawerTickAnimator`.
 
  - DrawerLinearAnimator
  - DrawerCurveEaseAnimator
