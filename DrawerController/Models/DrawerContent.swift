@@ -24,7 +24,7 @@ SOFTWARE.
 
 import UIKit
 
-internal class DrawerContent {
+public class DrawerContent {
     
     // MARK: - Property
     
@@ -78,7 +78,7 @@ internal class DrawerContent {
     
     // MARK: - Public
     
-    func addDrawerView(drawerController: DrawerController) {
+    internal func addDrawerView(drawerController: DrawerController) {
         
         self.viewController.drawerController = drawerController
         
@@ -90,7 +90,7 @@ internal class DrawerContent {
         
         updateView()
     }
-    func removeDrawerView() {
+    internal func removeDrawerView() {
         
         self.viewController.removeFromParentViewController()
         
@@ -100,19 +100,19 @@ internal class DrawerContent {
         self.viewController.drawerController = nil
     }
     
-    func startTransition(side: DrawerSide) {
+    public func startTransition(side: DrawerSide) {
         self.transition.initTransition(content: self)
         self.overflowTransition.initTransition(content: self)
         
         self.contentView.clipsToBounds = self.isBringToFront
     }
-    func endTransition(side: DrawerSide) {
+    public func endTransition(side: DrawerSide) {
         if let transition = self.useTransition {
             transition.endTransition(content: self, side: side)
         }
         self.useTransition = nil
     }
-    func transition(side: DrawerSide, percentage: Float, viewRect: CGRect) {
+    public func transition(side: DrawerSide, percentage: Float, viewRect: CGRect) {
         
         var currentPercent: Float
         var currentTransition = self.useTransition ?? self.transition
@@ -161,7 +161,7 @@ internal class DrawerContent {
         )
     }
     
-    func screenshot(withOptimization optimized: Bool) -> UIImage? {
+    public func screenshot(withOptimization optimized: Bool) -> UIImage? {
         if (optimized) {
             UIGraphicsBeginImageContext(self.contentView.frame.size)
         } else {
