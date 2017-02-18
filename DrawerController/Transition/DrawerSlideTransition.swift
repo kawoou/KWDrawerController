@@ -52,4 +52,8 @@ public class DrawerSlideTransition: DrawerTransition {
         
     }
     
+    public override init() {
+        super.init()
+    }
+    
 }

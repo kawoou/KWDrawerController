@@ -183,6 +183,10 @@ public class DrawerFoldTransition: DrawerTransition {
         
     }
     
+    public override init() {
+        super.init()
+    }
+    
 }
 
 private class FoldView: UIView {

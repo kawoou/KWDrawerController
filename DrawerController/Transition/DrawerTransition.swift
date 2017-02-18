@@ -44,4 +44,8 @@ open class DrawerTransition {
         
     }
     
+    public init() {
+        
+    }
+    
 }

@@ -104,4 +104,8 @@ public class DrawerSwingTransition: DrawerTransition {
         
     }
     
+    public override init() {
+        super.init()
+    }
+    
 }
