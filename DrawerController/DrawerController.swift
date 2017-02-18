@@ -1010,17 +1010,13 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 )
                 
                 if let content = self.contentMap[.left] {
-                    guard isGesture(content: content) else { return false }
-                    
-                    if leftRect.intersects(pointRect) {
+                    if self.isGesture(content: content) && leftRect.intersects(pointRect) {
                         self.isGestureMoveLeft = true
                         return true
                     }
                 }
                 if let content = self.contentMap[.right] {
-                    guard isGesture(content: content) else { return false }
-                    
-                    if rightRect.intersects(pointRect) {
+                    if  self.isGesture(content: content) && rightRect.intersects(pointRect) {
                         self.isGestureMoveLeft = false
                         return true
                     }

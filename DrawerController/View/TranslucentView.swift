@@ -155,19 +155,29 @@ internal class TranslucentView: UIView {
         
         let rect = CGRect(x: 0, y: -1, width: self.bounds.width, height: self.bounds.height + 1)
         if #available(iOS 8.0, *) {
-            let customBlurClass: AnyObject.Type = NSClassFromString("_UICustomBlurEffect")!
-            let customBlurObject: NSObject.Type = customBlurClass as! NSObject.Type
-            let blurEffect = customBlurObject.init() as! UIBlurEffect
-            blurEffect.setValue(1.0, forKeyPath: "scale")
-            blurEffect.setValue(CGFloat(25), forKeyPath: "blurRadius")
-            
-            let visualEffectView = UIVisualEffectView(effect: blurEffect)
-            visualEffectView.frame = rect
-            visualEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            visualEffectView.alpha = self.alpha
-            self.effectView.addSubview(visualEffectView)
-            
-            self.blurView = visualEffectView
+            if let customBlurClass: AnyObject.Type = NSClassFromString("_UICustomBlurEffect") {
+                let customBlurObject: NSObject.Type = customBlurClass as! NSObject.Type
+                let blurEffect = customBlurObject.init() as! UIBlurEffect
+                blurEffect.setValue(1.0, forKeyPath: "scale")
+                blurEffect.setValue(CGFloat(25), forKeyPath: "blurRadius")
+                
+                let visualEffectView = UIVisualEffectView(effect: blurEffect)
+                visualEffectView.frame = rect
+                visualEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                visualEffectView.alpha = self.alpha
+                self.effectView.addSubview(visualEffectView)
+                
+                self.blurView = visualEffectView
+            } else {
+                let toolbar = UIToolbar(frame: rect)
+                toolbar.barTintColor = UIColor(white: 0.8, alpha: 1.0)
+                toolbar.barStyle = .black
+                toolbar.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                toolbar.alpha = self.alpha
+                self.effectView.addSubview(toolbar)
+                
+                self.blurView = toolbar
+            }
         } else {
             let toolbar = UIToolbar(frame: rect)
             toolbar.barTintColor = UIColor(white: 0.8, alpha: 1.0)
