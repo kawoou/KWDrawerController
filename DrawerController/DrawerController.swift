@@ -147,17 +147,17 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - Public
     
     /// Options
-    func getSideOption(side: DrawerSide) -> DrawerOption? {
+    public func getSideOption(side: DrawerSide) -> DrawerOption? {
         guard let content = self.contentMap[side] else { return nil }
         return content.option
     }
     
     /// Absolute
-    func getAbsolute(side: DrawerSide) -> Bool {
+    public func getAbsolute(side: DrawerSide) -> Bool {
         guard let content = self.contentMap[side] else { return false }
         return content.isAbsolute
     }
-    func setAbsolute(isAbsolute: Bool, side: DrawerSide) {
+    public func setAbsolute(isAbsolute: Bool, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         
         if content.isAbsolute != isAbsolute && self.drawerSide == side && side != .none {
@@ -170,21 +170,21 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Bring to Front
-    func getBringToFront(side: DrawerSide) -> Bool {
+    public func getBringToFront(side: DrawerSide) -> Bool {
         guard let content = self.contentMap[side] else { return false }
         return content.isBringToFront
     }
-    func setBringToFront(isBringToFront: Bool, side: DrawerSide) {
+    public func setBringToFront(isBringToFront: Bool, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         content.isBringToFront = isBringToFront
     }
     
     /// Transition
-    func getTransition(side: DrawerSide) -> DrawerTransition? {
+    public func getTransition(side: DrawerSide) -> DrawerTransition? {
         guard let content = self.contentMap[side] else { return nil }
         return content.transition
     }
-    func setTransition(transition: DrawerTransition, side: DrawerSide) {
+    public func setTransition(transition: DrawerTransition, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         content.transition = transition
         
@@ -208,32 +208,32 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             self.didFinishAnimate(side: self.drawerSide, percent: percent)
         }
     }
-    func getOverflowTransition(side: DrawerSide) -> DrawerTransition? {
+    public func getOverflowTransition(side: DrawerSide) -> DrawerTransition? {
         guard let content = self.contentMap[side] else { return nil }
         return content.overflowTransition
     }
-    func setOverflowTransition(transition: DrawerTransition, side: DrawerSide) {
+    public func setOverflowTransition(transition: DrawerTransition, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         content.overflowTransition = transition
     }
     
     
     /// Animator
-    func getAnimator(side: DrawerSide) -> DrawerAnimator? {
+    public func getAnimator(side: DrawerSide) -> DrawerAnimator? {
         guard let content = self.contentMap[side] else { return nil }
         return content.animator
     }
-    func setAnimator(animator: DrawerAnimator, side: DrawerSide) {
+    public func setAnimator(animator: DrawerAnimator, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         content.animator = animator
     }
     
     /// Drawer Width
-    func getDrawerWidth(side: DrawerSide) -> Float? {
+    public func getDrawerWidth(side: DrawerSide) -> Float? {
         guard let content = self.contentMap[side] else { return nil }
         return content.drawerWidth
     }
-    func setDrawerWidth(drawerWidth: Float, side: DrawerSide) {
+    public func setDrawerWidth(drawerWidth: Float, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         
         if self.drawerSide == side {
@@ -247,7 +247,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// View controller
-    func setViewController(_ viewController: UIViewController?, side: DrawerSide) {
+    public func setViewController(_ viewController: UIViewController?, side: DrawerSide) {
         guard isEnable() else { return }
         
         if let controller = viewController {

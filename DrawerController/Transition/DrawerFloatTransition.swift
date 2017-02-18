@@ -33,21 +33,21 @@ public class DrawerFloatTransition: DrawerTransition {
     
     // MARK: - Public
     
-    override func initTransition(content: DrawerContent) {
+    override public func initTransition(content: DrawerContent) {
         super.initTransition(content: content)
         
         content.isBringToFront = false
     }
     
-    override func startTransition(content: DrawerContent, side: DrawerSide) {
+    override public func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
     }
     
-    override func endTransition(content: DrawerContent, side: DrawerSide) {
+    override public func endTransition(content: DrawerContent, side: DrawerSide) {
         super.endTransition(content: content, side: side)
     }
     
-    override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
+    override public func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
         switch content.drawerSide {
         case .left:
