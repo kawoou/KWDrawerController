@@ -28,19 +28,19 @@ public class DrawerSlideTransition: DrawerTransition {
 
     // MARK: - Public
     
-    override public func initTransition(content: DrawerContent) {
+    public override func initTransition(content: DrawerContent) {
         super.initTransition(content: content)
     }
     
-    override public func startTransition(content: DrawerContent, side: DrawerSide) {
+    public override func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
     }
     
-    override public func endTransition(content: DrawerContent, side: DrawerSide) {
+    public override func endTransition(content: DrawerContent, side: DrawerSide) {
         super.endTransition(content: content, side: side)
     }
     
-    override public func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
+    public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
         content.contentView.transform = CGAffineTransform.identity
         content.contentView.frame = CGRect(

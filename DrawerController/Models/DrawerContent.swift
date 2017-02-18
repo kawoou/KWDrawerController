@@ -206,7 +206,7 @@ public class DrawerContent {
     
     // MARK: - Initialize
     
-    init(viewController: UIViewController, drawerSide: DrawerSide) {
+    internal init(viewController: UIViewController, drawerSide: DrawerSide) {
         
         self.contentView = UIView()
         self.viewController = viewController
