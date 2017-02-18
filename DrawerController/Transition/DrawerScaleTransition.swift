@@ -83,4 +83,8 @@ public class DrawerScaleTransition: DrawerTransition {
         
     }
     
+    public override init() {
+        super.init()
+    }
+    
 }

@@ -73,4 +73,8 @@ public class DrawerZoomTransition: DrawerTransition {
         
     }
     
+    public override init() {
+        super.init()
+    }
+    
 }

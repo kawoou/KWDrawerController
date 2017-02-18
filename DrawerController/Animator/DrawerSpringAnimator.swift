@@ -36,4 +36,11 @@ public class DrawerSpringAnimator: DrawerAnimator {
         
     }
     
+    
+    // MARK: - Lifecycle
+    
+    public override init() {
+        super.init()
+    }
+    
 }

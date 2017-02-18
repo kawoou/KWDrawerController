@@ -99,4 +99,11 @@ open class DrawerAnimator {
         }
     }
     
+    
+    // MARK: - Lifecycle
+    
+    public init() {
+        
+    }
+    
 }

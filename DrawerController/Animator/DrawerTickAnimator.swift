@@ -30,4 +30,11 @@ open class DrawerTickAnimator: DrawerAnimator {
     
     public override var isTicked: Bool { return true }
     
+    
+    // MARK: - Lifecycle
+    
+    public override init() {
+        super.init()
+    }
+    
 }
