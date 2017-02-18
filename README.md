@@ -1,8 +1,8 @@
 KWDrawerController
 ==================
 
-[![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/)
-[![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/)
+[![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.1)
+[![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.1)
 [![Pod License](http://img.shields.io/cocoapods/l/KWDrawerController.svg?style=flat)](https://github.com/kawoou/KWDrawerController/blob/master/LICENSE)
 ![Swift](https://img.shields.io/badge/Swift-3.0-orange.svg)
 
@@ -17,7 +17,7 @@ Installation
 KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/cocoapods). Add the following to your Podfile:
 
 ```ruby
-pod 'KWDrawerController', '~> 3.0'
+pod 'KWDrawerController', '~> 3.1'
 ```
 
 
@@ -26,7 +26,7 @@ pod 'KWDrawerController', '~> 3.0'
 I recommend you to try [CocoaSeeds](https://github.com/devxoul/CocoaSeeds), which uses source code instead of dynamic frameworks. Sample Seedfile:
 
 ```ruby
-github 'kawoou/KWDrawerController', '3.0.0', :files => 'DrawerController/**.{swift}'
+github 'kawoou/KWDrawerController', '3.1', :files => 'DrawerController/**.{swift}'
 ```
 
 
@@ -232,6 +232,7 @@ Changelog
 + 2.1 Bug Fix, Update animation.
 + 2.2 Fix animation, and some bugs.
 + 3.0 Written in Swift 3.0
++ 3.1 Fix Access Controls issues.
 
 
 ⚠️ Requirements
