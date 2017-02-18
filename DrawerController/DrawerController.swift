@@ -940,8 +940,22 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                     self.gestureLastPercentage = -1.0
                 }
             } else {
-                self.closeSide {
-                    self.gestureLastPercentage = -1.0
+                if fabs(self.gestureLastPercentage) > 1.0 {
+                    
+                    if self.internalFromSide == .left {
+                        self.openSide(.left) {
+                            self.gestureLastPercentage = -1.0
+                        }
+                    } else if self.internalFromSide == .right {
+                        self.openSide(.right) {
+                            self.gestureLastPercentage = -1.0
+                        }
+                    }
+                    
+                } else {
+                    self.closeSide {
+                        self.gestureLastPercentage = -1.0
+                    }
                 }
             }
             
