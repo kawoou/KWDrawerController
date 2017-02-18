@@ -69,7 +69,7 @@ public class DrawerBackEaseAnimator: DrawerTickAnimator {
     
     // MARK: - Lifecycle
     
-    init(easeType: EaseType = .easeInOut) {
+    public init(easeType: EaseType = .easeInOut) {
         self.easeType = easeType
         
         super.init()
