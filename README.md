@@ -21,15 +21,6 @@ pod 'KWDrawerController', '~> 3.3'
 ```
 
 
-### CocoaSeeds (For iOS 7 projects)
-
-I recommend you to try [CocoaSeeds](https://github.com/devxoul/CocoaSeeds), which uses source code instead of dynamic frameworks. Sample Seedfile:
-
-```ruby
-github 'kawoou/KWDrawerController', '3.3', :files => 'DrawerController/**.{swift}'
-```
-
-
 ### Manually
 
 You can either simply drag and drop the `DrawerController` folder into your existing project.
