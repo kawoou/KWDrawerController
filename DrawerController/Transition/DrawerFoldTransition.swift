@@ -83,7 +83,7 @@ public class DrawerFoldTransition: DrawerTransition {
                         )
                     )
                     foldView.layer.anchorPoint = CGPoint(x: Double(i % 2), y: 0.5)
-                    foldView.layer.transform = CATransform3DMakeRotation(CGFloat(M_PI_2), 0, 1, 0)
+                    foldView.layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi / 2), 0, 1, 0)
                     
                     if i == 0 {
                         foldView.shadowLayer.colors = [UIColor(white: 0.0, alpha: 0.05).cgColor, UIColor(white: 0.0, alpha: 0.6).cgColor]
@@ -132,9 +132,9 @@ public class DrawerFoldTransition: DrawerTransition {
         case .left:
             let sidePercent = 1.0 + percentage
             
-            self.foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(M_PI_2 - asin(Double(sidePercent))), 0, 1, 0)
+            self.foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, 1, 0)
             self.foldList[1].layer.transform = CATransform3DConcat(
-                CATransform3DMakeRotation(CGFloat(M_PI_2 - asin(Double(sidePercent))), 0, -1, 0),
+                CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, -1, 0),
                 CATransform3DMakeTranslation(self.foldList[0].frame.width * 2, 0, 0)
             )
             
@@ -162,9 +162,9 @@ public class DrawerFoldTransition: DrawerTransition {
                 height: content.contentView.frame.height
             )
         
-            self.foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(M_PI_2 - asin(Double(sidePercent))), 0, 1, 0)
+            self.foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, 1, 0)
             self.foldList[1].layer.transform = CATransform3DConcat(
-                CATransform3DMakeRotation(CGFloat(M_PI_2 - asin(Double(sidePercent))), 0, -1, 0),
+                CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, -1, 0),
                 CATransform3DMakeTranslation(self.foldList[0].frame.width * 2, 0, 0)
             )
             

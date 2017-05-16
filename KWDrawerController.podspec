@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "KWDrawerController"
-  s.version      = "3.3"
+  s.version      = "3.4"
   s.summary      = "Drawer view controller that easy to use!"
   s.license      = { :type => "MIT", :file => "LICENSE" }
   s.homepage     = "https://github.com/Kawoou/KWDrawerController"

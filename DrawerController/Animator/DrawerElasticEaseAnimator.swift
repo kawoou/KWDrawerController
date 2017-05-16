@@ -36,14 +36,14 @@ public class DrawerElasticEaseAnimator: DrawerTickAnimator {
         internal func algorithm(value: Double) -> Double {
             switch self {
             case .easeIn:
-                return sin(13 * M_PI_2 * value) * pow(2, 10 * (value - 1))
+                return sin(13 * Double.pi / 2 * value) * pow(2, 10 * (value - 1))
             case .easeOut:
-                return sin(-13 * M_PI_2 * (value + 1)) * pow(2, -10 * value) + 1
+                return sin(-13 * Double.pi / 2 * (value + 1)) * pow(2, -10 * value) + 1
             case .easeInOut:
                 if value < 0.5 {
-                    return 0.5 * sin(13 * M_PI_2 * (2 * value)) * pow(2, 10 * ((2 * value) - 1))
+                    return 0.5 * sin(13 * Double.pi / 2 * (2 * value)) * pow(2, 10 * ((2 * value) - 1))
                 } else {
-                    return 0.5 * (sin(-13 * M_PI_2 * ((2 * value - 1) + 1)) * pow(2, -10 * (2 * value - 1)) + 2)
+                    return 0.5 * (sin(-13 * Double.pi / 2 * ((2 * value - 1) + 1)) * pow(2, -10 * (2 * value - 1)) + 2)
                 }
             }
         }

@@ -36,11 +36,11 @@ public class DrawerSineEaseAnimator: DrawerTickAnimator {
         internal func algorithm(value: Double) -> Double {
             switch self {
             case .easeIn:
-                return sin((value - 1) * M_PI_2) + 1
+                return sin((value - 1) * Double.pi / 2) + 1
             case .easeOut:
-                return sin(value * M_PI_2)
+                return sin(value * Double.pi / 2)
             case .easeInOut:
-                return 0.5 * (1 - cos(value * M_PI))
+                return 0.5 * (1 - cos(value * Double.pi / 2))
             }
         }
     }
