@@ -1,0 +1,20 @@
+language: objective-c
+osx_image: xcode8
+
+env:
+  global:
+  - PROJECT="Example/KWDrawerController-Example.xcodeproj"
+  - IOS_TARGET="KWDrawerController-Example"
+
+
+  matrix:
+    - DESTINATION="OS=8.1,name=iPhone 4S"          TARGET="$IOS_TARGET"     PLATFORM="iOS"
+
+script:
+  - set -o pipefail
+  - xcodebuild -version
+  - xcodebuild -showsdks
+  - xcodebuild -project "$PROJECT" -list
+
+  - xcodebuild -project "$PROJECT" -target "$TARGET" -destination "$DESTINATION" -configuration Debug ONLY_ACTIVE_ARCH=NO clean build | xcpretty
+  - xcodebuild -project "$PROJECT" -target "$TARGET" -destination "$DESTINATION" -configuration Release ONLY_ACTIVE_ARCH=NO clean build | xcpretty
