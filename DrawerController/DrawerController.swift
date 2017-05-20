@@ -818,6 +818,16 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         )
         
         for (drawerSide, content) in self.contentMap {
+            if content.isAbsolute {
+                if content.contentView.frame.intersects(pointRect) {
+                    if drawerSide != side {
+                        return false
+                    }
+                }
+            }
+        }
+        
+        for (drawerSide, content) in self.contentMap {
             if content.contentView.frame.intersects(pointRect) {
                 if drawerSide == side {
                     return true
