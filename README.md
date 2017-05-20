@@ -1,8 +1,8 @@
 KWDrawerController
 ==================
 
-[![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.4)
-[![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.4)
+[![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.5)
+[![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.5)
 [![Pod License](http://img.shields.io/cocoapods/l/KWDrawerController.svg?style=flat)](https://github.com/kawoou/KWDrawerController/blob/master/LICENSE)
 ![Swift](https://img.shields.io/badge/Swift-3.0-orange.svg)
 
@@ -17,7 +17,7 @@ Installation
 KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/cocoapods). Add the following to your Podfile:
 
 ```ruby
-pod 'KWDrawerController', '~> 3.4'
+pod 'KWDrawerController', '~> 3.5'
 ```
 
 
@@ -227,7 +227,7 @@ Changelog
 + 3.2 Fix Access Control issues on Transition.
 + 3.3 Fix Access Control issues on initializer.
 + 3.4 Remove debug log.
-
++ 3.5 Fixed bug where touch ignores is not applied for "Absolute Controller".
 
 ⚠️ Requirements
 --------------
