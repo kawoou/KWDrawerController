@@ -131,8 +131,6 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     private var internalDrawerWidth: Float = 280.0
     private var internalFromSide: DrawerSide = .none
     
-    private var lastOrientation: UIDeviceOrientation = .unknown
-    
     private var shadowView: UIView = UIView()
     private var fadeView: UIView = UIView()
     private var translucentView: TranslucentView = TranslucentView()
@@ -1112,23 +1110,10 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         if let rightSegueID = self.rightSegueIdentifier {
             self.performSegue(withIdentifier: rightSegueID, sender: self)
         }
-        
-        /// Event Handler
-        self.view.addObserver(self, forKeyPath: "center", options: .new, context: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
-    deinit {
-        self.view.removeObserver(self, forKeyPath:"center")
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc
-    private func deviceRotated() {
-        let orientation = UIDevice.current.orientation
-        
-        guard orientation == self.lastOrientation else { return }
-        self.lastOrientation = orientation
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         for (_, content) in self.contentMap {
             content.updateView()
@@ -1136,6 +1121,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         
         if !self.isAnimating {
             for (side, content) in self.contentMap {
+                if side == .none { continue }
+                
                 let percent: Float = self.drawerSide == .none ? 0.0 : 1.0
                 
                 self.willBeginAnimate(side: self.drawerSide)
@@ -1156,17 +1143,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 
             }
         }
-        
     }
-    
-    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        
-        if keyPath == "center" {
-            self.deviceRotated()
-        }
-    }
-    
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
