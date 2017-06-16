@@ -137,6 +137,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     
     private var tapGestureRecognizer: UITapGestureRecognizer?
     
+    private var currentOrientation: UIDeviceOrientation = .unknown
+    
     /// Gesture
     private var gestureBeginPoint: CGPoint = CGPoint.zero
     private var gestureMovePoint: CGPoint = CGPoint.zero
@@ -769,6 +771,39 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         self.delegate?.drawerDidCancelAnimation?(drawerController: self, side: side)
     }
     
+    private func updateLayout() {
+        
+        for (_, content) in self.contentMap {
+            content.updateView()
+        }
+        
+        if !self.isAnimating {
+            for (side, content) in self.contentMap {
+                if side == .none { continue }
+                
+                let percent: Float = self.drawerSide == .none ? 0.0 : 1.0
+                
+                self.willBeginAnimate(side: self.drawerSide)
+                self.didBeginAnimate(side: self.drawerSide)
+                self.willAnimate(side: self.drawerSide, percent: percent)
+                self.didAnimate(side: self.drawerSide, percent: percent)
+                
+                content.startTransition(side: self.drawerSide)
+                content.transition(
+                    side: self.drawerSide,
+                    percentage: self.calcPercentage(side: side, moveSide: self.drawerSide, percent),
+                    viewRect: self.calcViewRect(content: content)
+                )
+                content.endTransition(side: self.drawerSide)
+                
+                self.willFinishAnimate(side: self.drawerSide, percent: percent)
+                self.didFinishAnimate(side: self.drawerSide, percent: percent)
+                
+            }
+        }
+        
+    }
+    
     
     // MARK: - UIGestureRecognizerDelegate
     
@@ -1110,38 +1145,31 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         if let rightSegueID = self.rightSegueIdentifier {
             self.performSegue(withIdentifier: rightSegueID, sender: self)
         }
+        
+        /// Events
+        self.view.addObserver(self, forKeyPath: "center", options: .new, context: nil)
+    }
+    
+    deinit {
+        self.view.removeObserver(self, forKeyPath:"center")
     }
     
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        for (_, content) in self.contentMap {
-            content.updateView()
-        }
+        let newOrientation = UIDevice.current.orientation
+        guard newOrientation != .unknown else { return }
+        guard newOrientation != self.currentOrientation else { return }
+        self.currentOrientation = newOrientation
         
-        if !self.isAnimating {
-            for (side, content) in self.contentMap {
-                if side == .none { continue }
-                
-                let percent: Float = self.drawerSide == .none ? 0.0 : 1.0
-                
-                self.willBeginAnimate(side: self.drawerSide)
-                self.didBeginAnimate(side: self.drawerSide)
-                self.willAnimate(side: self.drawerSide, percent: percent)
-                self.didAnimate(side: self.drawerSide, percent: percent)
-                
-                content.startTransition(side: self.drawerSide)
-                content.transition(
-                    side: self.drawerSide,
-                    percentage: self.calcPercentage(side: side, moveSide: self.drawerSide, percent),
-                    viewRect: self.calcViewRect(content: content)
-                )
-                content.endTransition(side: self.drawerSide)
-                
-                self.willFinishAnimate(side: self.drawerSide, percent: percent)
-                self.didFinishAnimate(side: self.drawerSide, percent: percent)
-                
-            }
+        self.updateLayout()
+    }
+    
+    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+        
+        if keyPath == "center" {
+            self.updateLayout()
         }
     }
     
