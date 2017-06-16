@@ -538,10 +538,6 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func willBeginAnimate(side: DrawerSide) {
-        #if DEBUG
-        print("willBeginAnimate(side: \(side.rawValue))")
-        #endif
-        
         for (drawerSide, content) in self.contentMap {
             if drawerSide == side || drawerSide == .none || drawerSide == self.internalFromSide {
                 content.contentView.isHidden = false
@@ -567,10 +563,6 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         self.view.isUserInteractionEnabled = false
     }
     private func didBeginAnimate(side: DrawerSide) {
-        #if DEBUG
-        print("didBeginAnimate(side: \(side.rawValue))")
-        #endif
-        
         /// Golden-Path
         guard let mainContent = contentMap[.none] else { return }
         
@@ -625,15 +617,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         self.delegate?.drawerDidBeganAnimation?(drawerController: self, side: side)
     }
     private func willAnimate(side: DrawerSide, percent: Float) {
-        #if DEBUG
-        print("willAnimate(side: \(side.rawValue), percent: \(percent))")
-        #endif
     }
     private func didAnimate(side: DrawerSide, percent: Float) {
-        #if DEBUG
-        print("didAnimate(side: \(side.rawValue), percent: \(percent))")
-        #endif
-        
         /// Golden-Path
         guard let mainContent = contentMap[.none] else { return }
         
@@ -683,18 +668,10 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         self.delegate?.drawerDidAnimation?(drawerController: self, side: side, percentage: percent)
     }
     private func willFinishAnimate(side: DrawerSide, percent: Float) {
-        #if DEBUG
-        print("willFinishAnimate(side: \(side.rawValue), percent: \(percent))")
-        #endif
-        
         /// Delegate
         self.delegate?.drawerWillFinishAnimation?(drawerController: self, side: side)
     }
     private func didFinishAnimate(side: DrawerSide, percent: Float) {
-        #if DEBUG
-        print("didFinishAnimate(side: \(side.rawValue), percent: \(percent))")
-        #endif
-        
         /// Golden-Path
         guard let mainContent = contentMap[.none] else { return }
         
@@ -746,18 +723,10 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         self.delegate?.drawerDidFinishAnimation?(drawerController: self, side: side)
     }
     private func willCancelAnimate(side: DrawerSide, percent: Float) {
-        #if DEBUG
-        print("willCancelAnimate(side: \(side.rawValue), percent: \(percent))")
-        #endif
-        
         /// Delegate
         self.delegate?.drawerWillCancelAnimation?(drawerController: self, side: side)
     }
     private func didCancelAnimate(side: DrawerSide, percent: Float) {
-        #if DEBUG
-        print("didCancelAnimate(side: \(side.rawValue), percent: \(percent))")
-        #endif
-        
         /// Golden-Path
         guard let mainContent = contentMap[.none] else { return }
         
@@ -1141,18 +1110,10 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         if let rightSegueID = self.rightSegueIdentifier {
             self.performSegue(withIdentifier: rightSegueID, sender: self)
         }
-        
-        /// Event Handler
-        self.view.addObserver(self, forKeyPath: "center", options: .new, context: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(deviceRotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
     }
     
-    deinit {
-        self.view.removeObserver(self, forKeyPath:"center")
-    }
-    
-    @objc
-    private func deviceRotated() {
+    open override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         
         for (_, content) in self.contentMap {
             content.updateView()
@@ -1160,6 +1121,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         
         if !self.isAnimating {
             for (side, content) in self.contentMap {
+                if side == .none { continue }
+                
                 let percent: Float = self.drawerSide == .none ? 0.0 : 1.0
                 
                 self.willBeginAnimate(side: self.drawerSide)
@@ -1180,17 +1143,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 
             }
         }
-        
     }
-    
-    open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        
-        if keyPath == "center" {
-            deviceRotated()
-        }
-    }
-    
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

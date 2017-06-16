@@ -83,6 +83,7 @@ public class DrawerContent {
         self.viewController.drawerController = drawerController
         
         self.contentView.frame = drawerController.view.bounds
+        self.contentView.autoresizingMask = [.flexibleHeight]
         self.contentView.addSubview(self.viewController.view)
         drawerController.view.addSubview(self.contentView)
         
