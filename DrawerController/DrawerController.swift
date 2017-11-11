@@ -70,8 +70,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Define
     
-    static let OverflowPercentage: Float = 1.06
-    static let GestureArea: Float = 40.0
+    @objc static let OverflowPercentage: Float = 1.06
+    @objc static let GestureArea: Float = 40.0
     
     
     // MARK: - Property
@@ -118,10 +118,10 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     @IBInspectable
     public var rightSegueIdentifier: String?
     
-    public private(set) var drawerSide: DrawerSide = .none
-    public private(set) var isAnimating: Bool = false
+    @objc public private(set) var drawerSide: DrawerSide = .none
+    @objc public private(set) var isAnimating: Bool = false
     
-    public private(set) var panGestureRecognizer: UIPanGestureRecognizer?
+    @objc public private(set) var panGestureRecognizer: UIPanGestureRecognizer?
     
     
     // MARK: - Internal
@@ -155,11 +155,11 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Absolute
-    public func getAbsolute(side: DrawerSide) -> Bool {
+    @objc public func getAbsolute(side: DrawerSide) -> Bool {
         guard let content = self.contentMap[side] else { return false }
         return content.isAbsolute
     }
-    public func setAbsolute(isAbsolute: Bool, side: DrawerSide) {
+    @objc public func setAbsolute(isAbsolute: Bool, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         
         if content.isAbsolute != isAbsolute && self.drawerSide == side && side != .none {
@@ -172,11 +172,11 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Bring to Front
-    public func getBringToFront(side: DrawerSide) -> Bool {
+    @objc public func getBringToFront(side: DrawerSide) -> Bool {
         guard let content = self.contentMap[side] else { return false }
         return content.isBringToFront
     }
-    public func setBringToFront(isBringToFront: Bool, side: DrawerSide) {
+    @objc public func setBringToFront(isBringToFront: Bool, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         content.isBringToFront = isBringToFront
     }
@@ -235,7 +235,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         guard let content = self.contentMap[side] else { return nil }
         return content.drawerWidth
     }
-    public func setDrawerWidth(drawerWidth: Float, side: DrawerSide) {
+    @objc public func setDrawerWidth(drawerWidth: Float, side: DrawerSide) {
         guard let content = self.contentMap[side] else { return }
         
         if self.drawerSide == side {
@@ -249,7 +249,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// View controller
-    public func setViewController(_ viewController: UIViewController?, side: DrawerSide) {
+    @objc public func setViewController(_ viewController: UIViewController?, side: DrawerSide) {
         guard isEnable() else { return }
         
         if let controller = viewController {
@@ -261,7 +261,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Actions
-    public func openSide(_ side: DrawerSide, completion: (()->())? = nil) {
+    @objc public func openSide(_ side: DrawerSide, completion: (()->())? = nil) {
         
         /// Golden-Path
         guard isEnable() else { return }
@@ -337,7 +337,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         
     }
     
-    public func closeSide(completion: (()->())? = nil) {
+    @objc public func closeSide(completion: (()->())? = nil) {
         
         /// Golden-Path
         guard isEnable() else { return }
