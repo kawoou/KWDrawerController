@@ -193,12 +193,12 @@ private class FoldView: UIView {
     
     // MARK - Property
     
-    public var shadowView: UIView {
+    @objc public var shadowView: UIView {
         get {
             return self.internalShadowView
         }
     }
-    public var shadowLayer: CAGradientLayer {
+    @objc public var shadowLayer: CAGradientLayer {
         get {
             return self.internalShadowLayer
         }
