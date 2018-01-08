@@ -46,28 +46,28 @@ class RightOptionViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func absoluteDidTouched(_ sender: UISwitch) {
+    @objc func absoluteDidTouched(_ sender: UISwitch) {
         self.drawerController?.setAbsolute(isAbsolute: sender.isOn, side: .right)
     }
-    func shadowDidTouched(_ sender: UISwitch) {
+    @objc func shadowDidTouched(_ sender: UISwitch) {
         self.drawerController?.getSideOption(side: .right)?.isShadow = sender.isOn
     }
-    func fadeScreenDidTouched(_ sender: UISwitch) {
+    @objc func fadeScreenDidTouched(_ sender: UISwitch) {
         self.drawerController?.getSideOption(side: .right)?.isFadeScreen = sender.isOn
     }
-    func blurScreenDidTouched(_ sender: UISwitch) {
+    @objc func blurScreenDidTouched(_ sender: UISwitch) {
         self.drawerController?.getSideOption(side: .right)?.isBlur = sender.isOn
     }
-    func overflowAnimationDidTouched(_ sender: UISwitch) {
+    @objc func overflowAnimationDidTouched(_ sender: UISwitch) {
         self.drawerController?.getSideOption(side: .right)?.isOverflowAnimation = sender.isOn
     }
-    func gestureDidTouched(_ sender: UISwitch) {
+    @objc func gestureDidTouched(_ sender: UISwitch) {
         self.drawerController?.getSideOption(side: .right)?.isGesture = sender.isOn
     }
-    func tapToCloseDidTouched(_ sender: UISwitch) {
+    @objc func tapToCloseDidTouched(_ sender: UISwitch) {
         self.drawerController?.getSideOption(side: .right)?.isTapToClose = sender.isOn
     }
-    func bringToFrontDidTouched(_ sender: UISwitch) {
+    @objc func bringToFrontDidTouched(_ sender: UISwitch) {
         self.drawerController?.setBringToFront(isBringToFront: sender.isOn, side: .right)
     }
 

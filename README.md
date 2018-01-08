@@ -4,7 +4,7 @@ KWDrawerController
 [![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
 [![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
 [![Pod License](http://img.shields.io/cocoapods/l/KWDrawerController.svg?style=flat)](https://github.com/kawoou/KWDrawerController/blob/master/LICENSE)
-![Swift](https://img.shields.io/badge/Swift-3.0-orange.svg)
+![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg)
 
 Drawer view controller that easy to use!
 
@@ -17,7 +17,11 @@ Installation
 KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/cocoapods). Add the following to your Podfile:
 
 ```ruby
+// Swift 3.x
 pod 'KWDrawerController', '~> 3.7'
+
+// Swift 4
+pod 'KWDrawerController', '~> 4.0'
 ```
 
 
@@ -231,12 +235,12 @@ Changelog
 + 3.6 Fixed an occurs issue while the drawer was open and layout changing.
 + 3.6.1 Fixed layout issue when rotate device.
 + 3.7 Fixed not updating issues on properties.
++ 4.0 Support Swift 4.
 
 ⚠️ Requirements
 --------------
 
- - iOS 7.1+
- - Xcode 8.1+
+ - iOS 8.0+
  - Swift 3.0+
 
 
