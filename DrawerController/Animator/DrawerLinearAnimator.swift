@@ -29,11 +29,15 @@ public class DrawerLinearAnimator: DrawerAnimator {
     // MARK: - Public
     
     public override func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
-        
-        UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
-            animations(1.0)
-        }, completion: completion)
-        
+        UIView.animate(
+            withDuration: duration,
+            delay: 0.0,
+            options: .curveLinear,
+            animations: {
+                animations(1.0)
+            },
+            completion: completion
+        )
     }
     
     

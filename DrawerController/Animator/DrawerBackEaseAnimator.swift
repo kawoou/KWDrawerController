@@ -61,9 +61,7 @@ public class DrawerBackEaseAnimator: DrawerTickAnimator {
     // MARK: - Public
     
     public override func tick(delta: TimeInterval, duration: TimeInterval, animations: @escaping (Float)->()) {
-        
-        animations(Float(self.easeType.algorithm(value: delta / duration)))
-        
+        animations(Float(easeType.algorithm(value: delta / duration)))
     }
     
     

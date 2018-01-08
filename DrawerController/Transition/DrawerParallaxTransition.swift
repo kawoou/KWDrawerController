@@ -49,9 +49,9 @@ public class DrawerParallaxTransition: DrawerTransition {
     
     public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
-        let newPercentage = content.drawerSide == .none ? percentage : CGFloat(Float(percentage) / self.parallaxFactor)
+        let newPercentage = content.drawerSide == .none ? percentage : CGFloat(Float(percentage) / parallaxFactor)
         
-        content.contentView.transform = CGAffineTransform.identity
+        content.contentView.transform = .identity
         content.contentView.frame = CGRect(
             x: viewRect.width * newPercentage + content.drawerOffset,
             y: viewRect.minY,

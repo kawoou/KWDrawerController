@@ -46,19 +46,16 @@ public class DrawerContent {
     }
     public internal(set) var drawerWidth: Float {
         get {
-            if self.drawerSide != .none {
-                return self.internalDrawerWidth
+            guard drawerSide == .none else { return internalDrawerWidth }
+            
+            if let superview = contentView.superview {
+                return Float(superview.frame.width)
             } else {
-                if let superview = contentView.superview {
-                    return Float(superview.frame.width)
-                } else {
-                    return Float(self.viewController.view.frame.width)
-                }
+                return Float(viewController.view.frame.width)
             }
         }
-        set(value) {
-            self.internalDrawerWidth = value
-            
+        set {
+            internalDrawerWidth = newValue
             updateView()
         }
     }
@@ -79,46 +76,43 @@ public class DrawerContent {
     // MARK: - Public
     
     internal func addDrawerView(drawerController: DrawerController) {
+        viewController.drawerController = drawerController
         
-        self.viewController.drawerController = drawerController
+        contentView.frame = drawerController.view.bounds
+        contentView.autoresizingMask = [.flexibleHeight]
+        contentView.addSubview(viewController.view)
+        drawerController.view.addSubview(contentView)
         
-        self.contentView.frame = drawerController.view.bounds
-        self.contentView.autoresizingMask = [.flexibleHeight]
-        self.contentView.addSubview(self.viewController.view)
-        drawerController.view.addSubview(self.contentView)
-        
-        drawerController.addChildViewController(self.viewController)
-        
+        drawerController.addChildViewController(viewController)
         updateView()
     }
     internal func removeDrawerView() {
+        viewController.removeFromParentViewController()
         
-        self.viewController.removeFromParentViewController()
+        viewController.view.removeFromSuperview()
+        contentView.removeFromSuperview()
         
-        self.viewController.view.removeFromSuperview()
-        self.contentView.removeFromSuperview()
-        
-        self.viewController.drawerController = nil
+        viewController.drawerController = nil
     }
     
     public func startTransition(side: DrawerSide) {
-        self.transition.initTransition(content: self)
-        self.overflowTransition.initTransition(content: self)
+        transition.initTransition(content: self)
+        overflowTransition.initTransition(content: self)
         
-        self.contentView.clipsToBounds = self.isBringToFront
+        contentView.clipsToBounds = isBringToFront
     }
     public func endTransition(side: DrawerSide) {
-        if let transition = self.useTransition {
+        if let transition = useTransition {
             transition.endTransition(content: self, side: side)
         }
-        self.useTransition = nil
+        useTransition = nil
     }
     public func transition(side: DrawerSide, percentage: Float, viewRect: CGRect) {
         
         var currentPercent: Float
-        var currentTransition = self.useTransition ?? self.transition
+        var currentTransition = useTransition ?? transition
         
-        switch self.drawerSide {
+        switch drawerSide {
         case .left:
             currentPercent = 1.0 + percentage
         case .right:
@@ -127,30 +121,29 @@ public class DrawerContent {
             currentPercent = fabs(percentage)
         }
         
-        if currentTransition === self.transition {
+        if currentTransition === transition {
             if currentPercent > 1.0 {
-                currentTransition = self.overflowTransition
+                currentTransition = overflowTransition
             }
         } else {
             if currentPercent < 1.0 {
-                currentTransition = self.transition
+                currentTransition = transition
             }
         }
         
         /// Swap transition
-        if self.useTransition !== currentTransition {
-            
-            if self.useTransition != nil {
-                self.useTransition!.transition(
+        if useTransition !== currentTransition {
+            if let useTransition = useTransition {
+                useTransition.transition(
                     content: self,
                     side: side,
                     percentage: CGFloat((percentage >= 0) ? 1.0 : -1.0),
                     viewRect: viewRect
                 )
-                self.useTransition!.endTransition(content: self, side: side)
+                useTransition.endTransition(content: self, side: side)
             }
             
-            self.useTransition = currentTransition
+            useTransition = currentTransition
             currentTransition.startTransition(content: self, side: side)
         }
         
@@ -164,57 +157,50 @@ public class DrawerContent {
     
     public func screenshot(withOptimization optimized: Bool) -> UIImage? {
         if (optimized) {
-            UIGraphicsBeginImageContext(self.contentView.frame.size)
+            UIGraphicsBeginImageContext(contentView.frame.size)
         } else {
-            UIGraphicsBeginImageContextWithOptions(self.contentView.frame.size, false, 0.0)
+            UIGraphicsBeginImageContextWithOptions(contentView.frame.size, false, 0.0)
         }
         
-        if let context = UIGraphicsGetCurrentContext() {
-            self.contentView.layer.render(in: context)
-            
-            let screenshot = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            
-            return screenshot
-        } else {
-            return nil
-        }
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        contentView.layer.render(in: context)
+        
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return screenshot
     }
     
     
     // MARK: - Private
     
     internal func updateView() {
-        let width = CGFloat(self.drawerWidth)
+        let width = CGFloat(drawerWidth)
+        contentView.frame.size.width = width
+        drawerOffset = 0.0
         
-        self.contentView.frame.size.width = width
-        
-        self.drawerOffset = 0.0
-        
-        if let superView = self.contentView.superview {
-            if self.drawerSide == .right {
-                self.drawerOffset = superView.frame.width - width
-            }
-            self.viewController.view.frame = CGRect(
-                x: CGFloat(-self.drawerOffset),
-                y: 0,
-                width: superView.frame.width,
-                height: superView.frame.height
-            )
+        guard let superView = contentView.superview else { return }
+        if drawerSide == .right {
+            drawerOffset = superView.frame.width - width
         }
+        viewController.view.frame = CGRect(
+            x: CGFloat(-drawerOffset),
+            y: 0,
+            width: superView.frame.width,
+            height: superView.frame.height
+        )
     }
     
     
     // MARK: - Initialize
     
     internal init(viewController: UIViewController, drawerSide: DrawerSide) {
-        
-        self.contentView = UIView()
+        contentView = UIView()
         self.viewController = viewController
         
         self.drawerSide = drawerSide
-        self.internalDrawerWidth = 0.0
-        self.drawerOffset = 0.0
+        internalDrawerWidth = 0.0
+        drawerOffset = 0.0
     }
     
 }

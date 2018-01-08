@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wef-oF-1Wf">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="wef-oF-1Wf">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -67,7 +67,7 @@
             <objects>
                 <navigationController id="aCm-Qr-GDI" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8jg-Hl-12X">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -175,12 +175,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animator" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQQ-cf-OKi">
-                                <rect key="frame" x="15" y="72" width="343" height="32"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="26"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XVh-zC-ckG">
                                 <rect key="frame" x="0.0" y="112" width="375" height="100"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="calibratedRGB"/>
@@ -214,6 +208,12 @@
                                     <constraint firstAttribute="height" constant="100" id="ctI-2u-CEP"/>
                                 </constraints>
                             </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Animator" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQQ-cf-OKi">
+                                <rect key="frame" x="15" y="72" width="343" height="32"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="26"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -221,7 +221,6 @@
                             <constraint firstItem="JKn-D0-ykW" firstAttribute="top" secondItem="FBC-AA-Pet" secondAttribute="bottom" constant="32" id="3dn-5X-e1p"/>
                             <constraint firstItem="gYk-76-Col" firstAttribute="top" secondItem="XVh-zC-ckG" secondAttribute="bottom" constant="32" id="BpX-IE-e4q"/>
                             <constraint firstItem="Tcd-Wd-7RJ" firstAttribute="leading" secondItem="HEI-1O-xXy" secondAttribute="leading" id="Ddm-E3-4HB"/>
-                            <constraint firstItem="FQQ-cf-OKi" firstAttribute="top" secondItem="9V2-s3-zI3" secondAttribute="bottom" constant="8" id="DxR-XF-G1W"/>
                             <constraint firstItem="FBC-AA-Pet" firstAttribute="top" secondItem="gYk-76-Col" secondAttribute="bottom" constant="8" id="Ju7-by-Qgc"/>
                             <constraint firstItem="JKn-D0-ykW" firstAttribute="trailing" secondItem="HEI-1O-xXy" secondAttribute="trailingMargin" id="LNn-Yl-utO"/>
                             <constraint firstAttribute="trailingMargin" secondItem="FQQ-cf-OKi" secondAttribute="trailing" constant="1" id="bPz-jK-fgx"/>
@@ -230,6 +229,7 @@
                             <constraint firstAttribute="trailing" secondItem="XVh-zC-ckG" secondAttribute="trailing" id="f4a-SJ-pgC"/>
                             <constraint firstAttribute="trailing" secondItem="Tcd-Wd-7RJ" secondAttribute="trailing" id="hvA-8f-C4J"/>
                             <constraint firstItem="FBC-AA-Pet" firstAttribute="leading" secondItem="HEI-1O-xXy" secondAttribute="leading" id="irp-id-xIz"/>
+                            <constraint firstItem="FQQ-cf-OKi" firstAttribute="top" secondItem="9V2-s3-zI3" secondAttribute="bottom" constant="8" id="kTf-Jj-o4W"/>
                             <constraint firstItem="XVh-zC-ckG" firstAttribute="top" secondItem="FQQ-cf-OKi" secondAttribute="bottom" constant="7.5" id="l5y-Ce-E5C"/>
                             <constraint firstItem="FQQ-cf-OKi" firstAttribute="leading" secondItem="HEI-1O-xXy" secondAttribute="leadingMargin" constant="-1" id="oNQ-T8-PU9"/>
                             <constraint firstAttribute="trailing" secondItem="gYk-76-Col" secondAttribute="trailing" constant="17" id="vjH-eK-AHd"/>

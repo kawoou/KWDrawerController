@@ -30,16 +30,15 @@ extension UIViewController {
         static var drawerController = "drawerController"
     }
     
-    public var drawerController: DrawerController? {
+    public internal(set) var drawerController: DrawerController? {
         get {
             guard let controller = objc_getAssociatedObject(self, &AssociatedKeys.drawerController) as? DrawerController else {
                 return parent?.drawerController
             }
             return controller
         }
-        
-        set(value) {
-            objc_setAssociatedObject(self, &AssociatedKeys.drawerController, value, .OBJC_ASSOCIATION_ASSIGN)
+        set {
+            objc_setAssociatedObject(self, &AssociatedKeys.drawerController, newValue, .OBJC_ASSOCIATION_ASSIGN)
         }
     }
     

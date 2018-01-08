@@ -1,8 +1,8 @@
 KWDrawerController
 ==================
 
-[![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.6.1)
-[![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController/3.6.1)
+[![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
+[![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
 [![Pod License](http://img.shields.io/cocoapods/l/KWDrawerController.svg?style=flat)](https://github.com/kawoou/KWDrawerController/blob/master/LICENSE)
 ![Swift](https://img.shields.io/badge/Swift-3.0-orange.svg)
 
@@ -17,7 +17,7 @@ Installation
 KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/cocoapods). Add the following to your Podfile:
 
 ```ruby
-pod 'KWDrawerController', '~> 3.6.1'
+pod 'KWDrawerController', '~> 3.7'
 ```
 
 
@@ -67,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ### Storyboard
 
-![Storyboard](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/storyboard.jpg)
+![Storyboard](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/storyboard.jpg)
 
  1. Set the KWDrawerController to Custom Class of Initial ViewController.
 
@@ -135,30 +135,30 @@ Customizing
 
  - DrawerSlideTransition
 
-![DrawerSlideTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/slide.gif)
+![DrawerSlideTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/slide.gif)
 
  - DrawerScaleTransition
 	 - Use is not recommended.
  - DrawerParallaxTransition
 
-![DrawerParallaxTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/parallax.gif)
+![DrawerParallaxTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/parallax.gif)
 
  - DrawerFloatTransition
     - When using the `Transition`, `Overflow Transition` should also use `DrawerFloatTransition`.
 
-![DrawerFloatTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/float.gif)
+![DrawerFloatTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/float.gif)
 
  - DrawerFoldTransition
 
-![DrawerFoldTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/fold.gif)
+![DrawerFoldTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/fold.gif)
 
  - DrawerSwingTransition
 
-![DrawerSwingTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/swing.gif)
+![DrawerSwingTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/swing.gif)
 
  - DrawerZoomTransition
 
-![DrawerZoomTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/zoom.gif)
+![DrawerZoomTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/zoom.gif)
 
 
 ### Overflow Transition
@@ -169,7 +169,7 @@ Customizing
  - DrawerScaleTransition
     - This is natural when used with `DrawerSlideTransition`, `DrwaerParallaxTransition`, `DrawerFoldTransition`, and `DrawerSwingTransition`.
 
-![DrawerScaleTransition](https://github.com/Kawoou/KWDrawerController/raw/develop/Preview/scale.gif)
+![DrawerScaleTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/scale.gif)
     
  - DrawerParallaxTransition
  - DrawerFloatTransition
@@ -229,6 +229,8 @@ Changelog
 + 3.4 Remove debug log.
 + 3.5 Fixed bug where touch ignores is not applied for "Absolute Controller".
 + 3.6 Fixed an occurs issue while the drawer was open and layout changing.
++ 3.6.1 Fixed layout issue when rotate device.
++ 3.7 Fixed not updating issues on properties.
 
 ⚠️ Requirements
 --------------

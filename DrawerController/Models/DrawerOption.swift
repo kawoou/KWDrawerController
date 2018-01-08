@@ -25,9 +25,6 @@ SOFTWARE.
 import Foundation
 
 public class DrawerOption {
-    
-    // MARK: Property
-    
     public var isTapToClose: Bool = true
     public var isGesture: Bool = true
     public var isAnimation: Bool = true
@@ -36,5 +33,4 @@ public class DrawerOption {
     public var isFadeScreen: Bool = true
     public var isBlur: Bool = false
     public var isEnable: Bool = true
-    
 }

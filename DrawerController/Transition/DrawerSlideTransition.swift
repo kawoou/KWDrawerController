@@ -42,7 +42,7 @@ public class DrawerSlideTransition: DrawerTransition {
     
     public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
-        content.contentView.transform = CGAffineTransform.identity
+        content.contentView.transform = .identity
         content.contentView.frame = CGRect(
             x: viewRect.width * percentage + content.drawerOffset,
             y: viewRect.minY,

@@ -60,50 +60,49 @@ open class DrawerAnimator {
     // MARK: - Private
     
     internal func doAnimate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
-        if !self.isTicked {
-            
-            self.animate(duration: duration, animations: animations, completion: completion)
-            
-        } else {
-            
-            if let display = self.displayLink {
-                display.invalidate()
-                self.displayLink = nil
-            }
-            
-            self.startTime = CACurrentMediaTime()
-            self.durationTime = duration
-            self.animationClosure = animations
-            self.completionClosure = completion
-            
-            self.displayLink = CADisplayLink(target: self, selector: #selector(render))
-            self.displayLink!.add(to: .current, forMode: .defaultRunLoopMode)
+        guard isTicked else {
+            animate(duration: duration, animations: animations, completion: completion)
+            return
         }
+        
+        if let display = displayLink {
+            display.invalidate()
+            displayLink = nil
+        }
+        
+        startTime = CACurrentMediaTime()
+        durationTime = duration
+        animationClosure = animations
+        completionClosure = completion
+        
+        displayLink = { [unowned self] in
+            let displayLink = CADisplayLink(target: self, selector: #selector(render))
+            displayLink.add(to: .current, forMode: .defaultRunLoopMode)
+            return displayLink
+        }()
     }
     
     @objc
     private func render() {
+        guard let display = displayLink else { return }
+        guard let animationClosure = animationClosure else { return }
         
-        guard let display = self.displayLink else { return }
+        let delta = CACurrentMediaTime() - startTime
         
-        let delta = CACurrentMediaTime() - self.startTime
-        
-        if delta > self.durationTime {
-            self.tick(delta: self.durationTime, duration: self.durationTime, animations: self.animationClosure!)
-            self.completionClosure!(true)
+        if delta > durationTime {
+            tick(delta: durationTime, duration: durationTime, animations: animationClosure)
+            completionClosure!(true)
             
             display.invalidate()
-            self.displayLink = nil
+            displayLink = nil
         } else {
-            self.tick(delta: delta, duration: self.durationTime, animations: self.animationClosure!)
+            tick(delta: delta, duration: durationTime, animations: animationClosure)
         }
     }
     
     
     // MARK: - Lifecycle
     
-    public init() {
-        
-    }
+    public init() {}
     
 }
