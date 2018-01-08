@@ -37,7 +37,7 @@ public class DrawerZoomTransition: DrawerTransition {
     public override func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
         
-        content.contentView.transform = CGAffineTransform.identity
+        content.contentView.transform = .identity
         content.contentView.frame = CGRect(
             x: content.drawerOffset,
             y: 0,
@@ -62,7 +62,7 @@ public class DrawerZoomTransition: DrawerTransition {
             content.contentView.transform = CGAffineTransform(scaleX: sidePercent, y: sidePercent)
             
         default:
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.width * percentage + content.drawerOffset,
                 y: viewRect.minY,

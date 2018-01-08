@@ -25,7 +25,6 @@ SOFTWARE.
 import Foundation
 
 public enum DrawerGestureSensitivity {
-    
     case custom(Float)
     case high
     case normal
@@ -39,5 +38,4 @@ public enum DrawerGestureSensitivity {
         case .low: return 5.0
         }
     }
-    
 }

@@ -36,10 +36,14 @@ public class DrawerCurveEaseAnimator: DrawerAnimator {
         
         internal func option() -> UIViewAnimationOptions {
             switch self {
-            case .linear: return .curveLinear
-            case .easeIn: return .curveEaseIn
-            case .easeOut: return .curveEaseOut
-            case .easeInOut: return .curveEaseInOut
+            case .linear:
+                return .curveLinear
+            case .easeIn:
+                return .curveEaseIn
+            case .easeOut:
+                return .curveEaseOut
+            case .easeInOut:
+                return .curveEaseInOut
             }
         }
     }
@@ -53,11 +57,15 @@ public class DrawerCurveEaseAnimator: DrawerAnimator {
     // MARK: - Public
     
     public override func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
-        
-        UIView.animate(withDuration: duration, delay: 0.0, options: self.easeType.option(), animations: {
-            animations(1.0)
-        }, completion: completion)
-        
+        UIView.animate(
+            withDuration: duration,
+            delay: 0.0,
+            options: easeType.option(),
+            animations: {
+                animations(1.0)
+            },
+            completion: completion
+        )
     }
     
     

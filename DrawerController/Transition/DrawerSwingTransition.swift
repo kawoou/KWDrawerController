@@ -71,7 +71,7 @@ public class DrawerSwingTransition: DrawerTransition {
             affine = CATransform3DRotate(affine, CGFloat(-asin(Double(percentage))), 0, -1, 0)
             content.viewController.view.layer.transform = affine
             
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.width * percentage + content.drawerOffset,
                 y: viewRect.minY,
@@ -84,7 +84,7 @@ public class DrawerSwingTransition: DrawerTransition {
             affine = CATransform3DRotate(affine, CGFloat(-asin(Double(percentage))), 0, -1, 0)
             content.viewController.view.layer.transform = affine
             
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.width * percentage + content.drawerOffset,
                 y: viewRect.minY,
@@ -93,7 +93,7 @@ public class DrawerSwingTransition: DrawerTransition {
             )
             
         default:
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.width * percentage + content.drawerOffset,
                 y: viewRect.minY,

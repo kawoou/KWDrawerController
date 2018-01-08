@@ -35,13 +35,13 @@ public class DrawerScaleTransition: DrawerTransition {
     public override func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
         
-        content.contentView.transform = CGAffineTransform.identity
+        content.contentView.transform = .identity
     }
     
     public override func endTransition(content: DrawerContent, side: DrawerSide) {
         super.endTransition(content: content, side: side)
         
-        content.contentView.transform = CGAffineTransform.identity
+        content.contentView.transform = .identity
     }
     
     public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
@@ -49,7 +49,7 @@ public class DrawerScaleTransition: DrawerTransition {
         switch content.drawerSide {
         case .left:
             if 1.0 == -percentage {
-                content.contentView.transform = CGAffineTransform.identity
+                content.contentView.transform = .identity
             } else {
                 content.contentView.transform = CGAffineTransform(scaleX: 1.0 + percentage, y: 1.0)
             }
@@ -61,7 +61,7 @@ public class DrawerScaleTransition: DrawerTransition {
             )
         case .right:
             if 1.0 == percentage {
-                content.contentView.transform = CGAffineTransform.identity
+                content.contentView.transform = .identity
             } else {
                 content.contentView.transform = CGAffineTransform(scaleX: 1.0 - percentage, y: 1.0)
             }
@@ -72,7 +72,7 @@ public class DrawerScaleTransition: DrawerTransition {
                 height: content.contentView.frame.height
             )
         case .none:
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.size.width * percentage + content.drawerOffset,
                 y: viewRect.minY,

@@ -51,7 +51,7 @@ public class DrawerFloatTransition: DrawerTransition {
         
         switch content.drawerSide {
         case .left:
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: content.drawerOffset,
                 y: viewRect.minY,
@@ -59,7 +59,7 @@ public class DrawerFloatTransition: DrawerTransition {
                 height: content.contentView.frame.height
             )
         case .right:
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: content.drawerOffset,
                 y: viewRect.minY,
@@ -68,8 +68,8 @@ public class DrawerFloatTransition: DrawerTransition {
             )
         case .none:
             content.contentView.transform = CGAffineTransform(
-                scaleX: CGFloat(1.0 - Float(fabs(percentage)) * self.floatFactor),
-                y: CGFloat(1.0 - Float(fabs(percentage)) * self.floatFactor)
+                scaleX: CGFloat(1.0 - Float(fabs(percentage)) * floatFactor),
+                y: CGFloat(1.0 - Float(fabs(percentage)) * floatFactor)
             ).translatedBy(
                 x: viewRect.size.width * percentage,
                 y: 0

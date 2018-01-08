@@ -35,7 +35,7 @@ public class DrawerFoldTransition: DrawerTransition {
     
     private func bindView(content: DrawerContent) {
         
-        for foldView in self.foldList {
+        for foldView in foldList {
             foldView.isHidden = false
         }
         content.viewController.view.isHidden = true
@@ -48,7 +48,7 @@ public class DrawerFoldTransition: DrawerTransition {
     
     private func unbindView(content: DrawerContent) {
         
-        for foldView in self.foldList {
+        for foldView in foldList {
             foldView.isHidden = true
         }
         content.contentView.layer.sublayerTransform = CATransform3DIdentity
@@ -70,7 +70,7 @@ public class DrawerFoldTransition: DrawerTransition {
         
         if content.drawerSide != .none {
             /// Initialize
-            if self.foldList.count == 0 {
+            if foldList.count == 0 {
                 let foldWidth = content.drawerWidth / 2
                 
                 for i in 0..<2 {
@@ -92,7 +92,7 @@ public class DrawerFoldTransition: DrawerTransition {
                     }
                     
                     content.contentView.addSubview(foldView)
-                    self.foldList.append(foldView)
+                    foldList.append(foldView)
                 }
             }
             
@@ -101,7 +101,7 @@ public class DrawerFoldTransition: DrawerTransition {
                 if screenshot.size.width <= CGFloat(content.drawerWidth) {
                     let foldWidth = Float(screenshot.size.width) / 2.0
                     
-                    for i in 0..<self.foldList.count {
+                    for i in 0..<foldList.count {
                         let cropRect = CGRect(
                             x: CGFloat(foldWidth * Float(i) * Float(screenshot.scale)),
                             y: CGFloat(0.0),
@@ -110,7 +110,7 @@ public class DrawerFoldTransition: DrawerTransition {
                         )
                         
                         if let imageRef: CGImage = screenshot.cgImage?.cropping(to: cropRect) {
-                            self.foldList[i].layer.contents = imageRef
+                            foldList[i].layer.contents = imageRef
                         }
                     }
                 }
@@ -132,18 +132,18 @@ public class DrawerFoldTransition: DrawerTransition {
         case .left:
             let sidePercent = 1.0 + percentage
             
-            self.foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, 1, 0)
-            self.foldList[1].layer.transform = CATransform3DConcat(
+            foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, 1, 0)
+            foldList[1].layer.transform = CATransform3DConcat(
                 CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, -1, 0),
-                CATransform3DMakeTranslation(self.foldList[0].frame.width * 2, 0, 0)
+                CATransform3DMakeTranslation(foldList[0].frame.width * 2, 0, 0)
             )
             
-            self.foldList[0].shadowView.alpha = fabs(percentage)
-            self.foldList[1].shadowView.alpha = fabs(percentage)
+            foldList[0].shadowView.alpha = fabs(percentage)
+            foldList[1].shadowView.alpha = fabs(percentage)
             
-            let afterDelta = content.drawerWidth - Float(self.foldList[1].frame.maxX)
+            let afterDelta = content.drawerWidth - Float(foldList[1].frame.maxX)
             
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.width * percentage + content.drawerOffset + CGFloat(afterDelta),
                 y: viewRect.minY,
@@ -154,7 +154,7 @@ public class DrawerFoldTransition: DrawerTransition {
         case .right:
             let sidePercent = 1.0 - percentage
             
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.width * percentage + content.drawerOffset,
                 y: viewRect.minY,
@@ -162,17 +162,17 @@ public class DrawerFoldTransition: DrawerTransition {
                 height: content.contentView.frame.height
             )
         
-            self.foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, 1, 0)
-            self.foldList[1].layer.transform = CATransform3DConcat(
+            foldList[0].layer.transform = CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, 1, 0)
+            foldList[1].layer.transform = CATransform3DConcat(
                 CATransform3DMakeRotation(CGFloat(Double.pi / 2 - asin(Double(sidePercent))), 0, -1, 0),
-                CATransform3DMakeTranslation(self.foldList[0].frame.width * 2, 0, 0)
+                CATransform3DMakeTranslation(foldList[0].frame.width * 2, 0, 0)
             )
             
-            self.foldList[0].shadowView.alpha = fabs(percentage)
-            self.foldList[1].shadowView.alpha = fabs(percentage)
+            foldList[0].shadowView.alpha = fabs(percentage)
+            foldList[1].shadowView.alpha = fabs(percentage)
             
         default:
-            content.contentView.transform = CGAffineTransform.identity
+            content.contentView.transform = .identity
             content.contentView.frame = CGRect(
                 x: viewRect.width * percentage + content.drawerOffset,
                 y: viewRect.minY,
@@ -195,12 +195,12 @@ private class FoldView: UIView {
     
     public var shadowView: UIView {
         get {
-            return self.internalShadowView
+            return internalShadowView
         }
     }
     public var shadowLayer: CAGradientLayer {
         get {
-            return self.internalShadowLayer
+            return internalShadowLayer
         }
     }
     
@@ -214,14 +214,14 @@ private class FoldView: UIView {
         
         super.init(frame: frame)
         
-        self.internalShadowView.frame = self.bounds
-        self.addSubview(self.internalShadowView)
+        internalShadowView.frame = bounds
+        addSubview(internalShadowView)
         
-        self.internalShadowLayer = CAGradientLayer()
-        self.internalShadowLayer.frame = self.shadowView.bounds
-        self.internalShadowLayer.startPoint = CGPoint(x: 0, y: 0)
-        self.internalShadowLayer.endPoint = CGPoint(x: 1, y: 0)
-        self.internalShadowView.layer.addSublayer(self.internalShadowLayer)
+        internalShadowLayer = CAGradientLayer()
+        internalShadowLayer.frame = shadowView.bounds
+        internalShadowLayer.startPoint = CGPoint(x: 0, y: 0)
+        internalShadowLayer.endPoint = CGPoint(x: 1, y: 0)
+        internalShadowView.layer.addSublayer(internalShadowLayer)
         
     }
     

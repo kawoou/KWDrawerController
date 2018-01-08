@@ -26,9 +26,7 @@ import Foundation
 
 @objc
 public enum DrawerSide: Int {
-    
     case left = 0
     case right
     case none
-    
 }
