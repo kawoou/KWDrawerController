@@ -48,13 +48,9 @@ open class DrawerAnimator {
     
     // MARK: - Public
     
-    public func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
-        
-    }
+    public func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {}
     
-    public func tick(delta: TimeInterval, duration: TimeInterval, animations: @escaping (Float)->()) {
-        
-    }
+    public func tick(delta: TimeInterval, duration: TimeInterval, animations: @escaping (Float)->()) {}
     
     
     // MARK: - Private
