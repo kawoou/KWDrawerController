@@ -21,7 +21,7 @@ KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/coco
 pod 'KWDrawerController', '~> 3.7'
 
 // Swift 4
-pod 'KWDrawerController', '~> 4.0'
+pod 'KWDrawerController', '~> 4.1'
 ```
 
 
@@ -236,6 +236,7 @@ Changelog
 + 3.6.1 Fixed layout issue when rotate device.
 + 3.7 Fixed not updating issues on properties.
 + 4.0 Support Swift 4.
++ 4.1 Implement new flag that enables direction auto-switching.
 
 ⚠️ Requirements
 --------------
