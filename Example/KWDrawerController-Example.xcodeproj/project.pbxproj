@@ -52,9 +52,14 @@
 		9D2D4CB11E4F729E00E2B7A7 /* DrawerSide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2D4C8F1E4F729D00E2B7A7 /* DrawerSide.swift */; };
 		9D2D4CB21E4F729E00E2B7A7 /* UIViewController+DrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2D4C901E4F729E00E2B7A7 /* UIViewController+DrawerController.swift */; };
 		9D2D4CB31E4F729E00E2B7A7 /* TranslucentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2D4C921E4F729E00E2B7A7 /* TranslucentView.swift */; };
+		9DDA895C2004E6C200F9FD86 /* RxDrawerControllerDelegateProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDA895B2004E6C200F9FD86 /* RxDrawerControllerDelegateProxy.swift */; };
+		9DDA895E2004E80E00F9FD86 /* DrawerController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDA895D2004E80E00F9FD86 /* DrawerController+Rx.swift */; };
+		C806E5AE0BEE7DBEAF865AC2 /* Pods_KWDrawerController_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB7D4608B1429FE012C6BB40 /* Pods_KWDrawerController_Example.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C925ED7E7E9258F55B31377 /* Pods-KWDrawerController-Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KWDrawerController-Example.debug.xcconfig"; path = "Pods/Target Support Files/Pods-KWDrawerController-Example/Pods-KWDrawerController-Example.debug.xcconfig"; sourceTree = "<group>"; };
+		6B3DBE7050D31D5BF4626964 /* Pods-KWDrawerController-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-KWDrawerController-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-KWDrawerController-Example/Pods-KWDrawerController-Example.release.xcconfig"; sourceTree = "<group>"; };
 		9D2D4C2A1E4F71CF00E2B7A7 /* KWDrawerController-Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "KWDrawerController-Example.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D2D4C3F1E4F722100E2B7A7 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = SOURCE_ROOT; };
 		9D2D4C401E4F722100E2B7A7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = SOURCE_ROOT; };
@@ -102,6 +107,9 @@
 		9D2D4C8F1E4F729D00E2B7A7 /* DrawerSide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerSide.swift; sourceTree = "<group>"; };
 		9D2D4C901E4F729E00E2B7A7 /* UIViewController+DrawerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+DrawerController.swift"; sourceTree = "<group>"; };
 		9D2D4C921E4F729E00E2B7A7 /* TranslucentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TranslucentView.swift; sourceTree = "<group>"; };
+		9DDA895B2004E6C200F9FD86 /* RxDrawerControllerDelegateProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxDrawerControllerDelegateProxy.swift; sourceTree = "<group>"; };
+		9DDA895D2004E80E00F9FD86 /* DrawerController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DrawerController+Rx.swift"; sourceTree = "<group>"; };
+		EB7D4608B1429FE012C6BB40 /* Pods_KWDrawerController_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_KWDrawerController_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,17 +117,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C806E5AE0BEE7DBEAF865AC2 /* Pods_KWDrawerController_Example.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9CAB31398E8FC1A0AFCC0F02 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1C925ED7E7E9258F55B31377 /* Pods-KWDrawerController-Example.debug.xcconfig */,
+				6B3DBE7050D31D5BF4626964 /* Pods-KWDrawerController-Example.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9D2D4C211E4F71CF00E2B7A7 = {
 			isa = PBXGroup;
 			children = (
 				9D2D4C2C1E4F71CF00E2B7A7 /* KWDrawerController-Example */,
 				9D2D4C2B1E4F71CF00E2B7A7 /* Products */,
+				9CAB31398E8FC1A0AFCC0F02 /* Pods */,
+				C2FB08FA74310FEF2A6FCCC5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +183,7 @@
 		9D2D4C6B1E4F729D00E2B7A7 /* DrawerController */ = {
 			isa = PBXGroup;
 			children = (
+				9DDA895A2004E6C200F9FD86 /* Rx */,
 				9D2D4C6C1E4F729D00E2B7A7 /* Animator */,
 				9D2D4C7D1E4F729D00E2B7A7 /* Models */,
 				9D2D4C801E4F729D00E2B7A7 /* Segue */,
@@ -249,6 +270,23 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		9DDA895A2004E6C200F9FD86 /* Rx */ = {
+			isa = PBXGroup;
+			children = (
+				9DDA895D2004E80E00F9FD86 /* DrawerController+Rx.swift */,
+				9DDA895B2004E6C200F9FD86 /* RxDrawerControllerDelegateProxy.swift */,
+			);
+			path = Rx;
+			sourceTree = "<group>";
+		};
+		C2FB08FA74310FEF2A6FCCC5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EB7D4608B1429FE012C6BB40 /* Pods_KWDrawerController_Example.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -256,9 +294,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9D2D4C3C1E4F71CF00E2B7A7 /* Build configuration list for PBXNativeTarget "KWDrawerController-Example" */;
 			buildPhases = (
+				821A3A08B25DBA11FAA55FD6 /* [CP] Check Pods Manifest.lock */,
 				9D2D4C261E4F71CF00E2B7A7 /* Sources */,
 				9D2D4C271E4F71CF00E2B7A7 /* Frameworks */,
 				9D2D4C281E4F71CF00E2B7A7 /* Resources */,
+				D8C48F2C503487AD4185C3CA /* [CP] Embed Pods Frameworks */,
+				D74FDD6625759EE9DC0DECC8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -317,6 +358,62 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		821A3A08B25DBA11FAA55FD6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-KWDrawerController-Example-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D74FDD6625759EE9DC0DECC8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KWDrawerController-Example/Pods-KWDrawerController-Example-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D8C48F2C503487AD4185C3CA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-KWDrawerController-Example/Pods-KWDrawerController-Example-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-KWDrawerController-Example/Pods-KWDrawerController-Example-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9D2D4C261E4F71CF00E2B7A7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -324,6 +421,7 @@
 			files = (
 				9D2D4C9C1E4F729E00E2B7A7 /* DrawerQuadEaseAnimator.swift in Sources */,
 				9D2D4C421E4F722100E2B7A7 /* AppDelegate.swift in Sources */,
+				9DDA895E2004E80E00F9FD86 /* DrawerController+Rx.swift in Sources */,
 				9D2D4C9E1E4F729E00E2B7A7 /* DrawerQuintEaseAnimator.swift in Sources */,
 				9D2D4C691E4F728C00E2B7A7 /* RightViewController.swift in Sources */,
 				9D2D4C9A1E4F729E00E2B7A7 /* DrawerExpoEaseAnimator.swift in Sources */,
@@ -345,6 +443,7 @@
 				9D2D4C641E4F728C00E2B7A7 /* LeftOptionViewController.swift in Sources */,
 				9D2D4C9D1E4F729E00E2B7A7 /* DrawerQuartEaseAnimator.swift in Sources */,
 				9D2D4C681E4F728C00E2B7A7 /* RightOptionViewController.swift in Sources */,
+				9DDA895C2004E6C200F9FD86 /* RxDrawerControllerDelegateProxy.swift in Sources */,
 				9D2D4CA21E4F729E00E2B7A7 /* DrawerController.swift in Sources */,
 				9D2D4CAB1E4F729E00E2B7A7 /* DrawerScaleTransition.swift in Sources */,
 				9D2D4CAD1E4F729E00E2B7A7 /* DrawerSwingTransition.swift in Sources */,
@@ -467,6 +566,7 @@
 		};
 		9D2D4C3D1E4F71CF00E2B7A7 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1C925ED7E7E9258F55B31377 /* Pods-KWDrawerController-Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -482,6 +582,7 @@
 		};
 		9D2D4C3E1E4F71CF00E2B7A7 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6B3DBE7050D31D5BF4626964 /* Pods-KWDrawerController-Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

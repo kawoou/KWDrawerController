@@ -29,4 +29,15 @@ public enum DrawerSide: Int {
     case left = 0
     case right
     case none
+    
+    var stringValue: String {
+        switch self {
+        case .left:
+            return "Left"
+        case .right:
+            return "Right"
+        case .none:
+            return "None"
+        }
+    }
 }

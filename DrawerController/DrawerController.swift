@@ -26,44 +26,12 @@ import UIKit
 
 @objc
 public protocol DrawerControllerDelegate {
-    
-    @objc
-    optional func drawerDidAnimation(
-        drawerController: DrawerController,
-        side: DrawerSide,
-        percentage: Float
-    )
-    
-    @objc
-    optional func drawerDidBeganAnimation(
-        drawerController: DrawerController,
-        side: DrawerSide
-    )
-    
-    @objc
-    optional func drawerWillFinishAnimation(
-        drawerController: DrawerController,
-        side: DrawerSide
-    )
-    
-    @objc
-    optional func drawerWillCancelAnimation(
-        drawerController: DrawerController,
-        side: DrawerSide
-    )
-    
-    @objc
-    optional func drawerDidFinishAnimation(
-        drawerController: DrawerController,
-        side: DrawerSide
-    )
-    
-    @objc
-    optional func drawerDidCancelAnimation(
-        drawerController: DrawerController,
-        side: DrawerSide
-    )
-    
+    @objc optional func drawerDidAnimation(drawerController: DrawerController, side: DrawerSide, percentage: Float)
+    @objc optional func drawerDidBeganAnimation(drawerController: DrawerController, side: DrawerSide)
+    @objc optional func drawerWillFinishAnimation(drawerController: DrawerController, side: DrawerSide)
+    @objc optional func drawerWillCancelAnimation(drawerController: DrawerController, side: DrawerSide)
+    @objc optional func drawerDidFinishAnimation(drawerController: DrawerController, side: DrawerSide)
+    @objc optional func drawerDidCancelAnimation(drawerController: DrawerController, side: DrawerSide)
 }
 
 open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
