@@ -116,6 +116,9 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @IBInspectable
+    public var isEnableAutoSwitchDirection: Bool = false
+    
+    @IBInspectable
     public var animationDuration: TimeInterval = 0.35
 
     @IBInspectable
@@ -917,6 +920,17 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                     return percentage
                 }
                 
+                guard ss.isEnableAutoSwitchDirection else {
+                    switch from {
+                    case .left:
+                        guard percentage > 0.0 else { return 0.0 }
+                    case .right:
+                        guard percentage < 0.0 else { return 0.0 }
+                    default:
+                        return percentage
+                    }
+                    return percentage
+                }
                 guard ss.contentMap[to] != nil else {
                     return 0.0
                 }
