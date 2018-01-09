@@ -17,11 +17,12 @@ Installation
 KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/cocoapods). Add the following to your Podfile:
 
 ```ruby
-// Swift 3.x
+# Swift 3
 pod 'KWDrawerController', '~> 3.7'
 
-// Swift 4
-pod 'KWDrawerController', '~> 4.1'
+# Swift 4
+pod 'KWDrawerController', '~> 4.1.1'
+pod 'KWDrawerController/RxSwift'        # with RxSwift extension
 ```
 
 
@@ -237,6 +238,7 @@ Changelog
 + 3.7 Fixed not updating issues on properties.
 + 4.0 Support Swift 4.
 + 4.1 Implement new flag that enables direction auto-switching.
++ 4.1.1 Support RxSwift(If you want).
 
 ⚠️ Requirements
 --------------
