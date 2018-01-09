@@ -7,13 +7,51 @@
 //
 
 import UIKit
+import RxSwift
 
 class MainViewController: UITabBarController {
+    
+    let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        drawerController?.rx.didAnimation
+            .subscribe(onNext: { (side, percent) in
+                print("DrawerController.rx.didAnimation: \(side.stringValue), \(percent)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.didBeganAnimation
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.didBeganAnimation: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.willFinishAnimation
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.willFinishAnimation: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.willCancelAnimation
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.willCancelAnimation: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.didFinishAnimation
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.didFinishAnimation: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.didCancelAnimation
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.didCancelAnimation: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -24,16 +62,24 @@ class MainViewController: UITabBarController {
     @IBAction func leftButtonDidPressed(_ sender: UIBarButtonItem) {
         if self.drawerController!.drawerSide == .none {
             self.drawerController?.openSide(.left)
+                .subscribe()
+                .disposed(by: disposeBag)
         } else {
             self.drawerController?.closeSide()
+                .subscribe()
+                .disposed(by: disposeBag)
         }
     }
     
     @IBAction func rightButtonDidPressed(_ sender: UIBarButtonItem) {
         if self.drawerController!.drawerSide == .none {
             self.drawerController?.openSide(.right)
+                .subscribe()
+                .disposed(by: disposeBag)
         } else {
             self.drawerController?.closeSide()
+                .subscribe()
+                .disposed(by: disposeBag)
         }
     }
 
