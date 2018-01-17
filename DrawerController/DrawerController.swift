@@ -1143,6 +1143,12 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
+        for (_, content) in contentMap {
+            content.contentView.setNeedsUpdateConstraints()
+            content.contentView.setNeedsLayout()
+            content.contentView.layoutIfNeeded()
+        }
+        
         let newOrientation = UIDevice.current.orientation
         guard newOrientation != .unknown else { return }
         guard newOrientation != currentOrientation else { return }
