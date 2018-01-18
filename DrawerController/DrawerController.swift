@@ -212,7 +212,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// View controller
-    public func setViewController(_ viewController: UIViewController?, side: DrawerSide) {
+    public func setVController(_ viewController: UIViewController?, side: DrawerSide) {
         guard isEnable() else { return }
         guard let controller = viewController else {
             removeSide(side)

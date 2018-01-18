@@ -28,7 +28,7 @@ public class DrawerEmbedLeftControllerSegue: UIStoryboardSegue {
     
     final public override func perform() {
         if let sourceViewController = source as? DrawerController {
-            sourceViewController.setViewController(destination, side: .left)
+            sourceViewController.setVController(destination, side: .left)
         } else {
             assertionFailure("SourceViewController must be DrawerController!")
         }
