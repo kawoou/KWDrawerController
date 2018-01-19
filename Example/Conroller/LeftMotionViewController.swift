@@ -102,31 +102,31 @@ class LeftMotionViewController: UIViewController, UIPickerViewDelegate, UIPicker
         case self.animator:
             switch row {
             case 0:
-                self.drawerController?.setAnimator(animator: DrawerLinearAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerLinearAnimator(), for: .right)
             case 1:
-                self.drawerController?.setAnimator(animator: DrawerCurveEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerCurveEaseAnimator(), for: .right)
             case 2:
-                self.drawerController?.setAnimator(animator: DrawerSpringAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerSpringAnimator(), for: .right)
             case 3:
-                self.drawerController?.setAnimator(animator: DrawerQuadEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerQuadEaseAnimator(), for: .right)
             case 4:
-                self.drawerController?.setAnimator(animator: DrawerCubicEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerCubicEaseAnimator(), for: .right)
             case 5:
-                self.drawerController?.setAnimator(animator: DrawerQuartEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerQuartEaseAnimator(), for: .right)
             case 6:
-                self.drawerController?.setAnimator(animator: DrawerQuintEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerQuintEaseAnimator(), for: .right)
             case 7:
-                self.drawerController?.setAnimator(animator: DrawerSineEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerSineEaseAnimator(), for: .right)
             case 8:
-                self.drawerController?.setAnimator(animator: DrawerCircEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerCircEaseAnimator(), for: .right)
             case 9:
-                self.drawerController?.setAnimator(animator: DrawerExpoEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerExpoEaseAnimator(), for: .right)
             case 10:
-                self.drawerController?.setAnimator(animator: DrawerElasticEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerElasticEaseAnimator(), for: .right)
             case 11:
-                self.drawerController?.setAnimator(animator: DrawerBackEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerBackEaseAnimator(), for: .right)
             case 12:
-                self.drawerController?.setAnimator(animator: DrawerBounceEaseAnimator(), side: .left)
+                self.drawerController?.setAnimator(DrawerBounceEaseAnimator(), for: .right)
             default: break
             }
             
@@ -136,38 +136,38 @@ class LeftMotionViewController: UIViewController, UIPickerViewDelegate, UIPicker
             
             switch row {
             case 0:
-                self.drawerController?.setTransition(transition: DrawerSlideTransition(), side: .left)
+                self.drawerController?.setTransition(DrawerSlideTransition(), for: .right)
             case 1:
-                self.drawerController?.setTransition(transition: DrawerScaleTransition(), side: .left)
+                self.drawerController?.setTransition(DrawerScaleTransition(), for: .right)
             case 2:
-                self.drawerController?.setTransition(transition: DrawerFloatTransition(), side: .left)
+                self.drawerController?.setTransition(DrawerFloatTransition(), for: .right)
             case 3:
-                self.drawerController?.setTransition(transition: DrawerFoldTransition(), side: .left)
+                self.drawerController?.setTransition(DrawerFoldTransition(), for: .right)
             case 4:
-                self.drawerController?.setTransition(transition: DrawerParallaxTransition(), side: .left)
+                self.drawerController?.setTransition(DrawerParallaxTransition(), for: .right)
             case 5:
-                self.drawerController?.setTransition(transition: DrawerSwingTransition(), side: .left)
+                self.drawerController?.setTransition(DrawerSwingTransition(), for: .right)
             case 6:
-                self.drawerController?.setTransition(transition: DrawerZoomTransition(), side: .left)
+                self.drawerController?.setTransition(DrawerZoomTransition(), for: .right)
             default: break
             }
             
         case self.overflowTransition:
             switch row {
             case 0:
-                self.drawerController?.setOverflowTransition(transition: DrawerSlideTransition(), side: .left)
+                self.drawerController?.setOverflowTransition(DrawerSlideTransition(), for: .right)
             case 1:
-                self.drawerController?.setOverflowTransition(transition: DrawerScaleTransition(), side: .left)
+                self.drawerController?.setOverflowTransition(DrawerScaleTransition(), for: .right)
             case 2:
-                self.drawerController?.setOverflowTransition(transition: DrawerFloatTransition(), side: .left)
+                self.drawerController?.setOverflowTransition(DrawerFloatTransition(), for: .right)
             case 3:
-                self.drawerController?.setOverflowTransition(transition: DrawerFoldTransition(), side: .left)
+                self.drawerController?.setOverflowTransition(DrawerFoldTransition(), for: .right)
             case 4:
-                self.drawerController?.setOverflowTransition(transition: DrawerParallaxTransition(), side: .left)
+                self.drawerController?.setOverflowTransition(DrawerParallaxTransition(), for: .right)
             case 5:
-                self.drawerController?.setOverflowTransition(transition: DrawerSwingTransition(), side: .left)
+                self.drawerController?.setOverflowTransition(DrawerSwingTransition(), for: .right)
             case 6:
-                self.drawerController?.setOverflowTransition(transition: DrawerZoomTransition(), side: .left)
+                self.drawerController?.setOverflowTransition(DrawerZoomTransition(), for: .right)
             default: break
             }
             
