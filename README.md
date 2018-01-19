@@ -140,30 +140,30 @@ Customizing
 
  - DrawerSlideTransition
 
-![DrawerSlideTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/slide.gif)
+![DrawerSlideTransition](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/slide.gif)
 
  - DrawerScaleTransition
 	 - Use is not recommended.
  - DrawerParallaxTransition
 
-![DrawerParallaxTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/parallax.gif)
+![DrawerParallaxTransition](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/parallax.gif)
 
  - DrawerFloatTransition
     - When using the `Transition`, `Overflow Transition` should also use `DrawerFloatTransition`.
 
-![DrawerFloatTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/float.gif)
+![DrawerFloatTransition](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/float.gif)
 
  - DrawerFoldTransition
 
-![DrawerFoldTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/fold.gif)
+![DrawerFoldTransition](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/fold.gif)
 
  - DrawerSwingTransition
 
-![DrawerSwingTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/swing.gif)
+![DrawerSwingTransition](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/swing.gif)
 
  - DrawerZoomTransition
 
-![DrawerZoomTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/zoom.gif)
+![DrawerZoomTransition](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/zoom.gif)
 
 
 ### Overflow Transition
@@ -174,7 +174,7 @@ Customizing
  - DrawerScaleTransition
     - This is natural when used with `DrawerSlideTransition`, `DrwaerParallaxTransition`, `DrawerFoldTransition`, and `DrawerSwingTransition`.
 
-![DrawerScaleTransition](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/scale.gif)
+![DrawerScaleTransition](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/scale.gif)
     
  - DrawerParallaxTransition
  - DrawerFloatTransition
