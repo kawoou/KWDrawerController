@@ -58,7 +58,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 .map { $0.key }
             
             for side in updateList {
-                setDrawerWidth(drawerWidth: newValue, side: side)
+                setDrawerWidth(newValue, for: side)
             }
             internalDrawerWidth = newValue
         }
@@ -107,17 +107,17 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: - Public
     
     /// Options
-    public func getSideOption(side: DrawerSide) -> DrawerOption? {
+    public func getSideOption(for side: DrawerSide) -> DrawerOption? {
         guard let content = contentMap[side] else { return nil }
         return content.option
     }
     
     /// Absolute
-    public func getAbsolute(side: DrawerSide) -> Bool {
+    public func getAbsolute(for side: DrawerSide) -> Bool {
         guard let content = contentMap[side] else { return false }
         return content.isAbsolute
     }
-    public func setAbsolute(isAbsolute: Bool, side: DrawerSide) {
+    public func setAbsolute(_ isAbsolute: Bool, for side: DrawerSide) {
         guard let content = contentMap[side] else { return }
         
         if content.isAbsolute != isAbsolute && drawerSide == side && side != .none {
@@ -130,21 +130,21 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Bring to Front
-    public func getBringToFront(side: DrawerSide) -> Bool {
+    public func getBringToFront(for side: DrawerSide) -> Bool {
         guard let content = contentMap[side] else { return false }
         return content.isBringToFront
     }
-    public func setBringToFront(isBringToFront: Bool, side: DrawerSide) {
+    public func setBringToFront(_ isBringToFront: Bool, for side: DrawerSide) {
         guard let content = contentMap[side] else { return }
         content.isBringToFront = isBringToFront
     }
     
     /// Transition
-    public func getTransition(side: DrawerSide) -> DrawerTransition? {
+    public func getTransition(for side: DrawerSide) -> DrawerTransition? {
         guard let content = contentMap[side] else { return nil }
         return content.transition
     }
-    public func setTransition(transition: DrawerTransition, side: DrawerSide) {
+    public func setTransition(_ transition: DrawerTransition, for side: DrawerSide) {
         guard let content = contentMap[side] else { return }
         content.transition = transition
         
@@ -167,32 +167,32 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         willFinishAnimate(side: drawerSide, percent: percent)
         didFinishAnimate(side: drawerSide, percent: percent)
     }
-    public func getOverflowTransition(side: DrawerSide) -> DrawerTransition? {
+    public func getOverflowTransition(for side: DrawerSide) -> DrawerTransition? {
         guard let content = contentMap[side] else { return nil }
         return content.overflowTransition
     }
-    public func setOverflowTransition(transition: DrawerTransition, side: DrawerSide) {
+    public func setOverflowTransition(_ transition: DrawerTransition, for side: DrawerSide) {
         guard let content = contentMap[side] else { return }
         content.overflowTransition = transition
     }
     
     
     /// Animator
-    public func getAnimator(side: DrawerSide) -> DrawerAnimator? {
+    public func getAnimator(for side: DrawerSide) -> DrawerAnimator? {
         guard let content = contentMap[side] else { return nil }
         return content.animator
     }
-    public func setAnimator(animator: DrawerAnimator, side: DrawerSide) {
+    public func setAnimator(_ animator: DrawerAnimator, for side: DrawerSide) {
         guard let content = contentMap[side] else { return }
         content.animator = animator
     }
     
     /// Drawer Width
-    public func getDrawerWidth(side: DrawerSide) -> Float? {
+    public func getDrawerWidth(for side: DrawerSide) -> Float? {
         guard let content = contentMap[side] else { return nil }
         return content.drawerWidth
     }
-    public func setDrawerWidth(drawerWidth: Float, side: DrawerSide) {
+    public func setDrawerWidth(_ drawerWidth: Float, for side: DrawerSide) {
         guard let content = contentMap[side] else { return }
         
         guard drawerSide == side else {
@@ -212,7 +212,10 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// View controller
-    public func setViewController(_ viewController: UIViewController?, side: DrawerSide) {
+    public func getViewController(for side: DrawerSide) -> UIViewController? {
+        return contentMap[side]?.viewController
+    }
+    public func setViewController(_ viewController: UIViewController?, for side: DrawerSide) {
         guard isEnable() else { return }
         guard let controller = viewController else {
             removeSide(side)
@@ -1142,6 +1145,12 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        
+        for (_, content) in contentMap {
+            content.contentView.setNeedsUpdateConstraints()
+            content.contentView.setNeedsLayout()
+            content.contentView.layoutIfNeeded()
+        }
         
         let newOrientation = UIDevice.current.orientation
         guard newOrientation != .unknown else { return }

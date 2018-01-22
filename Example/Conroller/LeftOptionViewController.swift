@@ -31,14 +31,14 @@ class LeftOptionViewController: UIViewController {
         self.tapToClose.addTarget(self, action: #selector(tapToCloseDidTouched(_:)), for: .valueChanged)
         self.bringToFront.addTarget(self, action: #selector(bringToFrontDidTouched(_:)), for: .valueChanged)
         
-        self.absolute.isOn = self.drawerController?.getAbsolute(side: .left) ?? false
-        self.shadow.isOn = self.drawerController?.getSideOption(side: .left)?.isShadow ?? false
-        self.fadeScreen.isOn = self.drawerController?.getSideOption(side: .left)?.isFadeScreen ?? false
-        self.blurScreen.isOn = self.drawerController?.getSideOption(side: .left)?.isBlur ?? false
-        self.overflowAnimation.isOn = self.drawerController?.getSideOption(side: .left)?.isOverflowAnimation ?? false
-        self.gesture.isOn = self.drawerController?.getSideOption(side: .left)?.isGesture ?? false
-        self.tapToClose.isOn = self.drawerController?.getSideOption(side: .left)?.isTapToClose ?? false
-        self.bringToFront.isOn = self.drawerController?.getBringToFront(side: .left) ?? false
+        self.absolute.isOn = self.drawerController?.getAbsolute(for: .left) ?? false
+        self.shadow.isOn = self.drawerController?.getSideOption(for: .left)?.isShadow ?? false
+        self.fadeScreen.isOn = self.drawerController?.getSideOption(for: .left)?.isFadeScreen ?? false
+        self.blurScreen.isOn = self.drawerController?.getSideOption(for: .left)?.isBlur ?? false
+        self.overflowAnimation.isOn = self.drawerController?.getSideOption(for: .left)?.isOverflowAnimation ?? false
+        self.gesture.isOn = self.drawerController?.getSideOption(for: .left)?.isGesture ?? false
+        self.tapToClose.isOn = self.drawerController?.getSideOption(for: .left)?.isTapToClose ?? false
+        self.bringToFront.isOn = self.drawerController?.getBringToFront(for: .left) ?? false
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,28 +47,28 @@ class LeftOptionViewController: UIViewController {
     }
     
     @objc func absoluteDidTouched(_ sender: UISwitch) {
-        self.drawerController?.setAbsolute(isAbsolute: sender.isOn, side: .left)
+        self.drawerController?.setAbsolute(sender.isOn, for: .left)
     }
     @objc func shadowDidTouched(_ sender: UISwitch) {
-        self.drawerController?.getSideOption(side: .left)?.isShadow = sender.isOn
+        self.drawerController?.getSideOption(for: .left)?.isShadow = sender.isOn
     }
     @objc func fadeScreenDidTouched(_ sender: UISwitch) {
-        self.drawerController?.getSideOption(side: .left)?.isFadeScreen = sender.isOn
+        self.drawerController?.getSideOption(for: .left)?.isFadeScreen = sender.isOn
     }
     @objc func blurScreenDidTouched(_ sender: UISwitch) {
-        self.drawerController?.getSideOption(side: .left)?.isBlur = sender.isOn
+        self.drawerController?.getSideOption(for: .left)?.isBlur = sender.isOn
     }
     @objc func overflowAnimationDidTouched(_ sender: UISwitch) {
-        self.drawerController?.getSideOption(side: .left)?.isOverflowAnimation = sender.isOn
+        self.drawerController?.getSideOption(for: .left)?.isOverflowAnimation = sender.isOn
     }
     @objc func gestureDidTouched(_ sender: UISwitch) {
-        self.drawerController?.getSideOption(side: .left)?.isGesture = sender.isOn
+        self.drawerController?.getSideOption(for: .left)?.isGesture = sender.isOn
     }
     @objc func tapToCloseDidTouched(_ sender: UISwitch) {
-        self.drawerController?.getSideOption(side: .left)?.isTapToClose = sender.isOn
+        self.drawerController?.getSideOption(for: .left)?.isTapToClose = sender.isOn
     }
     @objc func bringToFrontDidTouched(_ sender: UISwitch) {
-        self.drawerController?.setBringToFront(isBringToFront: sender.isOn, side: .left)
+        self.drawerController?.setBringToFront(sender.isOn, for: .left)
     }
     
 }
