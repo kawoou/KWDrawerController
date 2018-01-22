@@ -21,7 +21,7 @@ KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/coco
 pod 'KWDrawerController', '~> 3.7'
 
 # Swift 4
-pod 'KWDrawerController', '~> 4.1.1'
+pod 'KWDrawerController', '~> 4.1.2'
 pod 'KWDrawerController/RxSwift'        # with RxSwift extension
 ```
 
@@ -239,6 +239,11 @@ Changelog
 + 4.0 Support Swift 4.
 + 4.1 Implement new flag that enables direction auto-switching.
 + 4.1.1 Support RxSwift(If you want).
++ 4.1.2
+  - Fix issues on auto layout of child view controllers.
+  - Replace naming.
+  - Implement `getViewController` method.
+  - Reduce cloning size.
 
 ⚠️ Requirements
 --------------
