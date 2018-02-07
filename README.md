@@ -21,7 +21,7 @@ KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/coco
 pod 'KWDrawerController', '~> 3.7'
 
 # Swift 4
-pod 'KWDrawerController', '~> 4.1.2'
+pod 'KWDrawerController', '~> 4.1.3'
 pod 'KWDrawerController/RxSwift'        # with RxSwift extension
 ```
 
@@ -244,6 +244,8 @@ Changelog
   - Replace naming.
   - Implement `getViewController` method.
   - Reduce cloning size.
++ 4.1.3
+  - [#12] Fix crashed on load.
 
 ⚠️ Requirements
 --------------
