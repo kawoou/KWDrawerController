@@ -383,6 +383,13 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     
     private var currentOrientation: UIDeviceOrientation = .unknown
     
+    #if swift(>=3.2)
+    private var observeContext: NSKeyValueObservation?
+    #else
+    private var isObserveKVO: Bool = false
+    private static var observeContext: Int = 0
+    #endif
+
     /// Gesture
     private var gestureBeginPoint: CGPoint = CGPoint.zero
     private var gestureMovePoint: CGPoint = CGPoint.zero
@@ -1136,11 +1143,25 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         /// Events
-        view.addObserver(self, forKeyPath: "center", options: .new, context: nil)
+        #if swift(>=3.2)
+            observeContext = view.observe(\.frame) { [weak self] (view, event) in
+                self?.updateLayout()
+            }
+        #else
+            view.addObserver(self, forKeyPath: "frame", options: .new, context: &DrawerController.observeContext)
+            isObserveKVO = true
+        #endif
     }
     
     deinit {
-        view.removeObserver(self, forKeyPath:"center")
+        #if swift(>=3.2)
+            observeContext?.invalidate()
+            observeContext = nil
+        #else
+            if isObserveKVO {
+                view.removeObserver(self, forKeyPath:"frame")
+            }
+        #endif
     }
     
     open override func viewDidLayoutSubviews() {
@@ -1160,14 +1181,20 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         updateLayout()
     }
     
+    #if !swift(>=3.2)
     open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        
-        if keyPath == "center" {
+        guard context == &DrawerController.observeContext else {
+            observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        guard isObserveKVO else { return }
+
+        if keyPath == "frame" {
             updateLayout()
         }
     }
-    
+    #endif
+
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
