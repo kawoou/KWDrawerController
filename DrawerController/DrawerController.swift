@@ -317,6 +317,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
 
         delegate?.drawerWillCloseSide?(drawerController: self, side: drawerSide)
         
+        let oldSide = drawerSide
         isAnimating = true
         
         willBeginAnimate(side: .none)
@@ -332,7 +333,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             didFinishAnimate(side: .none, percent: 0.0)
             
             isAnimating = false
-            delegate?.drawerDidCloseSide?(drawerController: self, side: drawerSide)
+            delegate?.drawerDidCloseSide?(drawerController: self, side: oldSide)
             completion?()
             return
         }
@@ -358,7 +359,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                     ss.didFinishAnimate(side: .none, percent: 0.0)
                     
                     ss.isAnimating = false
-                    ss.delegate?.drawerDidCloseSide?(drawerController: ss, side: ss.drawerSide)
+                    ss.delegate?.drawerDidCloseSide?(drawerController: ss, side: oldSide)
                     completion?()
                 }
             )
@@ -374,7 +375,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                     ss.didFinishAnimate(side: .none, percent: 0.0)
                     
                     ss.isAnimating = false
-                    ss.delegate?.drawerDidCloseSide?(drawerController: ss, side: ss.drawerSide)
+                    ss.delegate?.drawerDidCloseSide?(drawerController: ss, side: oldSide)
                     completion?()
                 }
             )
