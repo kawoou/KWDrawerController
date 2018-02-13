@@ -9,12 +9,14 @@
 import UIKit
 import RxSwift
 
-class MainViewController: UITabBarController {
+class MainViewController: UITabBarController, DrawerControllerDelegate {
     
     let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        drawerController?.delegate = self
 
         drawerController?.rx.didAnimation
             .subscribe(onNext: { (side, percent) in
@@ -92,5 +94,23 @@ class MainViewController: UITabBarController {
         // Pass the selected object to the new view controller.
     }
     */
-
+    
+    
+    // MARK: - DrawerControllerDelegate
+        
+    func drawerWillOpenSide(drawerController: DrawerController, side: DrawerSide) {
+        print("DrawerController.willOpenSide: \(side.stringValue)")
+    }
+    
+    func drawerWillCloseSide(drawerController: DrawerController) {
+        print("DrawerController.willCloseSide")
+    }
+    
+    func drawerDidOpenSide(drawerController: DrawerController, side: DrawerSide) {
+        print("DrawerController.didOpenSide: \(side.stringValue)")
+    }
+    
+    func drawerDidCloseSide(drawerController: DrawerController) {
+        print("DrawerController.didCloseSide")
+    }
 }
