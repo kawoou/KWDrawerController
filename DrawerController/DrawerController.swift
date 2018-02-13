@@ -33,9 +33,9 @@ public protocol DrawerControllerDelegate {
     @objc optional func drawerDidFinishAnimation(drawerController: DrawerController, side: DrawerSide)
     @objc optional func drawerDidCancelAnimation(drawerController: DrawerController, side: DrawerSide)
     @objc optional func drawerWillOpenSide(drawerController: DrawerController, side: DrawerSide)
-    @objc optional func drawerWillCloseSide(drawerController: DrawerController)
+    @objc optional func drawerWillCloseSide(drawerController: DrawerController, side: DrawerSide)
     @objc optional func drawerDidOpenSide(drawerController: DrawerController, side: DrawerSide)
-    @objc optional func drawerDidCloseSide(drawerController: DrawerController)
+    @objc optional func drawerDidCloseSide(drawerController: DrawerController, side: DrawerSide)
 }
 
 open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
@@ -315,7 +315,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         guard isEnable() else { return }
         guard !isAnimating else { return }
 
-        delegate?.drawerWillCloseSide?(drawerController: self)
+        delegate?.drawerWillCloseSide?(drawerController: self, side: drawerSide)
         
         isAnimating = true
         
@@ -332,7 +332,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             didFinishAnimate(side: .none, percent: 0.0)
             
             isAnimating = false
-            delegate?.drawerDidCloseSide?(drawerController: self)
+            delegate?.drawerDidCloseSide?(drawerController: self, side: drawerSide)
             completion?()
             return
         }
@@ -358,7 +358,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                     ss.didFinishAnimate(side: .none, percent: 0.0)
                     
                     ss.isAnimating = false
-                    ss.delegate?.drawerDidCloseSide?(drawerController: ss)
+                    ss.delegate?.drawerDidCloseSide?(drawerController: ss, side: ss.drawerSide)
                     completion?()
                 }
             )
@@ -374,7 +374,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                     ss.didFinishAnimate(side: .none, percent: 0.0)
                     
                     ss.isAnimating = false
-                    ss.delegate?.drawerDidCloseSide?(drawerController: ss)
+                    ss.delegate?.drawerDidCloseSide?(drawerController: ss, side: ss.drawerSide)
                     completion?()
                 }
             )

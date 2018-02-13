@@ -9,15 +9,13 @@
 import UIKit
 import RxSwift
 
-class MainViewController: UITabBarController, DrawerControllerDelegate {
+class MainViewController: UITabBarController {
     
     let disposeBag = DisposeBag()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        drawerController?.delegate = self
-
+      
         drawerController?.rx.didAnimation
             .subscribe(onNext: { (side, percent) in
                 print("DrawerController.rx.didAnimation: \(side.stringValue), \(percent)")
@@ -51,6 +49,30 @@ class MainViewController: UITabBarController, DrawerControllerDelegate {
         drawerController?.rx.didCancelAnimation
             .subscribe(onNext: { (side) in
                 print("DrawerController.rx.didCancelAnimation: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.willOpenSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.willOpenSide: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.willCloseSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.willCloseSide: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.didOpenSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.didOpenSide: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+      
+        drawerController?.rx.didCloseSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.didCloseSide: \(side.stringValue)")
             })
             .disposed(by: disposeBag)
         
@@ -94,23 +116,5 @@ class MainViewController: UITabBarController, DrawerControllerDelegate {
         // Pass the selected object to the new view controller.
     }
     */
-    
-    
-    // MARK: - DrawerControllerDelegate
-        
-    func drawerWillOpenSide(drawerController: DrawerController, side: DrawerSide) {
-        print("DrawerController.willOpenSide: \(side.stringValue)")
-    }
-    
-    func drawerWillCloseSide(drawerController: DrawerController) {
-        print("DrawerController.willCloseSide")
-    }
-    
-    func drawerDidOpenSide(drawerController: DrawerController, side: DrawerSide) {
-        print("DrawerController.didOpenSide: \(side.stringValue)")
-    }
-    
-    func drawerDidCloseSide(drawerController: DrawerController) {
-        print("DrawerController.didCloseSide")
-    }
+  
 }
