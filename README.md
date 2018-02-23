@@ -72,7 +72,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 ### Storyboard
 
-![Storyboard](https://github.com/kawoou/KWDrawerController/raw/develop/Preview/storyboard.jpg)
+![Storyboard](https://github.com/kawoou/KWDrawerController/raw/preview/Preview/storyboard.jpg)
 
  1. Set the KWDrawerController to Custom Class of Initial ViewController.
 
