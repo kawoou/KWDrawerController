@@ -227,8 +227,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     /// Actions
     public func openSide(_ side: DrawerSide, completion: (()->())? = nil) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard !isAnimating else { return }
+        guard isEnable(), !isAnimating else { return }
         
         if drawerSide != .none && side != drawerSide {
             closeSide { [weak self] in
@@ -303,8 +302,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     
     public func closeSide(completion: (()->())? = nil) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard !isAnimating else { return }
+        guard isEnable(), !isAnimating else { return }
         
         isAnimating = true
         
@@ -480,8 +478,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     private func removeSide(_ side: DrawerSide) {
         /// Golden-Path
-        guard !isAnimating else { return }
-        guard let content = contentMap[side] else { return }
+        guard !isAnimating, let content = contentMap[side] else { return }
         
         /// Closure
         let unsetContent: ((DrawerContent) -> Void) = { [weak self] content in
@@ -832,9 +829,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     private func handleTapGestureRecognizer(gesture: UITapGestureRecognizer) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard isGesture() else { return }
-        guard !isAnimating else { return }
+        guard isEnable(), isGesture(), !isAnimating else { return }
         
         closeSide { [weak self] in
             self?.gestureLastPercentage = -1.0
@@ -844,9 +839,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     private func handlePanGestureRecognizer(gesture: UIPanGestureRecognizer) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard isGesture() else { return }
-        guard !isAnimating else { return }
+        guard isEnable(), isGesture(), !isAnimating else { return }
         
         let location = gesture.location(in: view)
         
@@ -1174,8 +1167,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         let newOrientation = UIDevice.current.orientation
-        guard newOrientation != .unknown else { return }
-        guard newOrientation != currentOrientation else { return }
+        guard newOrientation != .unknown, newOrientation != currentOrientation else { return }
         currentOrientation = newOrientation
         
         updateLayout()
