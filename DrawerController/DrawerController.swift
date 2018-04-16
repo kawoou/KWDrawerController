@@ -225,6 +225,14 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Actions
+    @IBAction func openLeftSide(_ sender: Any) {
+        self.openSide(.left)
+    }
+    
+    @IBAction func openRightSide(_ sender: Any) {
+        self.openSide(.right)
+    }
+    
     public func openSide(_ side: DrawerSide, completion: (()->())? = nil) {
         /// Golden-Path
         guard isEnable(), !isAnimating else { return }
