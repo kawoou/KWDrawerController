@@ -33,7 +33,14 @@ extension UIViewController {
     public internal(set) var drawerController: DrawerController? {
         get {
             guard let controller = objc_getAssociatedObject(self, &AssociatedKeys.drawerController) as? DrawerController else {
-                return parent?.drawerController
+                var parentController = parent
+                while let parent = parentController {
+                    if let drawerController = parent.drawerController {
+                        return drawerController
+                    }
+                    parentController = parent.parent
+                }
+                return nil
             }
             return controller
         }
