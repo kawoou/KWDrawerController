@@ -24,7 +24,7 @@ SOFTWARE.
 
 import UIKit
 
-public class DrawerBounceEaseAnimator: DrawerTickAnimator {
+open class DrawerBounceEaseAnimator: DrawerTickAnimator {
 
     // MARK: - Enum
     
@@ -65,12 +65,12 @@ public class DrawerBounceEaseAnimator: DrawerTickAnimator {
     
     // MARK: - Property
     
-    public var easeType: EaseType
+    open var easeType: EaseType
     
     
     // MARK: - Public
     
-    public override func tick(delta: TimeInterval, duration: TimeInterval, animations: @escaping (Float)->()) {
+    open override func tick(delta: TimeInterval, duration: TimeInterval, animations: @escaping (Float)->()) {
         animations(Float(easeType.algorithm(value: delta / duration)))
     }
     

@@ -24,27 +24,27 @@ SOFTWARE.
 
 import UIKit
 
-public class DrawerScaleTransition: DrawerTransition {
+open class DrawerScaleTransition: DrawerTransition {
 
     // MARK: - Public
     
-    public override func initTransition(content: DrawerContent) {
+    open override func initTransition(content: DrawerContent) {
         super.initTransition(content: content)
     }
     
-    public override func startTransition(content: DrawerContent, side: DrawerSide) {
+    open override func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
         
         content.contentView.transform = .identity
     }
     
-    public override func endTransition(content: DrawerContent, side: DrawerSide) {
+    open override func endTransition(content: DrawerContent, side: DrawerSide) {
         super.endTransition(content: content, side: side)
         
         content.contentView.transform = .identity
     }
     
-    public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
+    open override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
         switch content.drawerSide {
         case .left:

@@ -28,7 +28,7 @@ open class DrawerTickAnimator: DrawerAnimator {
 
     // MARK: - Property
     
-    public override var isTicked: Bool { return true }
+    open override var isTicked: Bool { return true }
     
     
     // MARK: - Lifecycle

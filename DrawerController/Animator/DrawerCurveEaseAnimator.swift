@@ -24,7 +24,7 @@ SOFTWARE.
 
 import UIKit
 
-public class DrawerCurveEaseAnimator: DrawerAnimator {
+open class DrawerCurveEaseAnimator: DrawerAnimator {
 
     // MARK: - Enum
     
@@ -51,12 +51,12 @@ public class DrawerCurveEaseAnimator: DrawerAnimator {
     
     // MARK: - Property
     
-    public var easeType: EaseType
+    open var easeType: EaseType
     
     
     // MARK: - Public
     
-    public override func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
+    open override func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
         UIView.animate(
             withDuration: duration,
             delay: 0.0,

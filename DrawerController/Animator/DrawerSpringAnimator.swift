@@ -24,11 +24,11 @@ SOFTWARE.
 
 import UIKit
 
-public class DrawerSpringAnimator: DrawerAnimator {
+open class DrawerSpringAnimator: DrawerAnimator {
 
     // MARK: - Public
     
-    public override func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
+    open override func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {
         UIView.animate(
             withDuration: duration,
             delay: 0.0,

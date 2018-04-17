@@ -28,12 +28,12 @@ open class DrawerAnimator {
     
     // MARK: - Define
     
-    static let FrameRate: Double = 1.0 / 60.0
+    internal static let FrameRate: Double = 1.0 / 60.0
     
     
     // MARK: - Property
     
-    public var isTicked: Bool { return false }
+    open var isTicked: Bool { return false }
     
     
     // MARK: - Internal
@@ -48,9 +48,9 @@ open class DrawerAnimator {
     
     // MARK: - Public
     
-    public func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {}
+    open func animate(duration: TimeInterval, animations: @escaping (Float)->(), completion: @escaping ((Bool)->())) {}
     
-    public func tick(delta: TimeInterval, duration: TimeInterval, animations: @escaping (Float)->()) {}
+    open func tick(delta: TimeInterval, duration: TimeInterval, animations: @escaping (Float)->()) {}
     
     
     // MARK: - Private
