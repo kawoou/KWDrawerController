@@ -24,23 +24,23 @@ SOFTWARE.
 
 import UIKit
 
-public class DrawerSlideTransition: DrawerTransition {
+open class DrawerSlideTransition: DrawerTransition {
 
     // MARK: - Public
     
-    public override func initTransition(content: DrawerContent) {
+    open override func initTransition(content: DrawerContent) {
         super.initTransition(content: content)
     }
     
-    public override func startTransition(content: DrawerContent, side: DrawerSide) {
+    open override func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
     }
     
-    public override func endTransition(content: DrawerContent, side: DrawerSide) {
+    open override func endTransition(content: DrawerContent, side: DrawerSide) {
         super.endTransition(content: content, side: side)
     }
     
-    public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
+    open override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
         content.contentView.transform = .identity
         content.contentView.frame = CGRect(

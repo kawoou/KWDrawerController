@@ -24,30 +24,30 @@ SOFTWARE.
 
 import UIKit
 
-public class DrawerParallaxTransition: DrawerTransition {
+open class DrawerParallaxTransition: DrawerTransition {
 
     // MARK: - Property
     
-    public var parallaxFactor: Float
+    open var parallaxFactor: Float
     
     
     // MARK: - Public
     
-    public override func initTransition(content: DrawerContent) {
+    open override func initTransition(content: DrawerContent) {
         super.initTransition(content: content)
         
         content.isBringToFront = false
     }
     
-    public override func startTransition(content: DrawerContent, side: DrawerSide) {
+    open override func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
     }
     
-    public override func endTransition(content: DrawerContent, side: DrawerSide) {
+    open override func endTransition(content: DrawerContent, side: DrawerSide) {
         super.endTransition(content: content, side: side)
     }
     
-    public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
+    open override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
         let newPercentage = content.drawerSide == .none ? percentage : CGFloat(Float(percentage) / parallaxFactor)
         

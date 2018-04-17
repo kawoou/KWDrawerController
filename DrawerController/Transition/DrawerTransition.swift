@@ -28,19 +28,19 @@ open class DrawerTransition {
     
     // MARK: - Public
     
-    public func initTransition(content: DrawerContent) {
+    open func initTransition(content: DrawerContent) {
         
     }
     
-    public func startTransition(content: DrawerContent, side: DrawerSide) {
+    open func startTransition(content: DrawerContent, side: DrawerSide) {
         
     }
     
-    public func endTransition(content: DrawerContent, side: DrawerSide) {
+    open func endTransition(content: DrawerContent, side: DrawerSide) {
         
     }
     
-    public func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
+    open func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
     }
     

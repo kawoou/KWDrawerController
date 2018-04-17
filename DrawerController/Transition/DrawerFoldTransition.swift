@@ -24,7 +24,7 @@ SOFTWARE.
 
 import UIKit
 
-public class DrawerFoldTransition: DrawerTransition {
+open class DrawerFoldTransition: DrawerTransition {
     
     // MARK: - Internal
     
@@ -59,11 +59,11 @@ public class DrawerFoldTransition: DrawerTransition {
     
     // MARK: - Public
     
-    public override func initTransition(content: DrawerContent) {
+    open override func initTransition(content: DrawerContent) {
         super.initTransition(content: content)
     }
     
-    public override func startTransition(content: DrawerContent, side: DrawerSide) {
+    open override func startTransition(content: DrawerContent, side: DrawerSide) {
         super.startTransition(content: content, side: side)
         
         unbindView(content: content)
@@ -120,13 +120,13 @@ public class DrawerFoldTransition: DrawerTransition {
         }
     }
     
-    public override func endTransition(content: DrawerContent, side: DrawerSide) {
+    open override func endTransition(content: DrawerContent, side: DrawerSide) {
         super.endTransition(content: content, side: side)
         
         unbindView(content: content)
     }
     
-    public override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
+    open override func transition(content: DrawerContent, side: DrawerSide, percentage: CGFloat, viewRect: CGRect) {
         
         switch content.drawerSide {
         case .left:
