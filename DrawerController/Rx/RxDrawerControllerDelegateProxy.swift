@@ -34,7 +34,7 @@ class RxDrawerControllerDelegateProxy: DelegateProxy<DrawerController, DrawerCon
     /// Typed parent object.
     public private(set) weak var drawerController: DrawerController?
     
-    /// - parameter mapView: Parent object for delegate proxy.
+    /// - parameter drawerController: Parent object for delegate proxy.
     public init(drawerController: DrawerController) {
         self.drawerController = drawerController
         super.init(parentObject: drawerController, delegateProxy: RxDrawerControllerDelegateProxy.self)
