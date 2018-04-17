@@ -67,12 +67,14 @@ public class DrawerFloatTransition: DrawerTransition {
                 height: content.contentView.frame.height
             )
         case .none:
+            let scale = CGFloat(1.0 - Float(fabs(percentage)) * floatFactor)
             content.contentView.transform = CGAffineTransform(
-                scaleX: CGFloat(1.0 - Float(fabs(percentage)) * floatFactor),
-                y: CGFloat(1.0 - Float(fabs(percentage)) * floatFactor)
-            ).translatedBy(
+                scaleX: scale,
+                y: scale
+            )
+            content.contentView.frame.origin = CGPoint(
                 x: viewRect.size.width * percentage,
-                y: 0
+                y: (viewRect.height - content.contentView.frame.size.height) * 0.5
             )
         }
         
