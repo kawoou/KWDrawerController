@@ -80,19 +80,23 @@ public class DrawerContent {
         
         contentView.frame = drawerController.view.bounds
         contentView.autoresizingMask = [.flexibleHeight]
-        contentView.addSubview(viewController.view)
         drawerController.view.addSubview(contentView)
-        
-        drawerController.addChildViewController(viewController)
+
         updateView()
     }
     internal func removeDrawerView() {
-        viewController.removeFromParentViewController()
-        
-        viewController.view.removeFromSuperview()
         contentView.removeFromSuperview()
         
         viewController.drawerController = nil
+    }
+    internal func setVisible(_ isVisible: Bool) {
+        if isVisible {
+            contentView.addSubview(viewController.view)
+            viewController.drawerController?.addChildViewController(viewController)
+        } else {
+            viewController.view.removeFromSuperview()
+            viewController.removeFromParentViewController()
+        }
     }
     
     public func startTransition(side: DrawerSide) {
