@@ -469,6 +469,9 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             newContent.addDrawerView(drawerController: ss)
             newContent.drawerWidth = ss.drawerWidth
             ss.contentMap[side] = newContent
+            if side == .none {
+                newContent.setVisible(true)
+            }
             
             newContent.startTransition(side: .none)
             newContent.transition(
@@ -557,14 +560,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         internalFromSide = side
         
         /// View Controller Events
-        if side == .none {
-            if let sideContent = contentMap[drawerSide] {
-                sideContent.viewController.viewWillDisappear(isAnimation(content: sideContent))
-            }
-        } else {
-            if let sideContent = contentMap[side] {
-                sideContent.viewController.viewWillAppear(isAnimation(content: sideContent))
-            }
+        if side != .none, let sideContent = contentMap[side] {
+            sideContent.setVisible(true)
         }
         
         /// User Interaction
@@ -618,11 +615,6 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             view.bringSubview(toFront: sideContent.contentView)
         } else {
             view.bringSubview(toFront: mainContent.contentView)
-        }
-        
-        /// View Controller Events
-        if side != .none {
-            sideContent.viewController.viewDidAppear(isAnimation(content: sideContent))
         }
     }
     private func willAnimate(side: DrawerSide, percent: Float) {}
@@ -697,10 +689,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             }
             
             content.endTransition(side: side)
-            
-            /// View Controller Events
-            if side == .none {
-                content.viewController.viewDidDisappear(isAnimation(content: content))
+            if moveSide != .none, side == .none {
+                content.setVisible(false)
             }
         } else {
             fadeView.layer.opacity = percent
