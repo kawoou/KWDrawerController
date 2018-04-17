@@ -15,7 +15,7 @@ class MainViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+      
         drawerController?.rx.didAnimation
             .subscribe(onNext: { (side, percent) in
                 print("DrawerController.rx.didAnimation: \(side.stringValue), \(percent)")
@@ -49,6 +49,30 @@ class MainViewController: UITabBarController {
         drawerController?.rx.didCancelAnimation
             .subscribe(onNext: { (side) in
                 print("DrawerController.rx.didCancelAnimation: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.willOpenSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.willOpenSide: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.willCloseSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.willCloseSide: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+        
+        drawerController?.rx.didOpenSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.didOpenSide: \(side.stringValue)")
+            })
+            .disposed(by: disposeBag)
+      
+        drawerController?.rx.didCloseSide
+            .subscribe(onNext: { (side) in
+                print("DrawerController.rx.didCloseSide: \(side.stringValue)")
             })
             .disposed(by: disposeBag)
         
@@ -92,5 +116,5 @@ class MainViewController: UITabBarController {
         // Pass the selected object to the new view controller.
     }
     */
-
+  
 }

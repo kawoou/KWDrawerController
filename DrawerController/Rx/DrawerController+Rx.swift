@@ -125,5 +125,32 @@ extension Reactive where Base: DrawerController {
         
         return ControlEvent(events: source)
     }
-    
+    public var willOpenSide: ControlEvent<DrawerSide> {
+        let source = delegate
+            .methodInvoked(#selector(DrawerControllerDelegate.drawerWillOpenSide(drawerController:side:)))
+            .map { try castOrThrow(DrawerSide.self, $0[1]) }
+        
+        return ControlEvent(events: source)
+    }
+    public var willCloseSide: ControlEvent<DrawerSide> {
+        let source = delegate
+            .methodInvoked(#selector(DrawerControllerDelegate.drawerWillCloseSide(drawerController:side:)))
+            .map { try castOrThrow(DrawerSide.self, $0[1]) }
+        
+        return ControlEvent(events: source)
+    }
+    public var didOpenSide: ControlEvent<DrawerSide> {
+        let source = delegate
+            .methodInvoked(#selector(DrawerControllerDelegate.drawerDidOpenSide(drawerController:side:)))
+            .map { try castOrThrow(DrawerSide.self, $0[1]) }
+        
+        return ControlEvent(events: source)
+    }
+    public var didCloseSide: ControlEvent<DrawerSide> {
+        let source = delegate
+            .methodInvoked(#selector(DrawerControllerDelegate.drawerDidCloseSide(drawerController:side:)))
+            .map { try castOrThrow(DrawerSide.self, $0[1]) }
+
+        return ControlEvent(events: source)
+    }
 }
