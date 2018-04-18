@@ -4,7 +4,7 @@ KWDrawerController
 [![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
 [![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
 [![Pod License](http://img.shields.io/cocoapods/l/KWDrawerController.svg?style=flat)](https://github.com/kawoou/KWDrawerController/blob/master/LICENSE)
-![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg)
+![Swift](https://img.shields.io/badge/Swift-4.1-orange.svg)
 
 Drawer view controller that is easy to use!
 
@@ -21,7 +21,7 @@ KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/coco
 pod 'KWDrawerController', '~> 3.7'
 
 # Swift 4
-pod 'KWDrawerController', '~> 4.1.3'
+pod 'KWDrawerController', '~> 4.1.4'
 pod 'KWDrawerController/RxSwift'        # with RxSwift extension
 ```
 
@@ -246,6 +246,11 @@ Changelog
   - Reduce cloning size.
 + 4.1.3
   - [#12] Fix crashed on load.
++ 4.1.4
+  - [#16] Add state methods to delegate.
+  - [#18] Fix access control issues.
+  - [#20] Fixed DrawerFloatTransition bug.
+  - [#21][#22] DrawerController incorrectly manages lifecycles of child controllers.
 
 ⚠️ Requirements
 --------------
