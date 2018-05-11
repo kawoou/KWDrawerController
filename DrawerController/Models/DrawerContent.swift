@@ -190,7 +190,7 @@ public class DrawerContent {
         viewController.view.frame = CGRect(
             x: CGFloat(-drawerOffset),
             y: 0,
-            width: superView.frame.width,
+            width: width,
             height: superView.frame.height
         )
     }

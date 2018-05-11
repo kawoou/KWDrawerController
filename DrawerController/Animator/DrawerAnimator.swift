@@ -80,8 +80,7 @@ open class DrawerAnimator {
     
     @objc
     private func render() {
-        guard let display = displayLink else { return }
-        guard let animationClosure = animationClosure else { return }
+        guard let display = displayLink, let animationClosure = animationClosure else { return }
         
         let delta = CACurrentMediaTime() - startTime
         

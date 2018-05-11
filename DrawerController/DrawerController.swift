@@ -229,13 +229,36 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     /// Actions
+    @IBAction func openLeftSide(_ sender: Any) {
+        openSide(.left)
+    }
+    
+    @IBAction func openRightSide(_ sender: Any) {
+        openSide(.right)
+    }
+    
     public func openSide(_ side: DrawerSide, completion: (()->())? = nil) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard !isAnimating else { return }
-
-      delegate?.drawerWillOpenSide?(drawerController: self, side: side)
+        guard isEnable(), !isAnimating else { return }
         
+        delegate?.drawerWillOpenSide?(drawerController: self, side: side)
+        
+        if contentMap[side] == nil {
+            switch side {
+            case .left:
+                if let leftSegueID = leftSegueIdentifier {
+                    performSegue(withIdentifier: leftSegueID, sender: self)
+                }
+            case .right:
+                if let rightSegueID = rightSegueIdentifier {
+                    performSegue(withIdentifier: rightSegueID, sender: self)
+                }
+            default:
+                break
+            }
+        }
+        
+      
         if drawerSide != .none && side != drawerSide {
             closeSide { [weak self] in
                 self?.openSide(side, completion: completion)
@@ -312,8 +335,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     
     public func closeSide(completion: (()->())? = nil) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard !isAnimating else { return }
+        guard isEnable(), !isAnimating else { return }
 
         delegate?.drawerWillCloseSide?(drawerController: self, side: drawerSide)
         
@@ -498,8 +520,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     }
     private func removeSide(_ side: DrawerSide) {
         /// Golden-Path
-        guard !isAnimating else { return }
-        guard let content = contentMap[side] else { return }
+        guard !isAnimating, let content = contentMap[side] else { return }
         
         /// Closure
         let unsetContent: ((DrawerContent) -> Void) = { [weak self] content in
@@ -837,9 +858,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     private func handleTapGestureRecognizer(gesture: UITapGestureRecognizer) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard isGesture() else { return }
-        guard !isAnimating else { return }
+        guard isEnable(), isGesture(), !isAnimating else { return }
         
         closeSide { [weak self] in
             self?.gestureLastPercentage = -1.0
@@ -849,9 +868,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     @objc
     private func handlePanGestureRecognizer(gesture: UIPanGestureRecognizer) {
         /// Golden-Path
-        guard isEnable() else { return }
-        guard isGesture() else { return }
-        guard !isAnimating else { return }
+        guard isEnable(), isGesture(), !isAnimating else { return }
         
         let location = gesture.location(in: view)
         
@@ -1140,12 +1157,6 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         if let mainSegueID = mainSegueIdentifier {
             performSegue(withIdentifier: mainSegueID, sender: self)
         }
-        if let leftSegueID = leftSegueIdentifier {
-            performSegue(withIdentifier: leftSegueID, sender: self)
-        }
-        if let rightSegueID = rightSegueIdentifier {
-            performSegue(withIdentifier: rightSegueID, sender: self)
-        }
         
         /// Events
         #if swift(>=3.2)
@@ -1179,8 +1190,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         }
         
         let newOrientation = UIDevice.current.orientation
-        guard newOrientation != .unknown else { return }
-        guard newOrientation != currentOrientation else { return }
+        guard newOrientation != .unknown, newOrientation != currentOrientation else { return }
         currentOrientation = newOrientation
         
         updateLayout()
