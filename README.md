@@ -21,7 +21,7 @@ KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/coco
 pod 'KWDrawerController', '~> 3.7'
 
 # Swift 4
-pod 'KWDrawerController', '~> 4.1.4'
+pod 'KWDrawerController', '~> 4.1.5'
 pod 'KWDrawerController/RxSwift'        # with RxSwift extension
 ```
 
@@ -251,6 +251,8 @@ Changelog
   - [#18] Fix access control issues.
   - [#20] Fixed DrawerFloatTransition bug.
   - [#21][#22] DrawerController incorrectly manages lifecycles of child controllers.
++ 4.1.5
+  - [#24] Code and performance improvements and bug fixes.
 
 ⚠️ Requirements
 --------------
