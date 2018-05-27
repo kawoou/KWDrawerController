@@ -240,25 +240,8 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     public func openSide(_ side: DrawerSide, completion: (()->())? = nil) {
         /// Golden-Path
         guard isEnable(), !isAnimating else { return }
-        
         delegate?.drawerWillOpenSide?(drawerController: self, side: side)
         
-        if contentMap[side] == nil {
-            switch side {
-            case .left:
-                if let leftSegueID = leftSegueIdentifier {
-                    performSegue(withIdentifier: leftSegueID, sender: self)
-                }
-            case .right:
-                if let rightSegueID = rightSegueIdentifier {
-                    performSegue(withIdentifier: rightSegueID, sender: self)
-                }
-            default:
-                break
-            }
-        }
-        
-      
         if drawerSide != .none && side != drawerSide {
             closeSide { [weak self] in
                 self?.openSide(side, completion: completion)
@@ -1156,6 +1139,12 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         /// Storyboard
         if let mainSegueID = mainSegueIdentifier {
             performSegue(withIdentifier: mainSegueID, sender: self)
+        }
+        if let leftSegueID = leftSegueIdentifier {
+            performSegue(withIdentifier: leftSegueID, sender: self)
+        }
+        if let rightSegueID = rightSegueIdentifier {
+            performSegue(withIdentifier: rightSegueID, sender: self)
         }
         
         /// Events
