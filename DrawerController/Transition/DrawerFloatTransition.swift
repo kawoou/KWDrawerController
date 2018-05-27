@@ -72,10 +72,19 @@ open class DrawerFloatTransition: DrawerTransition {
                 scaleX: scale,
                 y: scale
             )
-            content.contentView.frame.origin = CGPoint(
-                x: viewRect.size.width * percentage,
-                y: (viewRect.height - content.contentView.frame.size.height) * 0.5
-            )
+            
+            switch side {
+            case .right:
+                content.contentView.frame.origin = CGPoint(
+                    x: viewRect.width * percentage * scale,
+                    y: (viewRect.height - content.contentView.frame.size.height) * 0.5
+                )
+            default:
+                content.contentView.frame.origin = CGPoint(
+                    x: viewRect.width * percentage,
+                    y: (viewRect.height - content.contentView.frame.size.height) * 0.5
+                )
+            }
         }
         
     }

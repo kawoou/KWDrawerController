@@ -49,7 +49,7 @@ open class DrawerScaleTransition: DrawerTransition {
         switch content.drawerSide {
         case .left:
             if 1.0 == -percentage {
-                content.contentView.transform = .identity
+                content.contentView.transform = CGAffineTransform(scaleX: 0.001, y: 1.0)
             } else {
                 content.contentView.transform = CGAffineTransform(scaleX: 1.0 + percentage, y: 1.0)
             }
@@ -61,7 +61,7 @@ open class DrawerScaleTransition: DrawerTransition {
             )
         case .right:
             if 1.0 == percentage {
-                content.contentView.transform = .identity
+                content.contentView.transform = CGAffineTransform(scaleX: 0.001, y: 1.0)
             } else {
                 content.contentView.transform = CGAffineTransform(scaleX: 1.0 - percentage, y: 1.0)
             }

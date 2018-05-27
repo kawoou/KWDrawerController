@@ -102,31 +102,31 @@ class LeftMotionViewController: UIViewController, UIPickerViewDelegate, UIPicker
         case self.animator:
             switch row {
             case 0:
-                self.drawerController?.setAnimator(DrawerLinearAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerLinearAnimator(), for: .left)
             case 1:
-                self.drawerController?.setAnimator(DrawerCurveEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerCurveEaseAnimator(), for: .left)
             case 2:
-                self.drawerController?.setAnimator(DrawerSpringAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerSpringAnimator(), for: .left)
             case 3:
-                self.drawerController?.setAnimator(DrawerQuadEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerQuadEaseAnimator(), for: .left)
             case 4:
-                self.drawerController?.setAnimator(DrawerCubicEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerCubicEaseAnimator(), for: .left)
             case 5:
-                self.drawerController?.setAnimator(DrawerQuartEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerQuartEaseAnimator(), for: .left)
             case 6:
-                self.drawerController?.setAnimator(DrawerQuintEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerQuintEaseAnimator(), for: .left)
             case 7:
-                self.drawerController?.setAnimator(DrawerSineEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerSineEaseAnimator(), for: .left)
             case 8:
-                self.drawerController?.setAnimator(DrawerCircEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerCircEaseAnimator(), for: .left)
             case 9:
-                self.drawerController?.setAnimator(DrawerExpoEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerExpoEaseAnimator(), for: .left)
             case 10:
-                self.drawerController?.setAnimator(DrawerElasticEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerElasticEaseAnimator(), for: .left)
             case 11:
-                self.drawerController?.setAnimator(DrawerBackEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerBackEaseAnimator(), for: .left)
             case 12:
-                self.drawerController?.setAnimator(DrawerBounceEaseAnimator(), for: .right)
+                self.drawerController?.setAnimator(DrawerBounceEaseAnimator(), for: .left)
             default: break
             }
             
@@ -136,38 +136,38 @@ class LeftMotionViewController: UIViewController, UIPickerViewDelegate, UIPicker
             
             switch row {
             case 0:
-                self.drawerController?.setTransition(DrawerSlideTransition(), for: .right)
+                self.drawerController?.setTransition(DrawerSlideTransition(), for: .left)
             case 1:
-                self.drawerController?.setTransition(DrawerScaleTransition(), for: .right)
+                self.drawerController?.setTransition(DrawerScaleTransition(), for: .left)
             case 2:
-                self.drawerController?.setTransition(DrawerFloatTransition(), for: .right)
+                self.drawerController?.setTransition(DrawerFloatTransition(), for: .left)
             case 3:
-                self.drawerController?.setTransition(DrawerFoldTransition(), for: .right)
+                self.drawerController?.setTransition(DrawerFoldTransition(), for: .left)
             case 4:
-                self.drawerController?.setTransition(DrawerParallaxTransition(), for: .right)
+                self.drawerController?.setTransition(DrawerParallaxTransition(), for: .left)
             case 5:
-                self.drawerController?.setTransition(DrawerSwingTransition(), for: .right)
+                self.drawerController?.setTransition(DrawerSwingTransition(), for: .left)
             case 6:
-                self.drawerController?.setTransition(DrawerZoomTransition(), for: .right)
+                self.drawerController?.setTransition(DrawerZoomTransition(), for: .left)
             default: break
             }
             
         case self.overflowTransition:
             switch row {
             case 0:
-                self.drawerController?.setOverflowTransition(DrawerSlideTransition(), for: .right)
+                self.drawerController?.setOverflowTransition(DrawerSlideTransition(), for: .left)
             case 1:
-                self.drawerController?.setOverflowTransition(DrawerScaleTransition(), for: .right)
+                self.drawerController?.setOverflowTransition(DrawerScaleTransition(), for: .left)
             case 2:
-                self.drawerController?.setOverflowTransition(DrawerFloatTransition(), for: .right)
+                self.drawerController?.setOverflowTransition(DrawerFloatTransition(), for: .left)
             case 3:
-                self.drawerController?.setOverflowTransition(DrawerFoldTransition(), for: .right)
+                self.drawerController?.setOverflowTransition(DrawerFoldTransition(), for: .left)
             case 4:
-                self.drawerController?.setOverflowTransition(DrawerParallaxTransition(), for: .right)
+                self.drawerController?.setOverflowTransition(DrawerParallaxTransition(), for: .left)
             case 5:
-                self.drawerController?.setOverflowTransition(DrawerSwingTransition(), for: .right)
+                self.drawerController?.setOverflowTransition(DrawerSwingTransition(), for: .left)
             case 6:
-                self.drawerController?.setOverflowTransition(DrawerZoomTransition(), for: .right)
+                self.drawerController?.setOverflowTransition(DrawerZoomTransition(), for: .left)
             default: break
             }
             
