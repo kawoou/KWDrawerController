@@ -90,6 +90,15 @@ public class DrawerContent {
         viewController.drawerController = nil
     }
     internal func setVisible(_ isVisible: Bool) {
+        #if swift(>=4.2)
+        if isVisible {
+            contentView.addSubview(viewController.view)
+            viewController.drawerController?.addChild(viewController)
+        } else {
+            viewController.view.removeFromSuperview()
+            viewController.removeFromParent()
+        }
+        #else
         if isVisible {
             contentView.addSubview(viewController.view)
             viewController.drawerController?.addChildViewController(viewController)
@@ -97,6 +106,7 @@ public class DrawerContent {
             viewController.view.removeFromSuperview()
             viewController.removeFromParentViewController()
         }
+        #endif
     }
     
     public func startTransition(side: DrawerSide) {
@@ -122,7 +132,11 @@ public class DrawerContent {
         case .right:
             currentPercent = 1.0 - percentage
         case .none:
+            #if swift(>=4.2)
+            currentPercent = abs(percentage)
+            #else
             currentPercent = fabs(percentage)
+            #endif
         }
         
         if currentTransition === transition {

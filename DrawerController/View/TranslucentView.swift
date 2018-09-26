@@ -185,6 +185,15 @@ internal class TranslucentView: UIView {
         }
     }
     
+    #if swift(>=4.2)
+    override func sendSubviewToBack(_ view: UIView) {
+        if isInitialize {
+            insertSubview(view, aboveSubview: translucentView)
+        } else {
+            super.sendSubviewToBack(view)
+        }
+    }
+    #else
     override func sendSubview(toBack view: UIView) {
         if isInitialize {
             insertSubview(view, aboveSubview: translucentView)
@@ -192,6 +201,7 @@ internal class TranslucentView: UIView {
             super.sendSubview(toBack: view)
         }
     }
+    #endif
     
     override func insertSubview(_ view: UIView, at index: Int) {
         if isInitialize {
