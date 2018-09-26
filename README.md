@@ -4,7 +4,7 @@ KWDrawerController
 [![Pod Version](http://img.shields.io/cocoapods/v/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
 [![Pod Platform](http://img.shields.io/cocoapods/p/KWDrawerController.svg?style=flat)](http://cocoadocs.org/docsets/KWDrawerController)
 [![Pod License](http://img.shields.io/cocoapods/l/KWDrawerController.svg?style=flat)](https://github.com/kawoou/KWDrawerController/blob/master/LICENSE)
-![Swift](https://img.shields.io/badge/Swift-4.1-orange.svg)
+![Swift](https://img.shields.io/badge/Swift-4.2-orange.svg)
 
 Drawer view controller that is easy to use!
 
@@ -20,8 +20,8 @@ KWDrawerController is available on [CocoaPods](https://github.com/cocoapods/coco
 # Swift 3
 pod 'KWDrawerController', '~> 3.7'
 
-# Swift 4
-pod 'KWDrawerController', '~> 4.1.6'
+# Swift 4~
+pod 'KWDrawerController', '~> 4.2'
 pod 'KWDrawerController/RxSwift'        # with RxSwift extension
 ```
 
@@ -257,6 +257,8 @@ Changelog
   - Fix transition bugs.
   - Fix gesture not working bugs.
   - Fix right drawer placement on iPads (#28 @rivera-ernesto)
++ 4.2
+  - Support swift 4.2. (#31)
 
 ⚠️ Requirements
 --------------
