@@ -230,11 +230,11 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
     
     /// Actions
     @IBAction func openLeftSide(_ sender: Any) {
-        openSide(.left)
+        openSide(.left, completion: nil)
     }
     
     @IBAction func openRightSide(_ sender: Any) {
-        openSide(.right)
+        openSide(.right, completion: nil)
     }
     
     public func openSide(_ side: DrawerSide, completion: (()->())? = nil) {
@@ -615,11 +615,19 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
             view.insertSubview(shadowView, belowSubview: sideContent.contentView)
         }
         
+        #if swift(>=4.2)
+        if sideContent.isBringToFront {
+            view.bringSubviewToFront(sideContent.contentView)
+        } else {
+            view.bringSubviewToFront(mainContent.contentView)
+        }
+        #else
         if sideContent.isBringToFront {
             view.bringSubview(toFront: sideContent.contentView)
         } else {
             view.bringSubview(toFront: mainContent.contentView)
         }
+        #endif
     }
     private func willAnimate(side: DrawerSide, percent: Float) {}
     private func didAnimate(side: DrawerSide, percent: Float) {
@@ -874,8 +882,13 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 gestureLastPercentage = 0.0
             }
             
+            #if swift(>=4.2)
+            willAnimate(side: internalFromSide, percent: abs(gestureLastPercentage))
+            didAnimate(side: internalFromSide, percent: abs(gestureLastPercentage))
+            #else
             willAnimate(side: internalFromSide, percent: fabs(gestureLastPercentage))
             didAnimate(side: internalFromSide, percent: fabs(gestureLastPercentage))
+            #endif
             
         case .changed:
             guard internalFromSide != .none else { return }
@@ -950,18 +963,29 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                 }
             }
             
+            #if swift(>=4.2)
+            willAnimate(side: internalFromSide, percent: abs(percentage))
+            didAnimate(side: internalFromSide, percent: abs(percentage))
+            #else
             willAnimate(side: internalFromSide, percent: fabs(percentage))
             didAnimate(side: internalFromSide, percent: fabs(percentage))
+            #endif
             
             gestureLastPercentage = percentage
             
         default:
             guard internalFromSide != .none else { return }
             
-            willCancelAnimate(side: internalFromSide, percent: fabs(gestureLastPercentage))
-            didCancelAnimate(side: internalFromSide, percent: fabs(gestureLastPercentage))
+            #if swift(>=4.2)
+            let lastPercentage = abs(gestureLastPercentage)
+            #else
+            let lastPercentage = fabs(gestureLastPercentage)
+            #endif
             
-            gestureLastPercentage = fabs(gestureLastPercentage)
+            willCancelAnimate(side: internalFromSide, percent: lastPercentage)
+            didCancelAnimate(side: internalFromSide, percent: lastPercentage)
+            
+            gestureLastPercentage = lastPercentage
             
             if internalFromSide == .left && !isGestureMoveLeft {
                 openSide(.left) { [weak self] in
@@ -972,7 +996,7 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
                     self?.gestureLastPercentage = -1.0
                 }
             } else {
-                if fabs(gestureLastPercentage) > 1.0 {
+                if lastPercentage > 1.0 {
                     if internalFromSide == .left {
                         openSide(.left) { [weak self] in
                             self?.gestureLastPercentage = -1.0
@@ -1018,7 +1042,11 @@ open class DrawerController: UIViewController, UIGestureRecognizerDelegate {
         guard let panGesture = gestureRecognizer as? UIPanGestureRecognizer else { return false }
         
         let translation = panGesture.translation(in: view)
+        #if swift(>=4.2)
+        guard abs(translation.x) >= abs(translation.y) else { return false }
+        #else
         guard fabs(translation.x) >= fabs(translation.y) else { return false }
+        #endif
         
         /// Set default values
         gestureBeginPoint = location

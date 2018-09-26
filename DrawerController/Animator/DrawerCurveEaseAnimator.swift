@@ -34,6 +34,20 @@ open class DrawerCurveEaseAnimator: DrawerAnimator {
         case easeOut
         case easeInOut
         
+        #if swift(>=4.2)
+        internal func option() -> UIView.AnimationOptions {
+            switch self {
+            case .linear:
+                return .curveLinear
+            case .easeIn:
+                return .curveEaseIn
+            case .easeOut:
+                return .curveEaseOut
+            case .easeInOut:
+                return .curveEaseInOut
+            }
+        }
+        #else
         internal func option() -> UIViewAnimationOptions {
             switch self {
             case .linear:
@@ -46,6 +60,7 @@ open class DrawerCurveEaseAnimator: DrawerAnimator {
                 return .curveEaseInOut
             }
         }
+        #endif
     }
     
     

@@ -67,7 +67,11 @@ open class DrawerFloatTransition: DrawerTransition {
                 height: content.contentView.frame.height
             )
         case .none:
+            #if swift(>=4.2)
+            let scale = CGFloat(1.0 - Float(abs(percentage)) * floatFactor)
+            #else
             let scale = CGFloat(1.0 - Float(fabs(percentage)) * floatFactor)
+            #endif
             content.contentView.transform = CGAffineTransform(
                 scaleX: scale,
                 y: scale
