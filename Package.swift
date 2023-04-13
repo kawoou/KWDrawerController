@@ -2,14 +2,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "KWDrawController",
+    name: "KWDrawerController",
     products: [
-        .library(name: "KWDrawController", targets: ["KWDrawController"])
+        .library(name: "KWDrawerController", targets: ["KWDrawerController"])
     ],
     targets: [
         .target(
-            name: "KWDrawController",
-            path: "KWDrawController/DrawController"
+            name: "KWDrawerController",
+            path: "KWDrawerController/DrawerController"
         )
     ]
 )
