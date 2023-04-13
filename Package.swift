@@ -6,6 +6,9 @@ let package = Package(
     products: [
         .library(name: "KWDrawerController", targets: ["KWDrawerController"])
     ],
+    dependencies: [
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .from("5.0.0"))
+    ],
     targets: [
         .target(
             name: "KWDrawerController",
