@@ -9,7 +9,7 @@ let package = Package(
     targets: [
         .target(
             name: "KWDrawerController",
-            path: "KWDrawerController/DrawerController"
+            path: "DrawerController"
         )
     ]
 )
