@@ -3,11 +3,14 @@ import PackageDescription
 
 let package = Package(
     name: "KWDrawerController",
+    platforms: [
+        .iOS(.v10)
+    ],
     products: [
         .library(name: "KWDrawerController", targets: ["KWDrawerController"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", from: "5.0.0"),
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", exact: "5.0.0")
     ],
     targets: [
         .target(
@@ -16,4 +19,3 @@ let package = Package(
         )
     ]
 )
-
