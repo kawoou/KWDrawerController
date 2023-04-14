@@ -15,6 +15,7 @@ let package = Package(
     targets: [
         .target(
             name: "KWDrawerController",
+            dependencies: ["RxSwift"],
             path: "DrawerController"
         )
     ]
