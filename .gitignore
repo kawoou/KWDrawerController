@@ -67,3 +67,4 @@ fastlane/test_output
 *.swp
 
 Pods/
+Package.resolved
