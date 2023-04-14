@@ -1,4 +1,4 @@
-// swift-tools-version:5.6
+// swift-tools-version:5.0
 import PackageDescription
 
 let package = Package(
@@ -10,12 +10,13 @@ let package = Package(
         .library(name: "KWDrawerController", targets: ["KWDrawerController"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", exact: "5.0.0")
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .exact( "5.0.0"))
+//        .package(name: "RxCocoa", url: "https://github.com/ReactiveX/RxSwift.git", from: "5.0.0")
     ],
     targets: [
         .target(
             name: "KWDrawerController",
-            dependencies: ["RxSwift"],
+            dependencies: [ "RxSwift", "RxCocoa" ],
             path: "DrawerController"
         )
     ]
