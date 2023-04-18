@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "KWDrawerController", targets: ["KWDrawerController"])
     ],
     dependencies: [
-        .package(url: "https://github.com/ReactiveX/RxSwift.git", .exact( "5.0.0"))
+        .package(url: "https://github.com/ReactiveX/RxSwift.git", .exact( "5.1.3"))
     ],
     targets: [
         .target(
